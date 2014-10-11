@@ -107,7 +107,7 @@
 
 /* Define to rpl_ if the getopt replacement functions and variables should be
    used. */
-#define __GETOPT_PREFIX rpl_
+/* #undef __GETOPT_PREFIX */
 
 /* Define to empty if `const' does not conform to ANSI C. */
 /* #undef const */
