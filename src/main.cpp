@@ -18,6 +18,7 @@
 #include <cstdlib>
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <ctime>
 #include <iostream>
 #include <limits>
