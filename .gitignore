@@ -6,3 +6,9 @@ config.h
 config.log
 config.status
 configure
+src/indel-seq-gen
+src/iSG_assess
+.deps
+compile
+stamp-h1
+autom4te.cache
