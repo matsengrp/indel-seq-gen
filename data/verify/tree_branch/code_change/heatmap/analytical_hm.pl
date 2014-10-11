@@ -38,7 +38,7 @@ for my $dt ($begin .. $nt-1) {
 	### For all possible numbers of differences
 	for my $L_D (0 .. $L) {
 		$L_I = $L-$L_D;
-		$Qidot_k 
+		$Qidot_k
 		=   0.25 * $L_D * (2 + $PIjk/$PDjk)		## Differing sites changing to either one of 2 differing states or ID state
 		  + 0.25 * $L_I * (3*$PDjk/$PIjk);		## Identical sites changing to any of the 3 differing states
 
@@ -46,7 +46,7 @@ for my $dt ($begin .. $nt-1) {
 
 		$proportion_different[$dt][$L_D]
 		= (0.25 * $L_D * (2 + $PIjk/$PDjk)) / $Qidot_k;
-		
+
 #		if (
 #			$L_D == 750 && $dt == 1 or
 #			$L_D == 750 && $dt == 999 or
@@ -57,10 +57,10 @@ for my $dt ($begin .. $nt-1) {
 #			$L_D == 750 && $dt == 999 or
 #			$L_D ==  50 && $dt ==  50
 #		   ) {
-#			print "" 
-#				  . ($dt/1000) 
-#				  . " $Qidot_k\n";	
-#				  . " ld: $L_D $proportion_different[$dt][$L_D]  length_diff: " . ($proportion_different[$dt][$L_D]/$L_D) ."\n"; 
+#			print ""
+#				  . ($dt/1000)
+#				  . " $Qidot_k\n";
+#				  . " ld: $L_D $proportion_different[$dt][$L_D]  length_diff: " . ($proportion_different[$dt][$L_D]/$L_D) ."\n";
 #		}
 
 	}

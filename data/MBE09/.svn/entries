@@ -25,7 +25,7 @@ cstrope
 
 
 3afae6fb-94a6-488e-aacf-045db869f053
-
+
 exon_intron_lineage.spec
 file
 
@@ -59,7 +59,7 @@ cstrope
 
 
 105
-
+
 codonLD
 file
 
@@ -93,7 +93,7 @@ cstrope
 
 
 28
-
+
 pse.freq
 file
 
@@ -127,7 +127,7 @@ cstrope
 
 
 11
-
+
 exon_intron_lineage.tree
 file
 
@@ -161,7 +161,7 @@ cstrope
 
 
 332
-
+
 exon
 file
 
@@ -195,7 +195,7 @@ cstrope
 
 
 265
-
+
 intron
 file
 
@@ -229,7 +229,7 @@ cstrope
 
 
 65
-
+
 idLD
 file
 
@@ -263,4 +263,4 @@ cstrope
 
 
 53
-
+

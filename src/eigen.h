@@ -1,10 +1,10 @@
 /*  Header file for eigen.c                                */
 
-/*  
+/*
    Sequence Generator - seq-gen, version 1.3.2
    Andrew Rambaut & Nick Grassly
-   Department of Zoology, University of Oxford			
-	
+   Department of Zoology, University of Oxford
+
    The code in this file is taken from Ziheng Yang's PAML package.
    http://abacus.gene.ucl.ac.uk/
 

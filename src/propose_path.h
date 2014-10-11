@@ -50,7 +50,7 @@ public:
 	list<eventTrack*> epc_events;
 	PathProbability P_path;
 
-	PathProposal() 
+	PathProposal()
 	{ }
 
 	void Print_Path_Events();
@@ -89,13 +89,13 @@ public:
 
 	void   Taxon_Dump();
 
-	Taxon() 
+	Taxon()
 		: taxon_name (""),
 		  taxon_sequence ("")
 	{  }
-	
 
-	
+
+
 };
 
 /// Function declaration

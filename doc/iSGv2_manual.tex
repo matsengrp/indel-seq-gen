@@ -8,7 +8,7 @@
 
 \setlength{\topmargin}{0.0cm}
 \setlength{\textheight}{21.5cm}
-\setlength{\oddsidemargin}{0cm} 
+\setlength{\oddsidemargin}{0cm}
 \setlength{\textwidth}{16.5cm}
 \setlength{\columnsep}{0.6cm}
 
@@ -17,11 +17,11 @@
 \newcommand{\iSGcurrentshort}{iSGv\version }
 \newcommand{\iSGcurrentlong}{indel-Seq-Gen v\version }
 
-%%%%%%%%%% 
+%%%%%%%%%%
 %%% When defining a comment, note that the \begin{GUI} MUST be
 %%%  (i) on a line of its own, and
 %%%  (ii) be flush left (not even spaces before it.
-%%%%%%%%%% 
+%%%%%%%%%%
 
 \begin{document}
 
@@ -30,7 +30,7 @@
 \excludecomment{GUI3}
 
 \title{\iSGcurrentlong Manual}
-\author{Cory L. Strope\thanks{Corresponding Author, University of Nebraska, email: 
+\author{Cory L. Strope\thanks{Corresponding Author, University of Nebraska, email:
         corystrope@gmail.com}, Computer Science and Engineering,\\
         Kevin Abel, Computer Science and Engineering,\\
         Stephen D. Scott, Computer Science and Engineering,\\
@@ -50,7 +50,7 @@ We would like to thank the authors of Seq-Gen, Drs. Andrew Rambaut and Nick Gras
 
 @ARTICLE{Rambaut97,
         AUTHOR = "A. Rambaut and N.C. Grassly",
-        TITLE = "{Seq-Gen}: an application for the {Monte Carlo} simulation of 
+        TITLE = "{Seq-Gen}: an application for the {Monte Carlo} simulation of
 {DNA} sequence evolution along phylogenetic trees",
         JOURNAL = "{CABIOS}",
         VOLUME = 13,
@@ -79,7 +79,7 @@ motifs, retain their original sequences and structures better than less function
  \item[] {\tt gunzip \iSGcurrent.tar.gz}, and then
  \item[] {\tt tar -xvf \iSGcurrent.tar}
  \end{itemize}
-\item This creates a directory {\tt \iSGcurrent} with all of the files.  Go to this directory {\tt cd \iSGcurrent}. Make the executables of indel-seq-gen by typing the command ``{\tt ./configure}'', followed by the command ``{\tt make}''. For further installation instructions, refer to the file {\tt INSTALL}. 
+\item This creates a directory {\tt \iSGcurrent} with all of the files.  Go to this directory {\tt cd \iSGcurrent}. Make the executables of indel-seq-gen by typing the command ``{\tt ./configure}'', followed by the command ``{\tt make}''. For further installation instructions, refer to the file {\tt INSTALL}.
 \item After making the executables, type the command ``{\tt cp src/indel-seq-gen data/}''. This copies the executable into the {\tt data} directory.
 \item Go to the {\tt data} directory using the command ``{\tt cd data/}''.
 \item In the {\tt data} directory, there are sample files that can be used to run indel-seq-gen. The following commands will execute indel-seq-gen using various capabilities. Cut-and-paste (or type) these examples to run the simulations. After each run, you can examine the output of these runs by opening the filenames that begin with the name following the {\tt --outfile} or {\tt -e} flags:
@@ -108,7 +108,7 @@ motifs, retain their original sequences and structures better than less function
 \label{sec:overview}
 
 In order to simulate heterogeneous sequences and lineage- and site-specific \iSGcurrentshort uses \textit{enviroments}. The environment of simulation is comprised of
-substitution parameters ($\Theta$; four components: $\theta^m \rightarrow$ substitution matrix , $\theta^f \rightarrow$ character frequencies, $\theta^r \rightarrow$ site rates, and $\theta^i\rightarrow$ percent invariable sites) and indel parameters ($\Lambda$; three components: $\lambda^p \rightarrow$ probability of an indel occurring as the number of indels per subsitution, $\lambda^l\rightarrow$ length distribution, and $\lambda^m\rightarrow$ maximum length). \iSGcurrentshort implements four environments: 
+substitution parameters ($\Theta$; four components: $\theta^m \rightarrow$ substitution matrix , $\theta^f \rightarrow$ character frequencies, $\theta^r \rightarrow$ site rates, and $\theta^i\rightarrow$ percent invariable sites) and indel parameters ($\Lambda$; three components: $\lambda^p \rightarrow$ probability of an indel occurring as the number of indels per subsitution, $\lambda^l\rightarrow$ length distribution, and $\lambda^m\rightarrow$ maximum length). \iSGcurrentshort implements four environments:
 
 \begin{enumerate}
 \item \textit{Global environment}: Sets the default substitution parameters for the simulation run (indel parameters cannot be specified globally).
@@ -124,11 +124,11 @@ Besides the motif environment, these environments define the same sets of parame
 \caption{\it Listing of the precedences of environments and the sections in hich environments are explained.}
 \begin{tabular}{lllll}
 \hline\hline
-            &        & \multicolumn{2}{c}{Precedence} & \\\cline{3-4} 
-Environment & Set in   & $\Theta$\tnote{1} & $\Lambda$\tnote{1} & Section 
+            &        & \multicolumn{2}{c}{Precedence} & \\\cline{3-4}
+Environment & Set in   & $\Theta$\tnote{1} & $\Lambda$\tnote{1} & Section
 \\\hline
 Global    & Command line       & Low      & N/A & \ref{sec:global_options} \\
-Partition & Guide tree file    & Middle   & Low & \ref{sec:partition_options}\\ 
+Partition & Guide tree file    & Middle   & Low & \ref{sec:partition_options}\\
 Subtree   & Specification file & High     & High&\ref{sec:lineage_options} \\
 Motif     & Specification file & N/A      & N/A &\ref{sec:motif_options} \\
 \hline\hline
@@ -151,29 +151,29 @@ Table~\ref{tab:precedence_specific} gives the precedence overriding options for 
  && \multicolumn{3}{c}{Lowest $\longleftarrow$ Precedence $\longrightarrow$ Highest} \\\cline{3-5}
  && \multicolumn{1}{c}{Global\tnote{1}} & \multicolumn{1}{c}{Subtree\tnote{2}} & \multicolumn{1}{c}{Lineage\tnote{3}} \\
 \hline
- 
+
  $\Theta$:
- & $\theta^f$ 
+ & $\theta^f$
    & \texttt{-f (--frequencies) $<$float\_list$>$}
    & \texttt{\#$<$filename$>$\# }
    & \texttt{\#f$<$filename$>$\#}
  \\\\
- & $\theta^m$ 
+ & $\theta^m$
    & \texttt{-m (--matrix) $<$matrix$>$}
    & \texttt{\#m$<$matrix$>$\#}
    & \texttt{\#m$<$matrix$>$\#}
  \\\\
- & $\theta^r$ 
+ & $\theta^r$
    & \texttt{-g (--num\_gamma\_cats) $<$int$>$}
-   & \texttt{\#r\#} 
+   & \texttt{\#r\#}
    & \texttt{\#r\#} {\small OR}
  \\
- & 
+ &
    &
    &
    & \texttt{\#g$<$int$>$\#}
  \\
- & 
+ &
    & \texttt{-a (--alpha) $<$float$>$}
    & \texttt{\#r\#}
    & \texttt{\#r\#} {\small OR}
@@ -193,7 +193,7 @@ Table~\ref{tab:precedence_specific} gives the precedence overriding options for 
    &
    & \texttt{\#c$<$float\_list$>$\#}
  \\\\
- & $\theta^i$ 
+ & $\theta^i$
    & \texttt{-i (--invariable) $<$float$>$}
    & \texttt{\#r\#} {\small OR}
    & \texttt{\#r\#} {\small OR}
@@ -210,7 +210,7 @@ Table~\ref{tab:precedence_specific} gives the precedence overriding options for 
    & \texttt{\{ * , - , - \}}
    & \texttt{\{ * , - , - \}}
  \\
- & $\lambda^p$ 
+ & $\lambda^p$
    & \multicolumn{1}{c}{\texttt{N/A}}
    & \texttt{\{ - , * , - \}}
    & \texttt{\{ - , * , - \}}
@@ -225,7 +225,7 @@ Table~\ref{tab:precedence_specific} gives the precedence overriding options for 
 \begin{tablenotes}
 \item[1] Global options are set at the command line. For the complete list of global options, see Table~\ref{tab:global}.
 \item[2] Subtree options are set in the guide tree file, explained in Section~\ref{sec:partition_options}. For a complete list of options for the guide tree file, see Table~\ref{tab:options}.
-\item[3] Lineage options are set in the specification file, explained in Section~\ref{sec:lineage_options}. For a complete list of options for the specification file, see Table~\ref{tab:options} for indel options ($\Lambda$) and Table~\ref{tab:lineage_options} for substitution options ($\Theta$). 
+\item[3] Lineage options are set in the specification file, explained in Section~\ref{sec:lineage_options}. For a complete list of options for the specification file, see Table~\ref{tab:options} for indel options ($\Lambda$) and Table~\ref{tab:lineage_options} for substitution options ($\Theta$).
 \item[4] Setting indel parameters is the same for both the subtree file and the specification file. The `*' indicates where the option is set. For formatting options, see Table~\ref{tab:options}.
 \end{tablenotes}
 \label{tab:precedence_specific}
@@ -252,7 +252,7 @@ It is recommended to use the GUI interface to become familiar with these many op
 \subsection{Global Options}
 \label{sec:global_options}
  To run indel-Seq-Gen from the command prompt, type the following line:
-  
+
   \begin{verbatim}
   indel-seq-gen -m <matrix> [-options] < guide_tree_file > outfile
   \end{verbatim}
@@ -261,7 +261,7 @@ It is recommended to use the GUI interface to become familiar with these many op
  \begin{itemize}
  \item This assumes that {\tt indel-seq-gen} is in your {\tt PATH} and data files locations are specified relative to your present working directory,
  \item The {\tt guide\_tree\_file} is described in Section~\ref{sec:partition_options}
- \item The ``{\tt $>$ outfile}'' portion of the command  specifies that all non-error messages generated by {\tt indel-Seq-Gen} will be saved in {\tt outfile}. Otherwise, messages will be displayed on the screen. 
+ \item The ``{\tt $>$ outfile}'' portion of the command  specifies that all non-error messages generated by {\tt indel-Seq-Gen} will be saved in {\tt outfile}. Otherwise, messages will be displayed on the screen.
 \begin{GUI}
 \item When using the GUI, this output will be saved in the outfile {\tt sim\_log\_file.txt}. This file is not overwritten; output for subsequent simulation runs are appended to this file.
 \end{GUI}
@@ -282,7 +282,7 @@ It is recommended to use the GUI interface to become familiar with these many op
  \hline
  \endfirsthead
  \caption[]{(continued)}\\
- \hline 
+ \hline
  Option & Long Option & Type & Effect & EV\tnote{a}\\
  \hline
  \\
@@ -349,32 +349,32 @@ It is recommended to use the GUI interface to become familiar with these many op
 
  \subsubsection{Discrete steps and Trace file}
  \label{sec:trace}
- 
+
  \iSGcurrentshort has two discrete-stepping methods and one non-discrete stepping method. Discrete stepping methods are implemented because (i) There is currently no continuous model for indel evolution, and thus most current simulation methods simulate with a flawed indel representation, and (ii) discrete steps allow for concrete tracking of events during the simulation (refer to~\cite{Strope09}). However, such methods are slow, and impractical for very large simulation runs. Thus, \iSGcurrentshort also includes a new non-discrete stepping method that also fixes the flaw in indel representations. These methods are described below.
- 
- \paragraph{Discrete Stepping Methods:} 
- \begin{itemize} 
- \item The Discrete Evolutionary Steps (DES) model simply calculates $\epsilon$, and simulates sequences along the guide tree in $\epsilon$ step sizes. 
- \item Event occurrence times can be related along the simulation guide tree with the \emph{time relative steps}, or TRS, representation. \iSGcurrentshort scales the branch lengths of the guide trees and branch-specific $\epsilon$'s so that all mutation events that occur in simulation run are ordered with respect to the relative time of the run (i.e., the simulation starts at relative time point 0.0, and all taxa end at time point 1.0). 
+
+ \paragraph{Discrete Stepping Methods:}
+ \begin{itemize}
+ \item The Discrete Evolutionary Steps (DES) model simply calculates $\epsilon$, and simulates sequences along the guide tree in $\epsilon$ step sizes.
+ \item Event occurrence times can be related along the simulation guide tree with the \emph{time relative steps}, or TRS, representation. \iSGcurrentshort scales the branch lengths of the guide trees and branch-specific $\epsilon$'s so that all mutation events that occur in simulation run are ordered with respect to the relative time of the run (i.e., the simulation starts at relative time point 0.0, and all taxa end at time point 1.0).
  \end{itemize}
- 
+
  \paragraph{Non-Discrete Steps:} The DES and TRS methods of simulation are computationally intensive, and can take a very long time for large datasets. For this reason, {\tt indel-Seq-Gen} also allows the user to choose an indel creation procedure that utilizes the Gillespie algorithm (GIL), as described by Cartwright~\cite{Cartwright05}. Using the GIL of indel creation greatly speeds up the the simulation time, and the output of such runs is comparable to the TRS method (i.e., the indel events are still traced). {\bf WARNING: If you choose to change the amino acid/nucleotide frequencies along lineages, DO NOT use this option. Use either DES or TRS.} The DES and TRS options will immediately begin shifting the amino acid/nucleotide distributions, while the GIL option will shift the distributions gradually.
- 
+
  \subsubsection*{Event Tracking}
 
  A benefit introduced by the above methods is the ability to track indel events by the following properties:
  \begin{enumerate}
  \item ID
- \item Relative time of occurrence (from 0.0 (root of guide tree) to 1.0 (tips of guide tree); for the TRS model), 
- \item Set of taxa affected by change (i.e., subtree of occurrence), 
- \item Event type (insertion/deletion), 
- \item Indel length, and 
- \item Locations (columns) in the output MSA that reflect the event. 
+ \item Relative time of occurrence (from 0.0 (root of guide tree) to 1.0 (tips of guide tree); for the TRS model),
+ \item Set of taxa affected by change (i.e., subtree of occurrence),
+ \item Event type (insertion/deletion),
+ \item Indel length, and
+ \item Locations (columns) in the output MSA that reflect the event.
  \end{enumerate}
- 
- The time of occurrence for events is listed in different ways for each model: DES reports events by sequence partition (specified in the {\tt guide\_tree\_file} in the order they occur. TRS and GIL reports events by the relative time they occur in the guide tree. 
- 
- 
+
+ The time of occurrence for events is listed in different ways for each model: DES reports events by sequence partition (specified in the {\tt guide\_tree\_file} in the order they occur. TRS and GIL reports events by the relative time they occur in the guide tree.
+
+
  %%%%%%%%%%% This is probably superfluous. %%%%%%%%%%%%%%%%
  %For example, see Figure~\ref{fig:input_MA}. Assuming a phylogeny that groups (Taxon1,Taxon2) and (Taxon3,Taxon4), positions 16--18 could have occurred in two ways, shown in Figure~\ref{fig:des}.
  %\begin{figure}
@@ -409,13 +409,13 @@ It is recommended to use the GUI interface to become familiar with these many op
 
   & \multicolumn{3}{c}{\textsc{Root Sequence}}
   & \multicolumn{3}{c}{Name}
-  & \multicolumn{3}{c}{Substitution} 
+  & \multicolumn{3}{c}{Substitution}
   & \multicolumn{3}{c}{Indel}
   & \multicolumn{3}{c}{\textsc{Guide Tree}}
   \\
  \hline
 \\
- \textit{Partition 1} & 
+ \textit{Partition 1} &
  \textbf{[}  & \textsc{Root Sequence 1} & \textbf{]} &
  \textbf{``} & Label 1         			& \textbf{''} &
  \textbf{\#} & Substitution 1  			& \textbf{\#}&
@@ -456,7 +456,7 @@ It is recommended to use the GUI interface to become familiar with these many op
 \caption{\textit{\normalsize Partition options.}}
 \endfirsthead
 \caption[]{{\normalsize (continued)}}\\
-\hline 
+\hline
 \multicolumn{1}{|r}{{\normalsize Options}} & \multicolumn{1}{c}{{\normalsize Command Styles}} & EV\tnote{a} & \multicolumn{1}{c|}{\normalsize Description} \\
 \hline
 \\
@@ -471,7 +471,7 @@ It is recommended to use the GUI interface to become familiar with these many op
 \multicolumn{1}{|r}{\normalsize Options} & \multicolumn{1}{c}{\normalsize Command Styles} & EV\tnote{a} & \multicolumn{1}{c|}{\normalsize Description} \\
 \hline
 \\
- \multicolumn{1}{r}{\it rootseq} 
+ \multicolumn{1}{r}{\it rootseq}
  & \parbox[t]{5.4cm}{
   $\mathtt{[}$:$<$root\_sequence\_file$>\mathtt{]}$ or \\
   $\mathtt{[}$:$<$root\_sequence\_file$>$, \#$\mathtt{]}$ or \\
@@ -483,7 +483,7 @@ It is recommended to use the GUI interface to become familiar with these many op
  & Six formats are allowed: The first two formats specify the root sequence file, in which a single root sequence along with the quaternary invariable array and any motifs/lineages are specified. The third and fourth format specify that the root sequence will be created from a file containing an input the multiple alignment file, with the quaternary invariable array and motifs/lineages specified. Sub-options `1', `2', and `3' specify the range of the multiple alignment to use, the number of sequences to select from the alignment, and the method of creating the consensus root sequence, respectively (for further details, see Section~\ref{sec:root}). The last two formats take as input a numeric value (not preceded by `:'), and generate a random sequence of the given length to use as the root sequence. When using the options with `\#', relative rates will be assigned to each partition. Using the `\#' option should be done only when the trees for each partition are the same.\\
 \\
 
- \multicolumn{1}{r}{\it label}   
+ \multicolumn{1}{r}{\it label}
  & ``Partition Label'' && This option, when present, will label the boundaries of the subsequence in the multiple alignment in the {\tt *.verb} file with the name given. \\
 \\
 
@@ -502,7 +502,7 @@ It is recommended to use the GUI interface to become familiar with these many op
  }
  & Option `b' modifies and options `i',`f',`m',`r' replaces the global options given at the command line, respectively. Option `b' will modify the default branch length scale by the value given. Option `r' is a flag that specifies that no site-specific rates are used for this partition (i.e., codon, gamma, and discrete gamma rates are reset to uniform rates). This is helpful for specifying introns in coding region sequences, as shown in~\ref{sec:coding_region}. Multiple options should be separated by commas.\\
 \\
- \multicolumn{1}{r}{\it indel}   
+ \multicolumn{1}{r}{\it indel}
  & \parbox[t]{5.4cm}{
   Format:\\
   \begin{tabular}{p{0.05cm}l}
@@ -513,7 +513,7 @@ It is recommended to use the GUI interface to become familiar with these many op
    & {\small If \#$_2 > 0$: P(ins)=P(del)=\#$_2$} \\
    & {\small If \#$_2$/\#$_3$: P(ins)=\#$_2$, P(del)=\#$_3$}\\
   \multicolumn{2}{l}{\textit{$<$file$_1\!>$/$<$file$_2\!>$}} \\
-\end{tabular} 
+\end{tabular}
  } &
  \parbox[t]{0.7cm}{~\\
    ~\\
@@ -525,10 +525,10 @@ It is recommended to use the GUI interface to become familiar with these many op
    $\lambda^l$
  }
  & \parbox[t]{7cm}{These options specify the different indel models and parameters.  Only the first two parameters are required. The last parameter, $<$file$_1$$>$/$<$file$_2>$, can be used to specify the two file names, which provide the user defined insertion length distribution (file$_1$) and deletion length distribution (file$_2$). If no distribution file is provided, the distributions given by Chang and Benner (2004) will be used. If only one distribution file is given, it will be used for both insertions and deletions.
- }\\ 
-\\ 
+ }\\
+\\
  \multicolumn{1}{r}{\it Guide tree}          & Modified Newick Format && The rooted evolutionary tree for the partition. Trees must have the same number of taxa, with each taxon named the same in all trees for all partitions. The branching pattern as well as branch lengths, however, may vary. Branch lengths are assumed to be the expected number of substitutions per site. {\bf Taxon names cannot begin with a number}. Subtrees can be named inside of the tree, as shown in Figure~\ref{fig:newick_clades}.\\ \\
-\hline 
+\hline
 \label{tab:options}
 \end{longtable}
 \end{ThreePartTable}
@@ -537,7 +537,7 @@ It is recommended to use the GUI interface to become familiar with these many op
  \subsubsection{Specifying Subtrees in Newick Format}
 
  To specify subtrees for lineages and motifs, the Newick Tree Format must be clade-labelled, as shown in Figure~\ref{fig:newick_clades}. For multi-partition simulation runs, note that internal node clade labels can be named arbitrarily, thus for a particular subtree, each partition can have a unique lineage-specific parameterization (e.g., Clade1\_1 for partition 1, Clade1\_2, for partition 2, \ldots). However, since taxon labels \emph{must} be consistant between partitions, unique subtree parameters cannot be made (e.g., specifying {\tt Taxon1} is ambiguous if more than one partition is used). To specify partition-specific taxon subsequence parameters, refer to Figure~\ref{fig:newick_clades} for the method of specifying subtrees for taxon subtrees.
- 
+
  \begin{figure}
   \begin{tabular}{p{2in}p{4in}}
   \begin{minipage}{2in}
@@ -562,11 +562,11 @@ It is recommended to use the GUI interface to become familiar with these many op
  \end{figure}
 
 \begin{figure}[htbp]
- \centering 
+ \centering
  \begin{tabular}{lll@{ : }l}
  \hline
  Node Type & \multicolumn{3}{l}{Specification} \\
- \hline	
+ \hline
  Internal Node & $<$clade\_list$>$ && options; \\
  Taxon & $<$Taxon\_name$>$ && options; \\
  Taxon & $<$Taxon\_name$>$ & (partition\_list) & options;\\
@@ -580,12 +580,12 @@ It is recommended to use the GUI interface to become familiar with these many op
  \label{sec:lineage}
  \label{sec:lineage_options}
  \label{sec:motif_options}
- Lineages and motifs are input to \iSGcurrentshort through the use of the global option ``{\tt -k}'' or ``{\tt --lineage}'' accompanied by the name of the lineage/motif file. This file consists of two parts: 
-  \begin{enumerate} 
-   \item LINEAGES, which change the conditions under which a subtree evolves, and 
-   \item MOTIFS, which impose site-specific functional constraints on specific sequence positions for a specific subtree. 
+ Lineages and motifs are input to \iSGcurrentshort through the use of the global option ``{\tt -k}'' or ``{\tt --lineage}'' accompanied by the name of the lineage/motif file. This file consists of two parts:
+  \begin{enumerate}
+   \item LINEAGES, which change the conditions under which a subtree evolves, and
+   \item MOTIFS, which impose site-specific functional constraints on specific sequence positions for a specific subtree.
   \end{enumerate}
- 
+
 The basic outline of this file is:
 \begin{verbatim}
 LINEAGES =
@@ -608,13 +608,13 @@ MOTIFS =
 }
 \end{verbatim}
 
-Lineages and motifs both work on subtrees (internal nodes named in input guide tree). To make a lineage or motif effective from the root of the guide tree, name {\tt subtree\_list} in LINEAGES or {\tt subtree} in MOTIFS as {\tt subtree:} to {\tt root:}, respectively. 
+Lineages and motifs both work on subtrees (internal nodes named in input guide tree). To make a lineage or motif effective from the root of the guide tree, name {\tt subtree\_list} in LINEAGES or {\tt subtree} in MOTIFS as {\tt subtree:} to {\tt root:}, respectively.
 
 
  \subsubsection{LINEAGES}
- Lineages allow for a specific subtree to evolve under different conditions as specified for partitions in the tree file.  Subsequence options (\#\#) are the only set of options affected by these restrictions, shown in Table~\ref{tab:lineage_options}. Labelling (``'') and indel (\{\}) options are no different than in partitions. {\it Note: In order to remove indels from a lineage, include the option \{0,0\} in the lineage.} 
+ Lineages allow for a specific subtree to evolve under different conditions as specified for partitions in the tree file.  Subsequence options (\#\#) are the only set of options affected by these restrictions, shown in Table~\ref{tab:lineage_options}. Labelling (``'') and indel (\{\}) options are no different than in partitions. {\it Note: In order to remove indels from a lineage, include the option \{0,0\} in the lineage.}
  \iSGcurrentshort prohibits unrealistic changes, {\it e.g.} when changing site rates (gamma rates ($\gamma$), discrete gamma rates, codon rates, and uniform rates), \iSGcurrentshort only allows a subset of ancestor$\rightarrow$descendant category changes: $\gamma\rightarrow$\{$\gamma$, uniform\}, discrete $\gamma\rightarrow$\{discrete $\gamma$, uniform\}, codon$\rightarrow$\{codon, uniform\}, and uniform$\rightarrow$\{$\gamma$, discrete $\gamma$, uniform\}.
- 
+
  \begin{threeparttable}
   \caption{\textit{Novel functions and restrictions imposed for lineage-specific subsequence options (\#\#).}}
   \begin{tabular}{p{0.1in}lp{2.25in}p{2.25in}p{0.5in}}
@@ -638,15 +638,15 @@ Lineages and motifs both work on subtrees (internal nodes named in input guide t
   \end{tablenotes}
   \label{tab:lineage_options}
  \end{threeparttable}
- 
+
  \subsubsection{MOTIFS}
 
- Two steps are required to specify a motif: (1) Marking the root sequence in the \textit{rootseq} file (as in Table~\ref{tab:options}, formats 1--4), and (2) Specifying constraints in the lineage file. 
+ Two steps are required to specify a motif: (1) Marking the root sequence in the \textit{rootseq} file (as in Table~\ref{tab:options}, formats 1--4), and (2) Specifying constraints in the lineage file.
 
   \paragraph{Motif types:} \iSGcurrentshort allows two formats for motifs: PROSITE-like motif format and sequence template motif format. PROSITE-like motif format specifies any length of motif that follows the PROSITE regular expression pattern. Sequence template motif format is required to cover the entire sequence, and are used to place minimum and maximum length parameters on subsequences.
- 
+
   \paragraph{Specifying sites on root sequence:} Marking sites is done in the root sequence input file, below the input root sequence or input multiple alignment. To begin marking the sequence, place a `*' corresponding to the first position in the root sequence. This \emph{must} be present for motifs to be correctly parsed. All other positions in the input root sequence must have a corresponding `*' or motif label (anything but `*'). Motif specification characters also must be contiguous, i.e., after specifying the positions that are in a motif, the rest of the motif specification line must be `*'s. As a regular expression, the PROSITE-like motif specification is: *$^+x^+$*$^*$, where $x$ is the character for the motif specification. For template-like motifs, the regular expression is *$[0-9]^n$\footnote{For multiple sequence alignment input, the regular expression is *$[[0-9],.]^n$, see Section~\ref{sec:ma_root} for details.}, where $n$ is the length of the root sequence input. There is no limit to the number of motifs that can be specified on a root sequence. Figure~\ref{fig:motif_errors} shows some errors that can be made in specifying motifs.
-  
+
  \begin{figure}[htbp]
   \begin{tabular}{lp{2.5in}p{2.5in}}
    \hline\hline
@@ -660,8 +660,8 @@ Lineages and motifs both work on subtrees (internal nodes named in input guide t
   \caption{\textit{Erroneous motif specifications for a root sequence of length 20, with the assumption that the motif is labelled by `a'.}}
   \label{fig:motif_errors}
  \end{figure}
- 
-  \paragraph{Specifying motif constraints:} After the motif-participating sites are labelled in the root sequence, specify the conditions that apply to each site in the lineage file. The fields for specifying motifs are shown in Table~\ref{tab:motif_spec}. 
+
+  \paragraph{Specifying motif constraints:} After the motif-participating sites are labelled in the root sequence, specify the conditions that apply to each site in the lineage file. The fields for specifying motifs are shown in Table~\ref{tab:motif_spec}.
 
   \begin{table}
    \caption{\textit{List of the options for specifying motifs. See Figure~\ref{fig:lipocalin_motif} for an example of a motif specification.}}
@@ -684,7 +684,7 @@ Lineages and motifs both work on subtrees (internal nodes named in input guide t
   \end{table}
 
  Note that when marking motifs, the marked positions must be the same size as the PATTERN specified. In the case of variable positions, \iSGcurrentshort requires that the maximum size of the motif (i.e., $n$ in {\tt x$(m,n)$}) are represented in the root sequence. To make this possible, you may need to place `-' in the root sequence or root MSA, as shown in Figure~\ref{fig:lipocalin_motif}. If a character is placed in the variable motif instead of `-', \iSGcurrentshort will assume that this position is part of the variable motif in the root sequence.
- 
+
  \begin{figure}
  \begin{tabular}{|l|}
  \multicolumn{1}{l}{\fbox{In root sequence specification file}}\\
@@ -710,7 +710,7 @@ Lineages and motifs both work on subtrees (internal nodes named in input guide t
 
 The root sequence is specified by the square brackets ({\tt [ ]}) in the guide tree file. There are three parameters, if used, for root sequence input:
 \begin{enumerate}
-\item Specifying the length of root sequence. indel-Seq-Gen will randomly generate a root 
+\item Specifying the length of root sequence. indel-Seq-Gen will randomly generate a root
 sequence of the specified length.  For example {\tt [40]} calls for a root sequence of length 40 characterss.
 \item Root sequence input.
 \item Multiple alignment input.
@@ -720,7 +720,7 @@ Each of these options is explained in the following subsection. Make sure that t
 
 \subsection{Root Sequence Input}
 
-This option specifies that the user has a root sequence in a file for a partition.  
+This option specifies that the user has a root sequence in a file for a partition.
 
 In the tree file, the root sequence input is specified as:
 \begin{verbatim}
@@ -735,7 +735,7 @@ The format of the file \verb+<rootseq_file>+ is:
 <motif_spec>
 \end{verbatim}
 
-Figure~\ref{fig:trx} gives an example of a root sequence for conserving a Thioredoxin-fold 
+Figure~\ref{fig:trx} gives an example of a root sequence for conserving a Thioredoxin-fold
 protein sequence motif.
 
 \begin{figure}[btph]
@@ -770,16 +770,16 @@ This option specifies that the user has a multiple alignment of their sequence s
 
 Where options 1, 2, and 3 stand for:
 \begin{enumerate}
-\item The range of the multiple alignment to use, where the format is {\it beginning}{\tt 
-:}{\it end}.  An input of {\tt 21:67} specifies the range from the 21st to the 67th spot 
-(inclusive) of the input multiple alignment.  Default for this option is the entire range of the multiple alignment. 
+\item The range of the multiple alignment to use, where the format is {\it beginning}{\tt
+:}{\it end}.  An input of {\tt 21:67} specifies the range from the 21st to the 67th spot
+(inclusive) of the input multiple alignment.  Default for this option is the entire range of the multiple alignment.
 \item The number of sequences to choose from the multiple alignment.  indel-Seq-Gen randomly with replacement selects the specified number of sequences from the multiple alignment. Default for this option is to use all sequences.
-\item Method for collapsing the multiple alignment into a root sequence, either random 
-{\tt `r'} or consensus {\tt `c'}.  Consensus is a majority-rule method, using a coin flip to break ties.  Random uses a weighted coin toss based on the character composition at the site to choose the representative character, except for invariable positions, which will be chosen by consensus. For an example of the weighted coin toss, look at the first column in Figure~\ref{fig:input_MA} in which all sequences emit an amino acid, column 6.  In this 
+\item Method for collapsing the multiple alignment into a root sequence, either random
+{\tt `r'} or consensus {\tt `c'}.  Consensus is a majority-rule method, using a coin flip to break ties.  Random uses a weighted coin toss based on the character composition at the site to choose the representative character, except for invariable positions, which will be chosen by consensus. For an example of the weighted coin toss, look at the first column in Figure~\ref{fig:input_MA} in which all sequences emit an amino acid, column 6.  In this
 column, there are 2 T's, 1 V, and 1 C.  A weighted coin toss on this column will be a T 50\% of the time, a V 25\% of the time, and a C 25\% of the time. The default for this option is consensus.
 \end{enumerate}
 
-When specifying the multiple alignment in the tree file, a blank field specifies that the default entry for the field is desired.  For example, \verb+[:input_MA(,,r)]+ indicates that the entire range and all sequences from {\tt input\_MA} will be used, but that the character that will represent the column will be chosen by a weighted coin toss based on the characters that appear in that column.  Note that the size of the root sequence can fluctuate between simulation runs.  For example, using the option \verb+[:input_MA(,1,)]+ will randomly choose a single sequence to create root sequence, thus the sequence that 
+When specifying the multiple alignment in the tree file, a blank field specifies that the default entry for the field is desired.  For example, \verb+[:input_MA(,,r)]+ indicates that the entire range and all sequences from {\tt input\_MA} will be used, but that the character that will represent the column will be chosen by a weighted coin toss based on the characters that appear in that column.  Note that the size of the root sequence can fluctuate between simulation runs.  For example, using the option \verb+[:input_MA(,1,)]+ will randomly choose a single sequence to create root sequence, thus the sequence that
 indel-Seq-Gen chooses will be the length of the root sequence for that subsequence.\\
 
 Format:
@@ -788,7 +788,7 @@ Format:
 <sequence 1>
 <sequence 2>
  .      .
- .      . 
+ .      .
  .      .
 <sequence n>
 <motifs>
@@ -819,7 +819,7 @@ Figure~\ref{fig:input_MA} is an example of an input multiple alignment of the SE
 \verb+       *....000000000000000000000..000000000000000000+\\
 \hline
 \multicolumn{1}{l}{}\\
-\hline 
+\hline
 \fbox{In motif specification}\\
 $<$subtree$>$:\\
 \verb+    MARKER=b;+\\
@@ -835,13 +835,13 @@ $<$subtree$'>$:\\
 \end{figure}
 
  \subsubsection{Multiple alignment root sequence input for template motifs}
- 
+
  Note that the multiple alignment root sequence input will have variable length, depending on the number of columns in the multiple alignment that are inferred to be gap columns ($>50\%$ `-' in a column). When specifying template motifs, all sites, except the first, must belong to a position in the template. For this reason, when specifying a template motif, \iSGcurrentshort also allows the character `.' on a position in the motif specification. The `.' character specifies that this site should be excluded from the template sites. For example, in Figure~\ref{fig:input_MA}, 6 positions of the multiple sequence alignment are excluded from the template specification.
 
 \subsection{Invariable Array}
 
-The invariable array in indel-Seq-Gen is a quaternary array that specifies how a region is 
-allowed to evolve, and is specified in the root sequence input. Table~\ref{tab:invariable} 
+The invariable array in indel-Seq-Gen is a quaternary array that specifies how a region is
+allowed to evolve, and is specified in the root sequence input. Table~\ref{tab:invariable}
 shows the effect of each numerical entry in the invariable array, and Figure~\ref{fig:placement} shows an example of how the algorithm finds possible positions for indels based on the invariable array.
 
 \begin{table}[Htbp]
@@ -881,14 +881,14 @@ Accepting Positions:
 
 \subsection{Character Frequencies {\tt \#f{\it freq\_file}\#}}
 
-Protein and nucleotide subsequences often evolve under different functional constraints, causing them to display different character frequencies. For this, a file containing 20 amino acid frequencies (order: ARNDCQEGHILKMFPSTWYV) or 4 nucleotide frequencies (order: ACGT) separated by commas can be entered for each subsequence with the option: 
-\verb+#f<freq_file>#+.  Values from the input file are read and normalized to create a 
-distribution, where the number of values is specified by the maximum indel size of the 
+Protein and nucleotide subsequences often evolve under different functional constraints, causing them to display different character frequencies. For this, a file containing 20 amino acid frequencies (order: ARNDCQEGHILKMFPSTWYV) or 4 nucleotide frequencies (order: ACGT) separated by commas can be entered for each subsequence with the option:
+\verb+#f<freq_file>#+.  Values from the input file are read and normalized to create a
+distribution, where the number of values is specified by the maximum indel size of the
 subsequence. For an example, see the file {\tt aaf.freq} included with all iSG {\tt .tar.gz} archive downloads.
 
 \subsection{Indel Probabilities {\tt \{\#$_1$,\#$_2$,{\it indel\_file(s)}\}}}
 
-Insertion and deletion frequencies can be provided for each subsequence.  The format of the file is shown in Figure~\ref{fig:zipf}.  This example is for the indel probabilities of sizes 1--10 of the Zipfian distribution described in Chang and Benner~\cite{Chang04}.  
+Insertion and deletion frequencies can be provided for each subsequence.  The format of the file is shown in Figure~\ref{fig:zipf}.  This example is for the indel probabilities of sizes 1--10 of the Zipfian distribution described in Chang and Benner~\cite{Chang04}.
 indel-Seq-Gen will read in the number of values corresponding to the {\tt max\_indel\_size} (\#$_1$) specified for the subsequence (for Figure~\ref{fig:zipf}, the maximum indel size of a subsequence using this file can be up to size 10), and then normalize the values to create a distribution.  This means that the frequencies can be given in absolute numbers or in any scale (as shown in Figure~\ref{fig:zipf}).  If the maximum indel size is greater than the number of indel positions in the length distribution file, indel-Seq-Gen will output a message that it is unable to read the input distribution file.
 
 \begin{figure}[htbp]
@@ -902,14 +902,14 @@ indel-Seq-Gen will read in the number of values corresponding to the {\tt max\_i
 \label{sec:example}
 
  \subsection{Basic coding and non-coding}
- Despite the complexity that exists in iSGv2, the main goal of the simulation method is to be an all-purpose sequence simulator. Therefore, included in the distribution is a file called ``{\tt simple\_nuc.tree}'', shown in Figure~\ref{fig:simple_nuc}. 
- 
+ Despite the complexity that exists in iSGv2, the main goal of the simulation method is to be an all-purpose sequence simulator. Therefore, included in the distribution is a file called ``{\tt simple\_nuc.tree}'', shown in Figure~\ref{fig:simple_nuc}.
+
  \begin{figure}
  \fbox{\tt [999]((Taxon1:0.3,Taxon2:0.14):0.5,(Taxon3:0.34, Taxon4:0.5):0.12);}
  \caption{\textit{A simple example of a nucleotide simulation partition file. This simulates a 999 nucleotide sequence with no indels, along a guide tree of 4 taxa.}}
  \label{fig:simple_nuc}
  \end{figure}
- 	
+
  Given this example, assume the usage of the Hasegawa, Kishino, and Yano~\cite{Hasegawa85} substitution matrix. The following two commands will create non-coding and coding simulation runs, respectively:
  \begin{verbatim}
  ./indel-seq-gen --matrix HKY --outfile DNA_out < simple_nuc.tree
@@ -921,13 +921,13 @@ indel-Seq-Gen will read in the number of values corresponding to the {\tt max\_i
  \subsection{Including indels}
 
  A little more complex example including indels is shown in Figure~\ref{fig:mid_nuc}. Notice that we now need to two trees to represent coding or non-coding sequences, since indel sizes that are not a multiple of three would cause a nonsense mutation.
- 
+
  \begin{figure}
  \begin{tabular}{|l|}
  \hline
  \fbox{mid\_nuc\_coding.tree}\\
  {\tt [999]\{9,0.1/0.3,codonLD\}((Taxon1:0.3,Taxon2:0.14):0.5,(Taxon3:0.34, Taxon4:0.5):0.12);}\\
- \hline 
+ \hline
  \multicolumn{1}{l}{}\\
  \hline
  \fbox{codonLD}\\
@@ -956,12 +956,12 @@ indel-Seq-Gen will read in the number of values corresponding to the {\tt max\_i
  \end{verbatim}
 
  In this example, the previously introduced options {\tt --matrix}, {\tt --outfile}, and {\tt --codon\_rates} have been replaced by their short options. The {\tt --num\_runs (-n)} option has also been included, so that five runs will be simulated. The multiple alignments of this example is very gappy, since in the indel options, the maximum indel size is 9 nucleotides, and an insertion occurs once for every 10 substitutions, a deletion once every 3.3 substitutions. Finally, the option {\tt --invar} sets 2 percent of the sites to be invariable. Codon rate input also does not need to add up to 1, as \iSGcurrentshort will normalize the values.
- 
+
  \subsection{Coding and non-coding together}
  \label{sec:coding_region}
 
  \iSGcurrentshort has the unique ability to simulate exons and introns in a single run. This adds yet more complexity, as you can see by the necessary files, as listed in Figure~\ref{fig:ORF}. Files that remain the same as previous examples are excluded from this figure.
- 
+
  \begin{figure}
  \begin{tabular}{|l|}
  \hline
@@ -1004,12 +1004,12 @@ indel-Seq-Gen will read in the number of values corresponding to the {\tt max\_i
 
  \subsection{Lineage Introduction}
  Lineages are one of the unique abilities of iSGv2, paricularly the ability to cause a lineage to evolve under no specifications, which we call ``pseudogene'' evolution (the {\tt p} option in subsequence options {\tt \#\#}). To add lineages to the previous example, we need to specify clades in the partition file, create the lineage file and specify this file on the command line. Figure~\ref{fig:lineage_spec} shows the file changes, and Figure~\ref{fig:lineage_output} shows the output of the command:
- 
+
  \begin{verbatim}
 ./indel-seq-gen -m HKY --lineage exon_intron_lineage.spec --alpha 1.3 < exon_intron_lineage.tree
  \end{verbatim}
 
- No output files are given, thus the output is printed to the screen. Note that the file {\tt outfile.verb} will still be created. 
+ No output files are given, thus the output is printed to the screen. Note that the file {\tt outfile.verb} will still be created.
 
 \begin{figure}
  \begin{tabular}{|l|}
@@ -1111,7 +1111,7 @@ indel-seq-gen -m JTT -k lipocalin.spec -w a < lipocalin.tree
 \label{fig:lipocalin_tree}
 \end{figure}
 
-Figure~\ref{fig:lipocalin_output} shows the output of this command. 
+Figure~\ref{fig:lipocalin_output} shows the output of this command.
 
 \begin{figure}[htbp]
 {\small

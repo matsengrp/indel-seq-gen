@@ -18,11 +18,11 @@
 #include "inClade.h"
 
 inClade::inClade(
-				 string& label, 
+				 string& label,
 				 TTree *tree
-				) 
+				)
 {
-	for (int i = 0; i < NUM_CLADE_VARIABLES; i++) 
+	for (int i = 0; i < NUM_CLADE_VARIABLES; i++)
 		set_in_clade[i] = false;
 	model = tree->treeEnv.front()->model;
 	environment_name.assign(label);
@@ -48,12 +48,12 @@ inClade::inClade(
 }
 
 inClade::inClade(
-				 string label, 
+				 string label,
 				 const seqGenOptions *options
-				) 
+				)
 {
 	list<string> arg_split;
-	
+
 	clade_name.assign(label);
 	environment_name.assign(label);
 	P_ins_ = P_del_ = maxIndel = 0;
@@ -67,10 +67,10 @@ inClade::inClade(
 		vector<double>::iterator pi_t = values2Export2Freq.begin();
 		for (list<string>::iterator it = arg_split.begin(); it != arg_split.end(); ++it, ++pi_t)
 			(*pi_t) = atof((*it).c_str());
-	} 
+	}
 	insert_lengthDistribution.clear();
 	delete_lengthDistribution.clear();
-	proportion_invariable = options->default_proportion_invariable;	
+	proportion_invariable = options->default_proportion_invariable;
 	rateHetero=options->default_rateHetero;
 	constraintChange = NO_CHANGE;
 	for (int i = 0; i < MAX_RATE_CATS; i++)
@@ -78,13 +78,13 @@ inClade::inClade(
 	if (rateHetero == DiscreteGammaRates) numCats = options->num_discrete_gamma_categories;
 	if (rateHetero == GammaRates || rateHetero == DiscreteGammaRates) gammaShape = options->alpha;
 	else gammaShape = 1.0;
-	
+
 	my_motifs.clear();
 }
 
 void inClade::rootEnvSetup(
 						   inClade *env
-						  ) 
+						  )
 {
 	processed = true;		// Global params for tree are always processed.
 	environment_name.assign("tree_parameters");
@@ -107,7 +107,7 @@ void inClade::rootEnvSetup(
 		set_in_clade[i] = true;
 }
 
-void inClade::Print_Environment() 
+void inClade::Print_Environment()
 {
 	if ( !environment_name.empty() ) cout << endl << "Environment name: " << environment_name << ", ";
 	cout << "Clade: " << clade_name << "  Top affected node: ";
@@ -127,13 +127,13 @@ void inClade::Print_Environment()
 		cout << "   maxIndel = " << maxIndel << endl;
 		if ( !(insert_lengthDistribution.empty()) ) {
 			cout << "   inLD = " << endl << "    ";
-			for (int i = 1; i <= maxIndel; i++) 
+			for (int i = 1; i <= maxIndel; i++)
 				cout << i << ":" << insert_lengthDistribution.at(i) << " ";
 			cout << endl;
 		}
 		if ( !(delete_lengthDistribution.empty()) ) {
 			cout << "   delLD = " << endl << "    ";
-			for (int i = 1; i <= maxIndel; i++) 
+			for (int i = 1; i <= maxIndel; i++)
 				cout << i << ":" << delete_lengthDistribution.at(i) << " ";
 			cout << endl;
 		}
@@ -166,7 +166,7 @@ void inClade::Print_Environment()
 		break;
 	}
 	cout << endl;
-		
+
 	if ( !my_motifs.empty() ) {
 		cerr << " MOTIFS: " << endl;
 		for (list<inMotif*>::iterator it = my_motifs.begin(); it != my_motifs.end(); ++it)
@@ -181,31 +181,31 @@ string inClade::report_rateHetero()
 	case 1: return "Codon Rates"; break;
 	case 2: return "Gamma Rates"; break;
 	case 3: return "Discrete Gamma Rates"; break;
-	default: 
+	default:
 		cerr << "Invalid rateHetero assignment? How did you do this?" << endl;
 		exit(EXIT_FAILURE);
 		break;
-	}	
+	}
 }
 
 string CladeName(
-				 TTree *tree, 
+				 TTree *tree,
 				 int which_clade_in_list
-				) 
+				)
 {
 	string cladename = "";
 	int clade_ctr = 0;
 
 	for (list<inClade*>::iterator it = tree->treeEnv.begin(); it != tree->treeEnv.end(); ++it, clade_ctr++)
 		if (clade_ctr == which_clade_in_list) cladename.assign((*it)->clade_name);
-		
+
 	return cladename;
 }
 
 inClade *FindEnvironment(
-						 TTree *tree, 
+						 TTree *tree,
 						 string& which_clade
-						) 
+						)
 {
 	for (list<inClade*>::iterator it = tree->treeEnv.begin(); it != tree->treeEnv.end(); ++it) {
 		if ( which_clade.compare((*it)->clade_name) == 0) {
@@ -218,7 +218,7 @@ inClade *FindEnvironment(
 // Function to set clade params to be clade-specific or to point to tree parameters (if not)
 int CladeUnprocessed(
 					 TTree *tree
-					) 
+					)
 {
 	int unprocessed_clade = 0;
 	int num_cycles = 0;

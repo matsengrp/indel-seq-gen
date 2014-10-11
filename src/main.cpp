@@ -54,7 +54,7 @@ extern 	ofstream verbose_output;
 int 	num_copy_ctor = 0, num_dtor = 0, num_ctor = 0;
 int 	num_insert = 0, num_delete = 0, len_insert = 0, len_delete = 0;
 int 	actual_events = 0, virtual_events = 0;
-int		eventNo; 
+int		eventNo;
 const string nucleotides="ACGT";
 const string aminoAcids="ARNDCQEGHILKMFPSTWYV";
 bool 	test_alternate_representations = true;
@@ -90,7 +90,7 @@ void WriteAncestralSequencesNode(vector<vector<char> >& print, int *print_array_
 void PrintTitle();
 void Print_NEXUS_Header(list<inTree*> inputTrees, seqGenOptions *options, ostream& out);
 void Reset_Run(list<inTree*>& inTrees, seqGenOptions *options, bool reset);
-void readInputTrees(list<inTree*>& inputTrees, 	seqGenOptions *options, inClade *global_environment, 
+void readInputTrees(list<inTree*>& inputTrees, 	seqGenOptions *options, inClade *global_environment,
 					vector<string>& OTU_names, int *numTrees, int numTaxa);
 unsigned int rand_seed();
 void setTRS(list<inTree*>& inputTrees, seqGenOptions *options, double max_path_length, double min_branch);
@@ -110,15 +110,15 @@ int point2me (int return_val) { cerr << "you chose me." << endl; return return_v
 ////////////////////////////////////////
 
 int main(int argc, char *argv[])
-{	
+{
 	clock_t totalStart;
 	double totalSecs;
 	vector<ofstream*> simulation_output_streams;
 
 /*	int (*ptr2func)(int) = NULL;
-	
+
 	ptr2func = &point_to_me;
-	
+
 	int check = (*ptr2func)(5);
 	cerr << check << endl;
 
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 
 	check = (*ptr2func)(10);
 	cerr << check << endl;
-	
+
 	exit(0);
 */
 	//QuickTest();
@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
 	}
 	mt_srand(&options->gil_Seed[0], options->gil_Seed.size());
 	SetSeed(options->randomSeed);
-	global_environment = new inClade("Global Environment", options);	
+	global_environment = new inClade("Global Environment", options);
 
 	simulation_output_streams.resize(6);
 	openOutputStreams(simulation_output_streams, options->output_file_flags, options->output_files, options->path_proposal);
@@ -162,9 +162,9 @@ int main(int argc, char *argv[])
 	/// Primary routine. Preprocesses data, then either calls Forward simulation or path proposals.
 	//////////
 	Simulate(
-		     inputTrees, 
-			 global_environment, 
-			 simulation_output_streams, 
+		     inputTrees,
+			 global_environment,
+			 simulation_output_streams,
 			 options
 			);
 
@@ -181,7 +181,7 @@ int main(int argc, char *argv[])
 
 	totalSecs = (double)(clock() - totalStart) / CLOCKS_PER_SEC;
 	fprintf(stderr,"Time taken: %G seconds\n", totalSecs);
-	
+
 	//Leakage();
 	return EXIT_SUCCESS;
 }
@@ -198,9 +198,9 @@ void QuickTest()
 	numStates = 4;
 	numStates_squared = 16;
 	numStates_cubed = 64;
-	
+
 	rates = new RateMatrix();
-	
+
 	rates->InitializeSubstitutionVectors();
 
 //	for (int i = 0; i < numStates; i++) {
@@ -241,14 +241,14 @@ void QuickTest()
 	double S = 0.1;
 	double t = 10;
 	double sum_neg;
-	for (int i = 0; i < numStates; i++) 
+	for (int i = 0; i < numStates; i++)
 		for (int j = 0; j < numStates; j++)
 			if (i != j)
 				rates->Qij.at(i*numStates+j) = S * rates->pi.at(j);
 
 	for (int i = 0; i < numStates; i++) {
 		sum_neg = 0;
-		for (int j = 0; j < numStates; j++) 
+		for (int j = 0; j < numStates; j++)
 			if (i != j) sum_neg += rates->Qij.at(i*numStates+j);
 			else rates->Qij.at(i*numStates+j) = 0;
 		rates->Qij.at(i*numStates+i) = -sum_neg;
@@ -288,9 +288,9 @@ void QuickTest()
 }
 
 void Simulate(
-	   	      list<inTree*>& inputTrees, 
+	   	      list<inTree*>& inputTrees,
 			  inClade *global_environment,
-			  vector<ofstream*>& simulation_output_streams, 
+			  vector<ofstream*>& simulation_output_streams,
 			  seqGenOptions *options
 			 )
 {
@@ -302,13 +302,13 @@ void Simulate(
 	vector<string> OTU_names;
 	Statistics stats(options->number_of_datasets_per_tree);
 	vector<SampleStatistics>::iterator stats_it = stats.sample_stats.begin();
- 
-	if (options->deposit_fossils) 
+
+	if (options->deposit_fossils)
 		paleontologicalProcess = new paleobiology(options->paleo_root_age, options->fossil_deposition_rate);
 
 
 	//////////
-	/// Gathering inTrees, checking sanity 
+	/// Gathering inTrees, checking sanity
 	//////////
 	int numTrees = 0;
 	readInputTrees(inputTrees,options,global_environment,OTU_names,&numTrees,numTaxa);
@@ -336,21 +336,21 @@ void Simulate(
 	//}
 
 	if (Qd && Pc) ptr2init = &iQdPc;
-	else if (Qd && !Pc && !nij) ptr2init = &iQdP; 
-	else if (!Qd && Pc) ptr2init = &iQPc; 
-	else if (Qd && nij) ptr2init = &iQN; 
+	else if (Qd && !Pc && !nij) ptr2init = &iQdP;
+	else if (!Qd && Pc) ptr2init = &iQPc;
+	else if (Qd && nij) ptr2init = &iQN;
 	else ptr2init = &iQP;
 
 	if (Qd && Pc) ptr2update = &uQdPc;
-	else if (Qd && !Pc && !nij) ptr2update = &uQdP; 
-	else if (!Qd && Pc) ptr2update = &uQPc; 
-	else if (Qd && nij) ptr2update = &uQN; 
+	else if (Qd && !Pc && !nij) ptr2update = &uQdP;
+	else if (!Qd && Pc) ptr2update = &uQPc;
+	else if (Qd && nij) ptr2update = &uQN;
 	else ptr2update = &uQP;
 
 	cerr << "Point-> Simulate() FUNCTION PTR SET" << endl;
 
 	if (!options->quiet && !options->path_proposal) {
-		if (options->fileFormat == NEXUSFormat) 
+		if (options->fileFormat == NEXUSFormat)
 			Print_NEXUS_Header(
 							   inputTrees,
 							   options,
@@ -375,9 +375,9 @@ void Simulate(
 			}
 		}
 
-		if (!options->output_file_flags[seqGenOptions::trace]) 
+		if (!options->output_file_flags[seqGenOptions::trace])
 			cout << header.str() << endl;
-		else 
+		else
 			*simulation_output_streams.at(seqGenOptions::trace) << header.str() << endl;
 	}
 
@@ -409,15 +409,15 @@ void Simulate(
 		for (list<inTree*>::iterator it = inputTrees.begin(); it != inputTrees.end(); ++it) {
 			if ( (*it)->my_tree->rooted )  {
 				thisTree_max_path = (*it)->CalculatePathLengths();
-				if(thisTree_max_path > max_path_length) 
+				if(thisTree_max_path > max_path_length)
 					max_path_length = thisTree_max_path;
 				thisTree_min_branch1= (*it)->SearchMinBranch((*it)->my_tree->root->branch1,min_branch);
 				thisTree_min_branch2= (*it)->SearchMinBranch((*it)->my_tree->root->branch2,min_branch);
-				if(thisTree_min_branch2 < min_branch && thisTree_min_branch2 != 0.0) 
+				if(thisTree_min_branch2 < min_branch && thisTree_min_branch2 != 0.0)
 					min_branch = thisTree_min_branch2;
-				if(thisTree_min_branch1 < min_branch && thisTree_min_branch1 != 0.0) 
+				if(thisTree_min_branch1 < min_branch && thisTree_min_branch1 != 0.0)
 					min_branch = thisTree_min_branch1;
-			} 
+			}
 			(*it)->nameAncestralNodes();
 		}
 		//
@@ -480,7 +480,7 @@ void Simulate(
 				}
 			}
 		}
-		for (list<inTree*>::iterator it = inputTrees.begin(); it != inputTrees.end(); ++it) 
+		for (list<inTree*>::iterator it = inputTrees.begin(); it != inputTrees.end(); ++it)
 			(*it)->partitionRate *= numSites / sum;
 
 		//////////
@@ -531,20 +531,20 @@ void Simulate(
 		if (options->path_proposal) {
 			cerr << "Point-> Simulate()::Path_Proposal() Beginning proposals." << endl;
 			Path_Proposal(
-						  inputTrees, 
+						  inputTrees,
 						  &stats,
-						  global_environment, 
-						  simulation_output_streams, 
+						  global_environment,
+						  simulation_output_streams,
 						  options,
 						  &events
 						 );
 		} else {
 			cerr << "Point-> Simulate::Forward_Simulation() Beginning simulation." << endl;
 			Forward_Simulation(
-							   inputTrees, 
-							   global_environment, 
+							   inputTrees,
+							   global_environment,
 							   i,
-							   simulation_output_streams, 
+							   simulation_output_streams,
 							   options,
 							   &events
 							  );
@@ -581,51 +581,51 @@ void Simulate(
 		if (options->tracking_defined()) {
 			if (options->simulation_step_type == TIME_RELATIVE_STEPS || options->simulation_step_type == UNIFORMIZATION) {
 				Print_Trace(
-						    inputTrees, 
-							events, 
+						    inputTrees,
+							events,
 							(
-							  (options->output_file_flags[seqGenOptions::trace]) 
+							  (options->output_file_flags[seqGenOptions::trace])
 							  ? *simulation_output_streams.at(seqGenOptions::trace)
 							  : cout
-							), 
-							options->simulation_step_type, 
-							0, 
+							),
+							options->simulation_step_type,
+							0,
 							i
 						   );
-			} else if (options->output_file_flags[seqGenOptions::trace]) 
+			} else if (options->output_file_flags[seqGenOptions::trace])
 				*simulation_output_streams.at(seqGenOptions::trace) << endl;
 			else cout << endl;
 		}
 
 		if (!options->path_proposal) {
 			Print_Root(
-				 	   inputTrees, 
+				 	   inputTrees,
 				 	   (
-				 	     (options->output_file_flags[seqGenOptions::root]) 
+				 	     (options->output_file_flags[seqGenOptions::root])
 				 	     ? *simulation_output_streams.at(seqGenOptions::root)
 				 	     : cout
-				 	   ), 
-				 	   options 
+				 	   ),
+				 	   options
 				 	  );
 			Print_Seq(
-					  inputTrees, 
+					  inputTrees,
 					  (
-					    (options->output_file_flags[seqGenOptions::seq]) 
+					    (options->output_file_flags[seqGenOptions::seq])
 					    ? *simulation_output_streams.at(seqGenOptions::seq)
 					    : cout
-					  ), 
-					  options, 
+					  ),
+					  options,
 					  i
 					 );
 			Print_MSA(
-					  inputTrees, 
+					  inputTrees,
 					  (
-					    (options->output_file_flags[seqGenOptions::ma]) 
+					    (options->output_file_flags[seqGenOptions::ma])
 					    ? *simulation_output_streams.at(seqGenOptions::ma)
 					    : cout
-					  ), 
-					  options, 
-					  i, 
+					  ),
+					  options,
+					  i,
 					  events
 					 );
 
@@ -688,26 +688,26 @@ void CheckMarkovCodonLikelihoods(
 		getline(is, nucl_seq);
 		index = Nucleotide_Sequence_2_Index(nucl_seq);
 		if (nucl_seq.size() == 6) {
-			cerr << nucl_seq 
+			cerr << nucl_seq
 				 << "    " << index
 				 << "    " << selective->context.return_lt_value(2, index)
 				 << " (" << selective->context.return_lt_value(0, index) << ")"
 				 << "    " << neutral->context.return_lt_value(2, index)
 				 << " (" << neutral->context.return_lt_value(0, index) << ")"
-				 << endl; 
+				 << endl;
 		} else {
-			cerr << nucl_seq 
+			cerr << nucl_seq
 				 << "    " << index
 				 << "    " << selective->context.return_lt_value(1, index)
 				 << "    " << neutral->context.return_lt_value(1, index)
-				 << endl; 
+				 << endl;
 		}
 	}
 
 	// int contextDependence::getOffset(
 	//							 int environment,
 	//							 int codon_position,
-	//							 short i, 
+	//							 short i,
 	//							 short j
 	//							)
 	// CODON POSITION::: XXX123XXX
@@ -724,15 +724,15 @@ void CheckMarkovCodonLikelihoods(
 	cerr << "CATGATGTA->CATTATGTA: " << selective->context.return_lt_value(1, CATGATGTA_index)
 		 << "   " << selective->context.return_lt_value(1, CATTATGTA_index)
 		 << "   OFFSET_DIFF: " << selective->context.getOffset(1,0,stateCharacters.find("G"),stateCharacters.find("T"))
-		 << "  VAL: " 
-		 << selective->context.return_lt_value(1, CATGATGTA_index+selective->context.getOffset(1,0,stateCharacters.find("G"),stateCharacters.find("T"))) 
+		 << "  VAL: "
+		 << selective->context.return_lt_value(1, CATGATGTA_index+selective->context.getOffset(1,0,stateCharacters.find("G"),stateCharacters.find("T")))
 		 << endl << endl;
 
 	cerr << "CATTATGTA->CATGATGTA: " << selective->context.return_lt_value(1, CATTATGTA_index)
 		 << "   " << selective->context.return_lt_value(1, CATGATGTA_index)
 		 << "   OFFSET_DIFF: " << selective->context.getOffset(1,0,stateCharacters.find("T"),stateCharacters.find("G"))
-		 << "  VAL: " 
-		 << selective->context.return_lt_value(1, CATTATGTA_index+selective->context.getOffset(1,0,stateCharacters.find("T"),stateCharacters.find("G"))) 
+		 << "  VAL: "
+		 << selective->context.return_lt_value(1, CATTATGTA_index+selective->context.getOffset(1,0,stateCharacters.find("T"),stateCharacters.find("G")))
 		 << endl << endl;
 
 	cerr << "AAAAAAAAA->AAACAAAAA: " << selective->context.getOffset(1, 0, 0, 1) << endl;
@@ -797,20 +797,20 @@ void CheckMarkovCodonLikelihoods(
 	// AAAAAT    3    0.0229461 (2.22507e-308)    0.0401082 (2.22507e-308)
 	//     0    0.000647527    0.000818621
 	// CATGATGTA->CATTATGTA: 0.000376667   0.000196572   OFFSET_DIFF: 1024  VAL: 0.000196572
-	// 
+	//
 	// CATTATGTA->CATGATGTA: 0.000196572   0.000376667   OFFSET_DIFF: -1024  VAL: 0.000376667
-	// 
+	//
 	// AAAAAAAAA->AAACAAAAA: 1024
 	//      VALUES:  0.000647527   0.000499676   OFFSET_DIFF: 1024  VAL: 0.000499676
 	// AAAAAAAAA->AAAGAAAAA: 2048
 	// AAAAAAAAA->AAATAAAAA: 3072
 	// AAACAAAAA->AAAAAAAAA: -1024
-	// 
+	//
 	// AAAAAAAAA->AAAACAAAA: 256
 	// AAAAAAAAA->AAAAGAAAA: 512
 	// AAAAAAAAA->AAAATAAAA: 768
 	// AAACAAAAA->AAAAAAAAA: -256
-	// 
+	//
 	// AAAAAAAAA->AAAAACAAA: 64
 	// AAAAAAAAA->AAAAAGAAA: 128
 	// AAAAAAAAA->AAAAATAAA: 192
@@ -831,17 +831,17 @@ Nucleotide_Sequence_2_Index ( string sequence )
 	return index;
 }
 
-int 
+int
 Get_Nucleotide_Value ( char nucleotide )
 {
 	return (int) stateCharacters.find(nucleotide);
 }
 
 void Path_Proposal(
-	   	    	   list<inTree*>& inputTrees, 
+	   	    	   list<inTree*>& inputTrees,
 	   	    	   Statistics *stats,
 				   inClade *global_environment,
-				   vector<ofstream*>& simulation_output_streams, 
+				   vector<ofstream*>& simulation_output_streams,
 				   seqGenOptions *options,
 				   list<eventTrack*> *events
 				  )
@@ -869,7 +869,7 @@ void Path_Proposal(
 			// Set "current" path (for MCMC; otherwise, this is the only path).
 			cerr << "Point-> Path_Proposal(......) Entering Evolve(). " << endl;
 			(*it)->path->Evolve((*it)->my_tree, events);
-			for (list<eventTrack*>::iterator it2 = (*events).begin(); it2 != (*events).end(); ++it2) 
+			for (list<eventTrack*>::iterator it2 = (*events).begin(); it2 != (*events).end(); ++it2)
 				(*it2)->Compute_MSA_Positions((*it)->my_tree, 0);
 			// If MCMC, need to perform some steps to set up path and run MCMC.
 			if (options->num_mcmc_steps) {
@@ -878,7 +878,7 @@ void Path_Proposal(
 			}
 		}
 
-		for (list<eventTrack*>::iterator it2 = (*events).begin(); it2 != (*events).end(); ++it2) 
+		for (list<eventTrack*>::iterator it2 = (*events).begin(); it2 != (*events).end(); ++it2)
 			(*it2)->Compute_MSA_Positions((*it)->my_tree, 0);
 
 		delete (*it)->path;
@@ -886,10 +886,10 @@ void Path_Proposal(
 }
 
 void Forward_Simulation(
-	   	    	   		list<inTree*>& inputTrees, 
+	   	    	   		list<inTree*>& inputTrees,
 				   		inClade *global_environment,
 				   		int replicate,
-				   		vector<ofstream*>& simulation_output_streams, 
+				   		vector<ofstream*>& simulation_output_streams,
 				   		seqGenOptions *options,
 					 	list<eventTrack*> *events
 					   )
@@ -902,28 +902,28 @@ void Forward_Simulation(
 	for (list<inTree*>::iterator it = inputTrees.begin(); it != inputTrees.end(); ++it, x++) {
 		(*it)->sim = new ForwardSimulation();
 		(*it)->sim->EvolveSequences(*it, events, options);
-		
+
 		//(*it)->my_tree->global_alignment->Print();
-		
+
 		// Sort out the positions of the sequences.
 		int msa_size = (*it)->my_tree->root_numSites;
 		if (options->tracking_defined()) {
 			for (list<eventTrack*>::iterator it2 = (*events).begin(); it2 != (*events).end(); ++it2) {
 				msa_size = (*it2)->Compute_MSA_Positions((*it)->my_tree, size_prev_msa_positions);
 			}
-			size_prev_msa_positions += msa_size;			
+			size_prev_msa_positions += msa_size;
 		}
 		if (options->simulation_step_type == DISCRETE_EVOLUTIONARY_STEPS && options->tracking_defined()) {
 			Print_Trace(
-						inputTrees, 
-						*events, 
-						( 
-						  (options->output_file_flags[seqGenOptions::trace]) 
-						  ? *simulation_output_streams.at(seqGenOptions::trace) 
+						inputTrees,
+						*events,
+						(
+						  (options->output_file_flags[seqGenOptions::trace])
+						  ? *simulation_output_streams.at(seqGenOptions::trace)
 						  : cout
-						), 
-						options->simulation_step_type, 
-						(*it)->treeNum, 
+						),
+						options->simulation_step_type,
+						(*it)->treeNum,
 						replicate
 					   );
 			(*events).clear();		// DES prints each partition separately, since they cannot be related.
@@ -935,9 +935,9 @@ void Forward_Simulation(
 /// This applies tree perturbations and treeScales to tree.
 //////////
 void fiddle_with_trees(
-					   list<inTree*>& inTrees, 
+					   list<inTree*>& inTrees,
 					   seqGenOptions *options
-					  ) 
+					  )
 {
 	double all_paths_sum, mean, std_dev;
 
@@ -984,7 +984,7 @@ void fiddle_with_trees(
 				std_dev /= (*it)->my_tree->tips.size();
 				cout << mean << " " << sqrt(std_dev) << endl;
 			} else {
-				cout << "If you wanted to scale average root-to-tip path length, input number must be negative." << endl; 
+				cout << "If you wanted to scale average root-to-tip path length, input number must be negative." << endl;
 				cout << mean << " ... " << sqrt(std_dev) << endl;
 				exit(EXIT_SUCCESS);
 			}
@@ -997,7 +997,7 @@ void fiddle_with_trees(
 	string treescale_outfile;
 	treescale_outfile = options->output_files + ".scale_tree";
 	treescale_out.open(treescale_outfile.c_str(), ios::trunc | ios::out);
-	for (list<inTree*>::iterator it = inTrees.begin(); it != inTrees.end(); ++it) 
+	for (list<inTree*>::iterator it = inTrees.begin(); it != inTrees.end(); ++it)
 		(*it)->Print_Newick_Tree(treescale_out, false);
 
 	return;
@@ -1007,22 +1007,22 @@ void fiddle_with_trees(
 /// Remove single-replicate specific objects, which will be recreated in next run
 //////////
 void Reset_Run(
-			   list<inTree*>& inTrees, 
-			   seqGenOptions *options, 
+			   list<inTree*>& inTrees,
+			   seqGenOptions *options,
 			   bool reset
 			  )
 {
 	//////////
 	/// This small chunk of code applies ONLY to random sequences using the PROSITE library
-	/// (option -1). 
+	/// (option -1).
 	//////////
 	for (list<inTree*>::iterator it = inTrees.begin(); it != inTrees.end(); ++it) {
 		if ((*it)->rootSeqType == RANDOM && options->random_sequence_proportion_motif) {
 			(*it)->motif_specs.clear();
 			// Destroy inMotifs, will reset them for next run.
-			for (list<inMotif*>::iterator jt = (*it)->my_tree->treeEnv.front()->my_motifs.begin(); 
-										  jt != (*it)->my_tree->treeEnv.front()->my_motifs.end(); 
-										  ++jt) 
+			for (list<inMotif*>::iterator jt = (*it)->my_tree->treeEnv.front()->my_motifs.begin();
+										  jt != (*it)->my_tree->treeEnv.front()->my_motifs.end();
+										  ++jt)
 			{
 				delete *jt;
 			}
@@ -1036,7 +1036,7 @@ void Reset_Run(
 			if (reset) (*it2)->addGeneral_varSites();
 		}
 	}
-	
+
 	eventNo = 0;
 }
 
@@ -1045,11 +1045,11 @@ void Reset_Run(
 /// necessary bookkeeping.
 //////////
 void readInputTrees(
-					list<inTree*>& inputTrees, 
-					seqGenOptions *options, 
-					inClade *global_environment, 
-					vector<string>& OTU_names, 
-					int *numTrees, 
+					list<inTree*>& inputTrees,
+					seqGenOptions *options,
+					inClade *global_environment,
+					vector<string>& OTU_names,
+					int *numTrees,
 					int numTaxa
 				   )
 {
@@ -1067,7 +1067,7 @@ void readInputTrees(
 			// Checking for errors in the tree file. All trees need [], so if more than one tree is found, this will catch it.
 			if (tmpInput.find("[") != tmpInput.npos) {
 				if (foundOneTree) {
-					cerr << "Treefile error: Treefiles must contain the root sequence option \"[]\" and trees must end with a ';'." << endl  
+					cerr << "Treefile error: Treefiles must contain the root sequence option \"[]\" and trees must end with a ';'." << endl
 					     << "Input tree: " << treeInput << endl << endl;
 					exit(EXIT_FAILURE);
 				}
@@ -1075,7 +1075,7 @@ void readInputTrees(
 			}
 			treeInput += trim(tmpInput);
 		} while (treeInput.find(";") == treeInput.npos && cin.good());
-		
+
 		if(!treeInput.empty() && !cin.good()) {
 			cerr << "Treefile error: Trailing characters after last tree. (Last tree may not end with ';\n')" << endl << treeInput << endl;
 			exit(EXIT_FAILURE);
@@ -1098,7 +1098,7 @@ void readInputTrees(
 		tempTree->parseTree(treeInput, options);
 		if(!(numTaxa)) {
 			numTaxa = tempTree->my_tree->numTips;
-			for (int i = 0; i < numTaxa; i++) 
+			for (int i = 0; i < numTaxa; i++)
 				OTU_names.push_back(tempTree->my_tree->names.at(i));
 		}
 		tempTree->Define_Ancestors();
@@ -1124,8 +1124,8 @@ void setRates(
 		for (list<TNode*>::iterator jt = (*it)->my_tree->nodeList.begin(); jt != (*it)->my_tree->nodeList.end(); ++jt) {
 			(*jt)->branch->rates = new RateMatrix();
 			(*jt)->branch->rates->setModelConditions(
-													 options->inputModel, 
-													 options->rate_matrix_values, 
+													 options->inputModel,
+													 options->rate_matrix_values,
 													 options->global_pi
 													);
 			(*jt)->branch->rates->SetModel((*jt)->nodeEnv);
@@ -1136,11 +1136,11 @@ void setRates(
 				(*jt)->branch->rates->num_categories = options->num_discrete_gamma_categories;
 				(*jt)->branch->rates->alphaGamma = options->alpha;
 				DiscreteGamma(
-							  (*jt)->branch->rates->freqRate, 
-							  (*jt)->branch->rates->catRate, 
-							  (*jt)->branch->rates->alphaGamma, 
-							  (*jt)->branch->rates->alphaGamma, 
-							  (*jt)->branch->rates->num_categories, 
+							  (*jt)->branch->rates->freqRate,
+							  (*jt)->branch->rates->catRate,
+							  (*jt)->branch->rates->alphaGamma,
+							  (*jt)->branch->rates->alphaGamma,
+							  (*jt)->branch->rates->num_categories,
 							  false
 							 );
 				(*jt)->nodeEnv->rateHetero = DiscreteGammaRates;
@@ -1154,11 +1154,11 @@ void setRates(
 }
 
 //////////
-/// This function checks to see if all lineages have marker matches, as well as other 
+/// This function checks to see if all lineages have marker matches, as well as other
 /// items of interest.
 //////////
 void CheckTrees(
-			    list<inTree*>& inputTrees, 
+			    list<inTree*>& inputTrees,
 			    seqGenOptions *options
 			   )
 {
@@ -1179,9 +1179,9 @@ void CheckTrees(
 }
 
 void Print_Motifs(
-				  list<inTree*>& inputTrees, 
+				  list<inTree*>& inputTrees,
 				  ostream& motif_out
-				 ) 
+				 )
 {
 	size_t curr_tree = 0;
 
@@ -1196,11 +1196,11 @@ void Print_Motifs(
 }
 
 void Print_Trace(
-				 list<inTree*> inputTrees, 
-				 list<eventTrack*> events, 
-				 ostream& trace_out, 
-				 int step_type, 
-				 int treeNo, 
+				 list<inTree*> inputTrees,
+				 list<eventTrack*> events,
+				 ostream& trace_out,
+				 int step_type,
+				 int treeNo,
 				 int setNo
 				)
 {
@@ -1249,7 +1249,7 @@ void Print_Trace(
 			for (list<inTree*>::iterator it = inputTrees.begin(); it != inputTrees.end(); ++it) {
 				if ((*it)->treeNum == treeNo) curr_tree = (*it);
 			}
-	
+
 			if(curr_tree == NULL) {
 				cerr << "Print_Trace: curr_tree has null value." << endl;
 				exit(EXIT_FAILURE);
@@ -1264,7 +1264,7 @@ void Print_Trace(
 			trace_out << "__partition_" << treeNo << endl << "-" << endl;
 		}
 	}
-	
+
 	// Free all of the event tracking.
 	for (list<eventTrack*>::iterator it = events.begin(); it != events.end(); ++it) {
 		delete (*it);
@@ -1272,10 +1272,10 @@ void Print_Trace(
 }
 
 void Print_Root(
-				list<inTree*> inputTrees, 
-				ostream& root_out, 
+				list<inTree*> inputTrees,
+				ostream& root_out,
 				seqGenOptions *options
-			) 
+			)
 {
 	if (options->output_file_flags[seqGenOptions::verb]) verbose_output << "Root: ";
 
@@ -1290,10 +1290,10 @@ void Print_Root(
 }
 
 void Print_NEXUS_Header(
-						list<inTree*> inputTrees, 
-						seqGenOptions *options, 
+						list<inTree*> inputTrees,
+						seqGenOptions *options,
 						ostream& out
-					   ) 
+					   )
 {
 	int root_length = 0;
 	int partitions = 0;
@@ -1313,7 +1313,7 @@ void Print_NEXUS_Header(
 	out << " partitions per dataset" << endl << endl;
 
 	// Rates etc?
-		
+
 	out << "Partition-specific parameters: " << endl;
 	partitions = 1;
 	for(list<inTree*>::iterator it = inputTrees.begin(); it != inputTrees.end(); ++it) {
@@ -1379,13 +1379,13 @@ void Print_NEXUS_Header(
 			} else {
 				if((*it)->my_tree->treeEnv.front()->P_ins_) {
 					out << "\tP(ins) = " << (*it)->my_tree->treeEnv.front()->P_ins_ << "\t";
-					for (int i = 1; i <= (*it)->my_tree->treeEnv.front()->maxIndel; i++) 
+					for (int i = 1; i <= (*it)->my_tree->treeEnv.front()->maxIndel; i++)
 						out << i << ":" << (*it)->my_tree->treeEnv.front()->insert_lengthDistribution.at(i) << " ";
 					out << endl;
 				}
 				if((*it)->my_tree->treeEnv.front()->P_del_) {
 					out << "\tP(del) = " << (*it)->my_tree->treeEnv.front()->P_del_ << "\t";
-					for (int i = 1; i <= (*it)->my_tree->treeEnv.front()->maxIndel; i++) 
+					for (int i = 1; i <= (*it)->my_tree->treeEnv.front()->maxIndel; i++)
 						out << i << ":" << (*it)->my_tree->treeEnv.front()->delete_lengthDistribution.at(i) << " ";
 					out << endl;
 				}
@@ -1409,22 +1409,22 @@ void Print_NEXUS_Header(
 			out << "\t*Pos. 3: " << (*it)->my_tree->treeEnv.front()->catRate[2];
 		}
 		out << endl << endl;
-		
+
 		partitions++;
 	}
 	out << "]" << endl << endl;
 }
 
 void Print_Seq(
-			   list<inTree*> inputTrees, 
-			   ostream& seq_out, 
-			   seqGenOptions *options, 
+			   list<inTree*> inputTrees,
+			   ostream& seq_out,
+			   seqGenOptions *options,
 			   int dataset_num
-			  ) 
-{   
+			  )
+{
 	int	numTips = inputTrees.front()->my_tree->numTips;
 	if(options->writeAncestors) {
-		if(inputTrees.front()->my_tree->rooted) 
+		if(inputTrees.front()->my_tree->rooted)
 			numTips = (2 * (inputTrees.front()->my_tree->numTips + 1)) - 3;
 		else
 			numTips = (2 * (inputTrees.front()->my_tree->numTips + 1)) - 4;
@@ -1456,7 +1456,7 @@ void Print_Seq(
 			for (int j = 0; j<(*it)->my_tree->root_numSites; j++)
 				print.at(0).push_back(stateCharacters[(*it)->my_tree->root->seq_evo.at(j).returnState()]);
             print_array_row++;
-    		if (!(*it)->my_tree->rooted) 
+    		if (!(*it)->my_tree->rooted)
     			WriteAncestralSequencesNode(print, &print_array_row, (*it)->my_tree, &n, (*it)->my_tree->root->branch0, anc_names);
     		WriteAncestralSequencesNode(print, &print_array_row, (*it)->my_tree, &n, (*it)->my_tree->root->branch1, anc_names);
     		WriteAncestralSequencesNode(print, &print_array_row, (*it)->my_tree, &n, (*it)->my_tree->root->branch2, anc_names);
@@ -1471,13 +1471,13 @@ void Print_Seq(
 					verbose_output << anc_names[i][j];
 				while(j++ < 10) verbose_output << " ";
 			}
-			
+
 			for(size_t j = 0; j < print.at(i).size(); j++) {
 				seq_out << print.at(i).at(j);
 				// If the second condition is true, there is a double-endline in the output, which is bad.
-				if((j+1) % options->output_width == 0 && (j+1) != print.at(i).size()) 
+				if((j+1) % options->output_width == 0 && (j+1) != print.at(i).size())
 					seq_out << endl;
-				if (options->output_file_flags[seqGenOptions::verb]) 
+				if (options->output_file_flags[seqGenOptions::verb])
 					verbose_output << print.at(i).at(j);
 			}
 			seq_out << endl;
@@ -1502,7 +1502,7 @@ void Print_Seq(
 				for(int j = 0; j < (*it)->my_tree->tips.at(i)->seq_evo.size(); aggregate++, j++) {
 					seq_out << stateCharacters[(*it)->my_tree->tips.at(i)->seq_evo.at(j).returnState()];
 					if(options->fileFormat == FASTAFormat) {
-						if((aggregate+1) % options->output_width == 0 && (aggregate+1) != (*it)->my_tree->tips.at(i)->seq_evo.size()) 
+						if((aggregate+1) % options->output_width == 0 && (aggregate+1) != (*it)->my_tree->tips.at(i)->seq_evo.size())
 							seq_out << endl;
 					}
 					if (options->output_file_flags[seqGenOptions::verb]) verbose_output << stateCharacters[(*it)->my_tree->tips.at(i)->seq_evo.at(j).returnState()];
@@ -1514,49 +1514,49 @@ void Print_Seq(
 		seq_out << endl;
 		if (options->output_file_flags[seqGenOptions::verb]) verbose_output << endl;
 	}
-}      
+}
 
 void WriteAncestralSequencesNode(
-								 vector<vector<char> >& print, 
-								 int *print_array_row, 
-								 TTree *tree, 
-								 int *nodeNo, 
-								 TNode *des, 
+								 vector<vector<char> >& print,
+								 int *print_array_row,
+								 TTree *tree,
+								 int *nodeNo,
+								 TNode *des,
 								 char **anc_names
 								)
-{ 
-    int j;       
-     
-    if (des->tipNo==-1) { 
-        (*nodeNo)++; 
+{
+    int j;
+
+    if (des->tipNo==-1) {
+        (*nodeNo)++;
 		sprintf(anc_names[*print_array_row], "%d", *nodeNo);
 	} else {
 		strcpy(anc_names[*print_array_row],(tree->names.at(des->tipNo)).c_str());
 	}
-                         
-    for (j=0; j<des->seq_evo.size(); j++) { 
+
+    for (j=0; j<des->seq_evo.size(); j++) {
 		print.at(*print_array_row).push_back(stateCharacters[des->seq_evo.at(j).returnState()]);
-    } 
+    }
 
 	(*print_array_row)++;
-	if(des->tipNo==-1) {         
+	if(des->tipNo==-1) {
         WriteAncestralSequencesNode(print, print_array_row, tree, nodeNo, des->branch1, anc_names);
         WriteAncestralSequencesNode(print, print_array_row, tree, nodeNo, des->branch2, anc_names);
-    }   
-} 
+    }
+}
 
 void Print_MSA(
-			  list<inTree*> inputTrees, 
-			  ostream& ma_out, 
-			  seqGenOptions *options, 
+			  list<inTree*> inputTrees,
+			  ostream& ma_out,
+			  seqGenOptions *options,
 			  int dataset_num,
 			  list<eventTrack*> events
-			 ) 
+			 )
 {
 	int numTips;
-	
+
 	if(options->writeAncestors) {
-		if(inputTrees.front()->my_tree->rooted) 
+		if(inputTrees.front()->my_tree->rooted)
 			numTips = (2 * (inputTrees.front()->my_tree->numTips + 1)) - 3;
 		else
 			numTips = (2 * (inputTrees.front()->my_tree->numTips + 1)) - 4;
@@ -1602,10 +1602,10 @@ void Print_MSA(
 			vector<Site>::iterator taxon_iterator = (*it)->my_tree->root->seq_evo.begin();
 			bool isSite;
 			for (
-				 bt =  (*it)->my_tree->global_alignment->insert_sites.begin(); 
-				 bt != (*it)->my_tree->global_alignment->insert_sites.end(); 
+				 bt =  (*it)->my_tree->global_alignment->insert_sites.begin();
+				 bt != (*it)->my_tree->global_alignment->insert_sites.end();
 				 ++bt
-				) 
+				)
 			{
 				isSite = true;
 				//////////
@@ -1620,12 +1620,12 @@ void Print_MSA(
 					//////////
 					/// If it isSite is still true after all checks, then return character.
 					//////////
-					if (taxon_iterator == (*it)->my_tree->root->seq_evo.end()) 
+					if (taxon_iterator == (*it)->my_tree->root->seq_evo.end())
 						print.at(print_array_row).push_back('-');
-					else 
-						print.at(print_array_row).push_back ( 
+					else
+						print.at(print_array_row).push_back (
 											   (
-											     (isSite) 
+											     (isSite)
 											     ? stateCharacters.at((*taxon_iterator).returnState())
 											     : '-'
 											   )
@@ -1649,10 +1649,10 @@ void Print_MSA(
 			for (at = (*it)->my_tree->tips.begin(); at != (*it)->my_tree->tips.end(); ++at, j++) {
 				taxon_iterator = (*at)->seq_evo.begin();
 				for (
-					 bt = (*it)->my_tree->global_alignment->insert_sites.begin(); 
-					 bt != (*it)->my_tree->global_alignment->insert_sites.end(); 
+					 bt = (*it)->my_tree->global_alignment->insert_sites.begin();
+					 bt != (*it)->my_tree->global_alignment->insert_sites.end();
 					 ++bt
-					) 
+					)
 				{
 					isSite = true;
 					//////////
@@ -1667,13 +1667,13 @@ void Print_MSA(
 						//////////
 						/// If it isSite is still true after all checks, then return character.
 						//////////
-						if (taxon_iterator == (*at)->seq_evo.end()) { 
+						if (taxon_iterator == (*at)->seq_evo.end()) {
 							print.at(j).push_back('-');
 							isSite = false;
 						} else {
-							print.at(j).push_back ( 
+							print.at(j).push_back (
 												   (
-												     (isSite) 
+												     (isSite)
 												     ? stateCharacters.at((*taxon_iterator).returnState())
 												     : '-'
 												   )
@@ -1695,7 +1695,7 @@ void Print_MSA(
 	num_empty_col = 0;
 	size_t maxNameLen = 0;
 	int MA_length = print.at(0).size() - num_empty_col;
-	
+
 	//////////
 	/// MSA header
 	//////////
@@ -1727,22 +1727,22 @@ void Print_MSA(
 	//////////
 	if(options->fileFormat == PHYLIPFormat || options->fileFormat == NEXUSFormat) {
 		int k = 0;
-		vector<char>::size_type m = 0;		
-		while(m < print.at(0).size()) {	
+		vector<char>::size_type m = 0;
+		while(m < print.at(0).size()) {
 			for(size_t i = 0; i < print.size(); i++) {
 				int j=0;
 				//////////
 				/// Phylip only prints labels on first block. Rest of blocks omit labels.
 				//////////
 				if (m == 0 || options->fileFormat == NEXUSFormat) {
-					if(options->writeAncestors) 
+					if(options->writeAncestors)
 						for(j = 0; j < maxNameLen && anc_names[i][j]; j++)
 							ma_out << anc_names[i][j];
 					else
-						for(j = 0; j < maxNameLen && j < inputTrees.front()->my_tree->names.at(i).size(); j++) 
+						for(j = 0; j < maxNameLen && j < inputTrees.front()->my_tree->names.at(i).size(); j++)
 							ma_out << inputTrees.front()->my_tree->names.at(i).at(j);
 				}
-				while(j++ <= maxNameLen) ma_out << " ";			
+				while(j++ <= maxNameLen) ma_out << " ";
 
 				//////////
 				/// Sequence output.
@@ -1767,7 +1767,7 @@ void Print_MSA(
 			for(size_t j = 0; j < print.at(i).size(); j++) {
 				if (empty_columns.at(j)) num_empty++;
 				else ma_out << print.at(i).at(j);
-				if((j+1-num_empty) % options->output_width == 0 && (j+1) != print.at(i).size()) 
+				if((j+1-num_empty) % options->output_width == 0 && (j+1) != print.at(i).size())
 					ma_out << endl;
 			}
 			ma_out << endl;
@@ -1782,12 +1782,12 @@ void Print_MSA(
 }
 
 void WriteAncestralMSA(
-					  vector<vector<char> >& print, 
-					  int *print_array_row, 
-					  TNode *des, 
-					  int *nodeNo, 
-					  TTree *tree, 
-					  char** anc_names, 
+					  vector<vector<char> >& print,
+					  int *print_array_row,
+					  TNode *des,
+					  int *nodeNo,
+					  TTree *tree,
+					  char** anc_names,
 					  seqGenOptions *options
 					 )
 {
@@ -1805,10 +1805,10 @@ void WriteAncestralMSA(
 	bool isSite;
 
 	for (
-		 bt =  tree->global_alignment->insert_sites.begin(); 
-		 bt != tree->global_alignment->insert_sites.end(); 
+		 bt =  tree->global_alignment->insert_sites.begin();
+		 bt != tree->global_alignment->insert_sites.end();
 		 ++bt
-		) 
+		)
 	{
 		isSite = true;
 		//////////
@@ -1826,10 +1826,10 @@ void WriteAncestralMSA(
 			if (taxon_iterator == des->seq_evo.end()) {
 				print.at(*print_array_row).push_back('-');
 				isSite = false;
-			} else 
-				print.at(*print_array_row).push_back ( 
+			} else
+				print.at(*print_array_row).push_back (
 									   (
-									     (isSite) 
+									     (isSite)
 									     ? stateCharacters.at((*taxon_iterator).returnState())
 									     : '-'
 									   )
@@ -1849,18 +1849,18 @@ void WriteAncestralMSA(
 //////////
 /// This function will detect the columns that are empty, and set those columns to true for use
 /// in Print_MSA. If output_file_flags[trace] is unset, this function will not set empty_columns
-/// to true in any place, since each site is important for the trace file. 
+/// to true in any place, since each site is important for the trace file.
 //////////
 size_t trimMSA(
-			   vector<vector<char> >& print, 
-			   vector<bool>& empty_columns, 
+			   vector<vector<char> >& print,
+			   vector<bool>& empty_columns,
 			   seqGenOptions *options
 			  )
 {
 	size_t num_columns = print.front().size();	// Number of sequences
 	size_t num_rows = print.size(); // Number of columns.
 	size_t empty_column_detected = 0;
-	
+
 	for (size_t i = 0; i < num_columns; i++) {
 		bool empty = true;
 		for (size_t j = 0; j < num_rows; j++) {
@@ -1884,7 +1884,7 @@ size_t trimMSA(
 		options->SpoolWarnings(warning.str());
 		empty_column_warning_spooled = true;
 	}
-	
+
 	return empty_column_detected;
 }
 
@@ -1904,11 +1904,11 @@ unsigned int rand_seed()
 }
 
 void setTRS(
-			list<inTree*>& inputTrees, 
-			seqGenOptions *options, 
-			double max_path_length, 
+			list<inTree*>& inputTrees,
+			seqGenOptions *options,
+			double max_path_length,
 			double min_branch
-		   ) 
+		   )
 {
 	//////////
 	/// Calculate the max_path_length so that we can correctly place events relative to total sim time.
@@ -1924,8 +1924,8 @@ void setTRS(
 }
 
 void openOutputStreams(
-					   vector<ofstream*>& simulation_output_streams, 
-					   vector<bool> outfile_flags, 
+					   vector<ofstream*>& simulation_output_streams,
+					   vector<bool> outfile_flags,
 					   string& outfile_name_root,
 					   bool epc
 					  )
@@ -1940,7 +1940,7 @@ void openOutputStreams(
 		simulation_output_streams.at(seqGenOptions::tree) = new ofstream(outfile_name.c_str(), ios::trunc | ios::out);
 	} else simulation_output_streams.at(seqGenOptions::tree) = NULL;
 	if (outfile_flags[seqGenOptions::root]) {
-		outfile_name = outfile_name_root + ".root";	
+		outfile_name = outfile_name_root + ".root";
 		simulation_output_streams.at(seqGenOptions::root) = new ofstream(outfile_name.c_str(), ios::trunc | ios::out);
 	} else simulation_output_streams.at(seqGenOptions::root) = NULL;
 	if (outfile_flags[seqGenOptions::seq]) {
@@ -1963,7 +1963,7 @@ void openOutputStreams(
 
 void closeOutputStreams(
 						list<inTree*>& inputTrees,
-						vector<ofstream*>& simulation_output_streams, 
+						vector<ofstream*>& simulation_output_streams,
 						vector<bool> outfile_flags
 					   )
 {
@@ -1971,13 +1971,13 @@ void closeOutputStreams(
 
 	if (outfile_flags[seqGenOptions::tree])
 		delete simulation_output_streams.at(seqGenOptions::tree);
-	if (outfile_flags[seqGenOptions::seq]) 
+	if (outfile_flags[seqGenOptions::seq])
 		delete simulation_output_streams.at(seqGenOptions::seq);
-	if (outfile_flags[seqGenOptions::root]) 
+	if (outfile_flags[seqGenOptions::root])
 		delete simulation_output_streams.at(seqGenOptions::root);
-	if (outfile_flags[seqGenOptions::ma]) 
+	if (outfile_flags[seqGenOptions::ma])
 		delete simulation_output_streams.at(seqGenOptions::ma);
-	if (outfile_flags[seqGenOptions::verb]) 
+	if (outfile_flags[seqGenOptions::verb])
 		delete simulation_output_streams.at(seqGenOptions::verb);
 	if (outfile_flags[seqGenOptions::trace]) {
 		//////////

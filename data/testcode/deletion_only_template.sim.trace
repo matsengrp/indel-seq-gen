@@ -2,7 +2,7 @@ Taxa bit representation:
 T_1 100
 T_2 010
 T_3 001
-Clade List (<taxon members> = <clade name>): 
+Clade List (<taxon members> = <clade name>):
 110 = bipartition
 
 >Dataset_0

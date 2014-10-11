@@ -12,12 +12,12 @@
 #define EPS 1.2e-7
 #define RNMX (1.0-EPS)
 
-/* 
-   ======================================================================  
+/*
+   ======================================================================
    MT19937-2002 Algorithm
 
    Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
-   All rights reserved.                          
+   All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
    modification, are permitted provided that the following conditions
@@ -30,8 +30,8 @@
         notice, this list of conditions and the following disclaimer in the
         documentation and/or other materials provided with the distribution.
 
-     3. The names of its contributors may not be used to endorse or promote 
-        products derived from this software without specific prior written 
+     3. The names of its contributors may not be used to endorse or promote
+        products derived from this software without specific prior written
         permission.
 
    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -53,7 +53,7 @@
 
 */
 
-/* Period parameters */  
+/* Period parameters */
 #define N 624
 #define M 397
 #define MATRIX_A 0x9908b0dfUL   /* constant vector a */
@@ -103,7 +103,7 @@ void mt_srand(uint32_t s)
     int j;
     state[0]= s & 0xffffffffUL;
     for (j=1; j<N; j++) {
-        state[j] = (1812433253UL * (state[j-1] ^ (state[j-1] >> 30)) + j); 
+        state[j] = (1812433253UL * (state[j-1] ^ (state[j-1] >> 30)) + j);
         //state[j] &= 0xffffffffUL;  /* for >32 bit machines */
     }
     leqq = 1;
@@ -138,7 +138,7 @@ void mt_srand(uint32_t uKeys[], size_t uLen)
         if (i>=N) { state[0] = state[N-1]; i=1; }
     }
 
-    state[0] = 0x80000000UL; /* MSB is 1; assuring non-zero initial array */ 
+    state[0] = 0x80000000UL; /* MSB is 1; assuring non-zero initial array */
     leqq = 1;
 }
 
@@ -147,9 +147,9 @@ inline void mt_next_state()
 	leqq = N;
     next = state;
 	uint32_t *p=state;
-    for (int j=N-M+1; --j; p++) 
+    for (int j=N-M+1; --j; p++)
         *p = p[M] ^ TWIST(p[0], p[1]);
-    for (int j=M; --j; p++) 
+    for (int j=M; --j; p++)
         *p = p[M-N] ^ TWIST(p[0], p[1]);
     *p = p[M-N] ^ TWIST(p[0], state[0]);
 }

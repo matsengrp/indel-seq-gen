@@ -50,7 +50,7 @@ for my $i (0 .. 63) {
 	print OUT "" . (1/64) . " 0.25 0.25 0.25 0.25\n";
 }
 close OUT;
-open OUT, ">$filename.sim.ma"; 
+open OUT, ">$filename.sim.ma";
 print OUT ">T_1\n$anc\n";
 print OUT ">T_2\n$des\n";
 close OUT;
@@ -72,8 +72,8 @@ for my $t ( ($begin * ($branch_length/$increment)) .. ($end * (($branch_length/$
 	print "$epc_command\n ";
 	my $return_val_epc = `./$indel_seq_gen $epc_command`;
 	print "Done with run.....\n";
-	
-	## Gather output	
+
+	## Gather output
 	my @each_line = split /\n/, $return_val_epc;
 	#print OUTPUT "" . ($branch_length - $t*$increment) . ",$each_line[0]";
 	print OUTPUT "$each_line[0]\n";

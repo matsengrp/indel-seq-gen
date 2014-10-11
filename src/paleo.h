@@ -26,9 +26,9 @@ class paleobiology : private Counter<paleobiology>
 		using Counter<paleobiology>::howMany;
 		double paleo_step_size;
 		double max_path_length;
-	
-		paleobiology() 
-			: root_node_age (1.0), 
+
+		paleobiology()
+			: root_node_age (1.0),
 			  fossil_deposition_rate (0.0),
 			  paleo_step_size (0.0)
 		{ }
@@ -38,7 +38,7 @@ class paleobiology : private Counter<paleobiology>
 		{ }
 		void doPaleontology(TTree *tree, list<eventTrack*> *events);
 		void DepositFossils(TNode *des, list<eventTrack*> *events);
-	
+
 	private:
 		double root_node_age;
 		double fossil_deposition_rate;

@@ -35,13 +35,13 @@ int main (int argc, char **argv)
       pst_file = argv[1];
       pfa_file = argv[2];
       break;
-      
+
     default:
       fprintf(stderr,"Syntax Error: type %s for a short reminder\n",argv[0]);
       exit(1);
 
     }
-  
+
 
   /* pst2pfa */
 
@@ -70,6 +70,6 @@ int main (int argc, char **argv)
   save_pfa(pfa_file, AB, absize, max_L, M);
 
   return(0);
-  
-}    
+
+}
 

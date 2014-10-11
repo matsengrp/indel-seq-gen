@@ -78,7 +78,7 @@ int main (int argc, char **argv)
       p_ratio = atof(argv[11]);
       L_max = atoi(argv[12]);
       break;
-      
+
     case 14: /* alg-1 */
       ab_file = argv[1];
       strings_file = argv[2];
@@ -100,13 +100,13 @@ int main (int argc, char **argv)
       p_ratio = atof(argv[12]);
       L_max = atoi(argv[13]);
       break;
-      
+
     default:
       fprintf(stderr,"Syntax Error: type %s for a short reminder\n",argv[0]);
       exit(1);
 
     }
-  
+
 
   /* train */
 
@@ -170,7 +170,7 @@ int main (int argc, char **argv)
       }
 
   if (*stats_entry != '@') /* write entry and close */
-    { 
+    {
       if (alg == 1)
 	fprintf(fp, "%2d   %8.6f %2g %6.4f %6.3f %3d  ", alg, p_min, alpha, gamma_min, p_ratio, L_max);
       else
@@ -213,7 +213,7 @@ int main (int argc, char **argv)
 	fprintf(fp, "%2d   %10.6f  %6.4f %6.3f %3d  ", alg, input_shows, gama, p_ratio, L_max);
       fprintf(fp, "  %6d    %5d  %5d    %5.2f\n\n\n",pot_nodes, nodes, leaves,
 	      (1.0*nodes)/leaves);
-      print_pst_stat (AB, absize, L_max, T, stats_size, m, ts_ptr, &nodes, &leaves, fp); 
+      print_pst_stat (AB, absize, L_max, T, stats_size, m, ts_ptr, &nodes, &leaves, fp);
       fclose(fp);
     }
 
@@ -228,8 +228,8 @@ int main (int argc, char **argv)
   /* save PST */
   if (*new_pst != '@')
     save_pst(new_pst, AB, absize, L_max, T);
-  
+
   return(0);
-  
-}    
+
+}
 

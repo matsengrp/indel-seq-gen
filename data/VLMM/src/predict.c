@@ -43,19 +43,19 @@ int main (int argc, char **argv)
       short_out = argv[5];
       log_file = argv[6];
       break;
-      
+
     default:
       fprintf(stderr,"Syntax Error: type %s for a short reminder\n",argv[0]);
       exit(1);
 
     }
-  
+
 
   /* predict */
 
   load_pst (pst_file, &AB, &absize, &max_L, &T);
 
-  predict_fasta_set(long_out, short_out, T, AB, strings_file, index_file, 
+  predict_fasta_set(long_out, short_out, T, AB, strings_file, index_file,
 		    &test_size, &train_size, &train_len);
 
   if (*log_file != '@')
@@ -81,6 +81,6 @@ int main (int argc, char **argv)
 
 
   return(0);
-  
-}    
+
+}
 

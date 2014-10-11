@@ -293,10 +293,10 @@ uninstall-binPROGRAMS:
 
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
-iSG_assess$(EXEEXT): $(iSG_assess_OBJECTS) $(iSG_assess_DEPENDENCIES) $(EXTRA_iSG_assess_DEPENDENCIES) 
+iSG_assess$(EXEEXT): $(iSG_assess_OBJECTS) $(iSG_assess_DEPENDENCIES) $(EXTRA_iSG_assess_DEPENDENCIES)
 	@rm -f iSG_assess$(EXEEXT)
 	$(CXXLINK) $(iSG_assess_OBJECTS) $(iSG_assess_LDADD) $(LIBS)
-indel-seq-gen$(EXEEXT): $(indel_seq_gen_OBJECTS) $(indel_seq_gen_DEPENDENCIES) $(EXTRA_indel_seq_gen_DEPENDENCIES) 
+indel-seq-gen$(EXEEXT): $(indel_seq_gen_OBJECTS) $(indel_seq_gen_DEPENDENCIES) $(EXTRA_indel_seq_gen_DEPENDENCIES)
 	@rm -f indel-seq-gen$(EXEEXT)
 	$(CXXLINK) $(indel_seq_gen_OBJECTS) $(indel_seq_gen_LDADD) $(LIBS)
 

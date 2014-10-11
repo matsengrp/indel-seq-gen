@@ -1,4 +1,4 @@
-MOTIFS = 
+MOTIFS =
 {
 	root:
 		MARKER=b;

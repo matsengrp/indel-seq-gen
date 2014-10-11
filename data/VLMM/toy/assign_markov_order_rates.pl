@@ -95,11 +95,11 @@ sub trip
 	my $second = int($ival / 4);
 	$ival -= $second * 4;
 	my $third = $ival;
-	
+
 	return ($first, $second, $third);
 }
 
-sub triplet 
+sub triplet
 {
 	my ($ival) = @_;
 
@@ -108,6 +108,6 @@ sub triplet
 	my $second = int($ival / 4);
 	$ival -= $second * 4;
 	my $third = $ival;
-	
+
 	return "$nucl[$first]$nucl[$second]$nucl[$third]";
 }

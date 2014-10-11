@@ -25,7 +25,7 @@ iQN(
 	//////////
 	/// Independent sites: Copy the global model in for each site.
 	//////////
-	for (vector<Site>::iterator it = k_0->seq_evo.begin(); it != k_0->seq_evo.end(); ++it) 
+	for (vector<Site>::iterator it = k_0->seq_evo.begin(); it != k_0->seq_evo.end(); ++it)
 		(*it).e_QijDt = k_0->branch->rates->Qij;
 
 	vector<Site>::iterator target_it = k_0->seq_evo.begin();
@@ -99,13 +99,13 @@ iQP(
 	//////////
 	/// Independent sites: Copy the global model in for each site.
 	//////////
-	for (vector<Site>::iterator it = k_0->seq_evo.begin(); it != k_0->seq_evo.end(); ++it) 
+	for (vector<Site>::iterator it = k_0->seq_evo.begin(); it != k_0->seq_evo.end(); ++it)
 		(*it).e_QijDt = k_0->branch->rates->Qij;
 
 	// setPij uses the Root and Cijk matrices, already set up for branch->rates
 	k_0->branch->rates->setPij(k_0->seq_evo.front(), k_0->branch->S*(T-at_dt), k_0->nodeEnv->rateHetero);	// setPij dependes on the root Matrix
 	// Transfer independent rates into the initial_rates holding the dependent Qij's.
-	vector<vector<double> >::iterator ppt = initial_rates.Pij.begin(); 
+	vector<vector<double> >::iterator ppt = initial_rates.Pij.begin();
 	for (vector<vector<double> >::iterator PPt = k_0->branch->rates->Pij.begin(); PPt != k_0->branch->rates->Pij.end(); ++PPt, ++ppt) {
 		vector<double>::iterator pt = (*ppt).begin();
 		for(vector<double>::iterator Pt = (*PPt).begin(); Pt != (*PPt).end(); ++Pt, ++pt) {
@@ -164,7 +164,7 @@ iQdP(
 	// setPij uses the Root and Cijk matrices, already set up for branch->rates
 	k_0->branch->rates->setPij(k_0->seq_evo.front(), k_0->branch->S*(T-at_dt), k_0->nodeEnv->rateHetero);	// setPij dependes on the root Matrix
 	// Transfer independent rates into the initial_rates holding the dependent Qij's.
-	vector<vector<double> >::iterator ppt = initial_rates.Pij.begin(); 
+	vector<vector<double> >::iterator ppt = initial_rates.Pij.begin();
 	for (vector<vector<double> >::iterator PPt = k_0->branch->rates->Pij.begin(); PPt != k_0->branch->rates->Pij.end(); ++PPt, ++ppt) {
 		vector<double>::iterator pt = (*ppt).begin();
 		for(vector<double>::iterator Pt = (*PPt).begin(); Pt != (*PPt).end(); ++Pt, ++pt) {
@@ -177,9 +177,9 @@ iQdP(
 
 void
 uQN(
-	RateMatrix *rates, 
-	TNode *i_z, 
-	vector<Site>::iterator site, 
+	RateMatrix *rates,
+	TNode *i_z,
+	vector<Site>::iterator site,
 	double T,
 	double at_dt
    )
@@ -189,9 +189,9 @@ uQN(
 
 void
 uQdPc(
-	  RateMatrix *rates, 
-	  TNode *i_z, 
-	  vector<Site>::iterator site, 
+	  RateMatrix *rates,
+	  TNode *i_z,
+	  vector<Site>::iterator site,
 	  double T,
 	  double at_dt
      )
@@ -204,9 +204,9 @@ uQdPc(
 
 void
 uQdP(
-	 RateMatrix *rates, 
-	 TNode *i_z, 
-	 vector<Site>::iterator site, 
+	 RateMatrix *rates,
+	 TNode *i_z,
+	 vector<Site>::iterator site,
 	 double T,
 	 double at_dt
     )
@@ -217,9 +217,9 @@ uQdP(
 
 void
 uQPc(
-	 RateMatrix *rates, 
-	 TNode *i_z, 
-	 vector<Site>::iterator site, 
+	 RateMatrix *rates,
+	 TNode *i_z,
+	 vector<Site>::iterator site,
 	 double T,
 	 double at_dt
     )
@@ -232,9 +232,9 @@ uQPc(
 
 void
 uQP(
-	RateMatrix *rates, 
-	TNode *i_z, 
-	vector<Site>::iterator site, 
+	RateMatrix *rates,
+	TNode *i_z,
+	vector<Site>::iterator site,
 	double T,
 	double at_dt
    )

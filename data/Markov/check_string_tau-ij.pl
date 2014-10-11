@@ -152,7 +152,7 @@ exit(0);
 sub stop_codon
 {
 	my ($seq) = @_;
-	
+
 	if ($seq eq "TAG") { return 1; }
 	if ($seq eq "TGA") { return 1; }
 	if ($seq eq "TAA") { return 1; }
@@ -183,7 +183,7 @@ sub tau_ij_eq
 #	if($env == 1) { print " i   i+1 |$i_codon|$codon_right| = $GRCh37[$idx_codon_i][$idx_codon_right]\n"; }
 #	print " j-1 j   |$codon_left|$j_codon| = $GRCh37[$idx_codon_left][$idx_codon_j]\n";
 #	if($env == 1) { print " j   j+1 |$j_codon|$codon_right| = $GRCh37[$idx_codon_j][$idx_codon_right]\n"; }
-	
+
 	$diffPji = markov_ratio($env, $idx_codon_left, $idx_codon_right, $idx_codon_i, $idx_codon_j, \@CCDS);
 	$diffP0ji = markov_ratio($env, $idx_codon_left, $idx_codon_right, $idx_codon_i, $idx_codon_j, \@GRCh37);
 
@@ -193,7 +193,7 @@ sub tau_ij_eq
 	$tau_ij = $diffPji / $diffP0ji;
 
 #	print "tau_ij = diffPji/diffP0ji = $tau_ij\n";
-	
+
 	return (log($tau_ij) / (1-1/$tau_ij));
 }
 
@@ -202,7 +202,7 @@ sub markov_ratio
 {
 	my ($env, $left, $right, $i, $j, $matrix_ref) = @_;
 	my $ratio;
-	
+
 	if ($env == 1) {
 		$ratio = ( $matrix_ref->[$left][$j] * $matrix_ref->[$j][$right] ) / ( $matrix_ref->[$left][$i] * $matrix_ref->[$i][$right] );
 	} else {
@@ -223,7 +223,7 @@ sub get_index
 sub nucl_val
 {
 	my $nucl = shift;
-	
+
 	if ($nucl eq "A") { return 0; }
 	if ($nucl eq "C") { return 1; }
 	if ($nucl eq "G") { return 2; }

@@ -13,7 +13,7 @@
 #include "eigen.h"
 #include "evolve.h"
 #include "inTree.h"
-#include "gamma.h" 
+#include "gamma.h"
 #include "tree.h"
 
 #define NUM_AA 20
@@ -28,15 +28,15 @@ extern std::string stateCharacters;
 extern unsigned int numStates_squared;
 extern unsigned int numStates_cubed;
 
-enum { 
-	  NONE=-1, 
+enum {
+	  NONE=-1,
 	  JC69,
 	  K80,
 	  K81,
 	  K81ne,
-	  F81, 
-	  F84, 
-	  HKY, 
+	  F81,
+	  F84,
+	  HKY,
 	  T92,
 	  TN93,
 	  TN93eq,
@@ -45,26 +45,26 @@ enum {
 	  TVM,
 	  TVMeq,
 	  SYM,
-	  GTR, 
-	  JTT, 
-	  WAG, 
-	  PAM, 
-	  BLOSUM, 
-	  MTREV, 
-	  CPREV, 
-	  GENERAL, 
-	  numModels 
+	  GTR,
+	  JTT,
+	  WAG,
+	  PAM,
+	  BLOSUM,
+	  MTREV,
+	  CPREV,
+	  GENERAL,
+	  numModels
 	 };
-enum { 
-	  NUC_NONE = -1, 
-	  NUC_JC69, 
+enum {
+	  NUC_NONE = -1,
+	  NUC_JC69,
 	  NUC_K80,
 	  NUC_K81,
 	  NUC_K81ne,
 	  NUC_F81,
-	  NUC_F84, 
-	  NUC_HKY, 
-	  NUC_T92, 
+	  NUC_F84,
+	  NUC_HKY,
+	  NUC_T92,
 	  NUC_TN93,
 	  NUC_TN93eq,
 	  NUC_TIM,
@@ -72,14 +72,14 @@ enum {
 	  NUC_TVM,
 	  NUC_TVMeq,
 	  NUC_SYM,
-	  NUC_GTR, 
-	  AA_JTT, 
-	  AA_WAG, 
-	  AA_DAYHOFF78, 
-	  AA_BLOSUM62, 
-	  AA_MTREV24, 
-	  AA_CPREV45, 
-	  AA_GENERAL, 
+	  NUC_GTR,
+	  AA_JTT,
+	  AA_WAG,
+	  AA_DAYHOFF78,
+	  AA_BLOSUM62,
+	  AA_MTREV24,
+	  AA_CPREV45,
+	  AA_GENERAL,
 	 };
 enum { A, C, G, T };
 enum { ala, arg, asn, asp, cys, gln, glu, gly, his, ileu, leu, lys, met, phe, pro, ser, thr, trp, tyr, val};
@@ -88,7 +88,7 @@ enum { AAA, AAC, AAG, AAT, ACA, ACC, ACG, ACT, AGA, AGC, AGG, AGT, ATA, ATC, ATG
 	   GAA, GAC, GAG, GAT, GCA, GCC, GCG, GCT, GGA, GGC, GGG, GGT, GTA, GTC, GTG, GTT,
 	   TAA, TAC, TAG, TAT, TCA, TCC, TCG, TCT, TGA, TGC, TGG, TGT, TTA, TTC, TTG, TTT
 	 };
-	
+
 extern const std::string nucleotides;
 extern const std::string aminoAcids;
 extern const std::string codons;
@@ -115,7 +115,7 @@ public:
 		: substitution_model (-1),
 		  num_categories (1),
 		  alphaGamma (-1)
-	{ 
+	{
 		Qij.clear();
 		Pij.clear();
 		kappa.clear();

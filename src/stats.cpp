@@ -10,11 +10,11 @@ extern int  print_stepwise_rates;
 
 vector<double> t_path_start (100001, 0);
 vector<double> t_path_end (100001, 0);
-stringstream subpath_times;	// To compare function vs. current representations. // 
+stringstream subpath_times;	// To compare function vs. current representations. //
 
 SampleStatistics::SampleStatistics() : forward_probability(0), epc_probability(0), w_i(0), numEvents(0), P_path (new PathProbability()) { }
 
-void 
+void
 SampleStatistics::calculateStatistics(
 									  		list<eventTrack*> *events
 									  	   )
@@ -41,9 +41,9 @@ SampleStatistics::calculateStatistics(
 		cerr << "NO EVENTS IN SampleStatistics::calculateStatistics()." << endl;
 		exit(EXIT_FAILURE);
 	}
-}		
+}
 
-void 
+void
 SampleStatistics::reportSampleStatistics()
 {
 	cerr << "----------" << endl;
@@ -54,11 +54,11 @@ SampleStatistics::reportSampleStatistics()
 	cerr << "w_i:                                   : " << return_w_i() << endl;
 }
 
-void 
+void
 Statistics::reportStatistics()
 {
 	cerr << "Relative weights: " << endl;
-	for (vector<SampleStatistics>::iterator stats_it = sample_stats.begin(); stats_it != sample_stats.end(); ++stats_it) 
+	for (vector<SampleStatistics>::iterator stats_it = sample_stats.begin(); stats_it != sample_stats.end(); ++stats_it)
 		(*stats_it).reportSampleStatistics();
 
 	cerr << "Sample set statistics: " << endl;
@@ -70,7 +70,7 @@ Statistics::reportStatistics()
 
 }
 
-void 
+void
 Statistics::setWeights()
 {
 	vector<double> mod_m_i (sample_stats.size(), 0);
@@ -96,13 +96,13 @@ Statistics::setWeights()
 
 }
 
-void 
+void
 Statistics::ImportanceSampling::mu_sigma( vector<double> X )
 {
 	int N = X.size();
 	double mu = 0;
 	double sigma = 0;
-	
+
 //	std::sort(X.begin(), X.end());
 	med = X.at(X.size()/2);
 	range.set_min(X.front());
@@ -121,24 +121,24 @@ Statistics::ImportanceSampling::mu_sigma( vector<double> X )
 	r = sqrt(sigma);
 }
 
-void 
+void
 Statistics::calc_ESS()
 {
 	int N = sample_stats.size();
 	effective_sample_size = N / ( 1 + ESS() );
 
 	cerr << N << " / ( " << 1 + ESS() << " )" << endl;
-	
+
 	cerr << "ESS = " << effective_sample_size << endl;
 }
 
-double 
+double
 Statistics::ESS()
 {
 	int N = sample_stats.size();
 	double denominator;
 	double mu_m_i = 1.0/N * m_i_sum;
-	
+
 	double numerator = 0, squareme;
 	for (vector<SampleStatistics>::iterator it = sample_stats.begin(); it != sample_stats.end(); ++it) {
 		squareme = ( exp((*it).m_i()-returnM() ) - mu_m_i );
@@ -152,10 +152,10 @@ Statistics::ESS()
 	return numerator * denominator;
 }
 
-void 
+void
 Statistics::MCMC_run(
 					 TTree *tree,
-					 int number_of_steps, 
+					 int number_of_steps,
 					 string outfile,
 					 PathProposal *path
 					)
@@ -172,7 +172,7 @@ Statistics::MCMC_run(
 	int cycle_sample_length = 1;
 	ofstream *mcmc_out;
 
-	string mcmc_outfilename = outfile + ".paths";	
+	string mcmc_outfilename = outfile + ".paths";
 	mcmc_out = new ofstream(mcmc_outfilename.c_str(), ios::trunc | ios::out);
 	tree->write_tree(*mcmc_out, false);
 
@@ -220,7 +220,7 @@ Statistics::MCMC_run(
 
 		accepted = false;
 		cout << i << "  ";
-		if (rasmus_independent_proposals) 
+		if (rasmus_independent_proposals)
 			mcmc_chain_forward.push_back( mcmc.rasmus_resample(tree, i_0, k_0, t_0, T, mcmc_chain_forward.back()) );
 		else {
 			// Output the forward probability of the ith sample from the MCMC chain. //
@@ -234,12 +234,12 @@ Statistics::MCMC_run(
 
 		// Global array is keeping track of all substitutions. Site changes will make many substitutions
 		// obselete, so remove those. Keeps global arrays reasonably small-sized to speed up computation.
-		if (i % cycle_sample_length == 0) tree->global_alignment->cleanArray(mcmc.current->epc_events);	
+		if (i % cycle_sample_length == 0) tree->global_alignment->cleanArray(mcmc.current->epc_events);
 
-		//if (i > 1000 && i % 100 == 0) { 
+		//if (i > 1000 && i % 100 == 0) {
 			// This would be to print out every 100th path state. For 5-14 10000_path...
-			//cout << ">" << endl; 
-			//mcmc.current->Print_Path_Events(); 
+			//cout << ">" << endl;
+			//mcmc.current->Print_Path_Events();
 		//}
 		cerr << "DONE." << endl;
 	}
@@ -376,7 +376,7 @@ Statistics::MCMC::resample_subpath(
 	//////////
 	/// PROPOSED SUBPATH
 	//////////
-	// Set the site-state likelihoods for the subpath. 
+	// Set the site-state likelihoods for the subpath.
 	for (vector<Site>::iterator qt = i_E->seq_evo.begin(); qt != i_E->seq_evo.end(); ++qt)
 		(*qt).L_i.Li_xi_.at( (*qt).returnState() ) = 1;
 	// Propose events for the subpath. Do not need to emulate path, since the proposal step will calculate
@@ -385,7 +385,7 @@ Statistics::MCMC::resample_subpath(
 	work->resetSequence(i_B);
 	if (order_3_markov) tree->dep.front()->context.set_sequence_indices(work, 1);
 	if (Human_Data_simulation) tree->dep.front()->context.set_sequence_indices(work, 3);
-	
+
 	proposed->EvolveStep(tree, work, i_E, t_B, t_E, &proposed_subpath_events);
 	for (pt = proposed_subpath_events.begin(); pt != proposed_subpath_events.end(); ++pt)
 		(*pt)->Compute_MSA_Positions(tree, 0);
@@ -461,7 +461,7 @@ Statistics::MCMC::resample_subpath(
 		//	cout << "// PROPOSED SUBPATH //" << endl;
 		//	proposed->Print_Path_Events();
 		//
-		//	// Don't do this. If error_debug is set, 
+		//	// Don't do this. If error_debug is set,
 		//	//cout << "// CURRENT EVENTS IN SUBPATH //" << endl;
 		//	//for (list<eventTrack*>::iterator yt = current_subpath_events.begin(); yt != current_subpath_events.end(); ++yt)
 		//	//	cout << (*yt)->Print_Event();
@@ -483,7 +483,7 @@ Statistics::MCMC::resample_subpath(
 		//	cerr << "Not equal, step " << i << endl;
 		//	cerr << "Forward: " << return_probability << "    " << fwd_prop << endl;
 		//	cerr << "     Differences: " << forward_prob_fullpath << " vs: " << cP-pP << endl;
-	
+
 		//	exit(0);
 		//}
 
@@ -579,8 +579,8 @@ Statistics::MCMC::rasmus_resample(
 	} else {
 		return_probability = current_cycle_probability;
 	}
-	
-	for (list<eventTrack*>::iterator jjjt = proposed->epc_events.begin(); jjjt != proposed->epc_events.end(); ++jjjt) 
+
+	for (list<eventTrack*>::iterator jjjt = proposed->epc_events.begin(); jjjt != proposed->epc_events.end(); ++jjjt)
 		delete (*jjjt);
 	delete proposed;
 	work->Remove_Objects();
@@ -629,10 +629,10 @@ Statistics::MCMC::accept_proposal (
 	double log_r = logr(P, J, Pstar, Jstar);
 	bool accept_new_path = ( (logRN < log_r ) ? true : false );
 
-	cerr   << "*P(p):    " << P << endl << "*J(p|p'): " << J << endl 
-		   << "*P(p'):   " << Pstar << endl << "*J(p'|p): " << Jstar << endl 
-		   << "*log_r = min{0, -->}" << "Acceptance test: (logRN < log(r)) = " << logRN 
-		   << " > " << log_r << " = subpath " << ( (accept_new_path) ? "accepted" : "rejected" ) 
+	cerr   << "*P(p):    " << P << endl << "*J(p|p'): " << J << endl
+		   << "*P(p'):   " << Pstar << endl << "*J(p'|p): " << Jstar << endl
+		   << "*log_r = min{0, -->}" << "Acceptance test: (logRN < log(r)) = " << logRN
+		   << " > " << log_r << " = subpath " << ( (accept_new_path) ? "accepted" : "rejected" )
 		   << "." << endl;
 
 	return accept_new_path;
@@ -681,13 +681,13 @@ void Leakage()
 }
 
 long print_memory(
-				  string message, 
-				  size_t howMany, 
+				  string message,
+				  size_t howMany,
 				  int object_size
 				 )
 {
 	cerr << setw(25) << message << setw(10) << howMany << " x " << setw(5) << object_size
 		 << " = " << setw(10) << howMany*object_size << endl;
-	
+
 	return howMany*object_size;
 }

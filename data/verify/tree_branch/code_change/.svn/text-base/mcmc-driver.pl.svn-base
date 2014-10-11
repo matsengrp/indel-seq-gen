@@ -31,7 +31,7 @@ my $return_val_epc;
 
 my @ret_split;
 
-#my $branch_length = 
+#my $branch_length =
 #		 0.01,
 #		 0.5,
 #		 0.95,
@@ -40,7 +40,7 @@ my @ret_split;
 #		 5.0,
 #		10.0
 		;
-		
+
 my $filename = "mcmc$MCMC-bl$branch_length-ds$dependence_superscript-$EPC_SAMPLE_TYPE$EVEN_SAMPLING-$RANDOM_SEED";
 my $indel_seq_gen = "isg-test-one";
 
@@ -92,19 +92,19 @@ print STDERR "MCMC: Last $MCMC lines in file $filename.results.\n";
 print " branch length:   $branch_length\n";
 print " sequence length: $seq_size\n";
 print " depsup:          $dependence_superscript\n";
-print " mcmc style:      "; 
-if($EPC_SAMPLE_TYPE == 0) { print "rasmus"; } 
-else { 
+print " mcmc style:      ";
+if($EPC_SAMPLE_TYPE == 0) { print "rasmus"; }
+else {
 	if ($EPC_SAMPLE_TYPE == 1) { print "QdPc"; }
 	elsif ($EPC_SAMPLE_TYPE == 2) { print "QdP"; }
 	elsif ($EPC_SAMPLE_TYPE == 3) { print "QPc"; }
 	elsif ($EPC_SAMPLE_TYPE == 5) { print "QN"; }
 	else { print "QP"; }
 
-	print "-subpath, P(time = T/2) = "; 
-	if ($EVEN_SAMPLING) { print "0.333"; } 
-	else { print "0.5"; } 
-} 
+	print "-subpath, P(time = T/2) = ";
+	if ($EVEN_SAMPLING) { print "0.333"; }
+	else { print "0.5"; }
+}
 print "\n";
 print " mcmc_cycles:     $MCMC\n";
 print " seed:            $RANDOM_SEED\n";

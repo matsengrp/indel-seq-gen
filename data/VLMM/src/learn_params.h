@@ -44,7 +44,7 @@ double p0[] = {  /* DEFUNCT */
 	        /* Z */ 2.072e-05
               };
 
-	   
+
 double Q[23]; /* inited inside alg2's smoother */
 
 const double q[23][23] =

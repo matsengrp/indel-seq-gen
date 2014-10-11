@@ -77,9 +77,9 @@ my @matrix = (
 			  "JC69",
 #			  "JC69",
 #			  "HKY",
-#			  "F81",		### Successful: rev. 1816, 4-23-11. 10000 reps, 
+#			  "F81",		### Successful: rev. 1816, 4-23-11. 10000 reps,
 						    ###   * NoCpG: 2999.0430
-						    ###   * CpG:   
+						    ###   * CpG:
 #			  "F81",		###
 						    ###   * NoCpG: 2999.4942
 						    ###   * CpG:   2943.xxxx
@@ -109,7 +109,7 @@ my @iSG_freqs =
 #		 "0.1,0.2,0.3,0.4"
 #		 "0.25,0.25,0.25,0.25",
 		);
-my @iSG_rel_rates = 
+my @iSG_rel_rates =
 		(
 		 "",
 #		 "",
@@ -120,7 +120,7 @@ my @iSG_rel_rates =
 #		 "-r 2,3,2,2,3,1"
 #		 "-r 2,3,2,2,3,1"
 		);
-my @path_rel_rates = 
+my @path_rel_rates =
 		(
 		 "",
 #		 "",
@@ -154,7 +154,7 @@ my @path_gamma_cats =
 #		 ""
 		);
 
-my @junkfile_sim = 
+my @junkfile_sim =
 		(
 		 "test_0s",
 #		 "test_01s",
@@ -166,7 +166,7 @@ my @junkfile_sim =
 #		 "xxxs",
 #		 "test_4s",
 		);
-my @junkfile_pro = 
+my @junkfile_pro =
 		(
 		 "test_0p",
 #		 "test_01p",
@@ -179,7 +179,7 @@ my @junkfile_pro =
 #		 "test_4p",
 		);
 my $treefile;
-my @branch_length = 
+my @branch_length =
 		(
 #		 "0.1",
 #		 "0.5",
@@ -202,7 +202,7 @@ my ($root_seq, $target_seq);
 my $pathfile;
 my (@simulated_subst, @proposed_subst);
 my $num_replicates;
-if ($TEST) { $num_replicates = $TEST; $rootseq_length = 1000; } 
+if ($TEST) { $num_replicates = $TEST; $rootseq_length = 1000; }
 else { $num_replicates = 100; $rootseq_length = 1000; }
 my @simulated_A;
 my @simulated_C;
@@ -210,7 +210,7 @@ my @simulated_G;
 my @simulated_T;
 my @proposed_A;my @proposed_C;my @proposed_G;my @proposed_T;
 my @proposed_AA;my @proposed_AC;my @proposed_AG;my @proposed_AT;my @proposed_CA;my @proposed_CC;my @proposed_CG;my @proposed_CT;my @proposed_GA;my @proposed_GC;my @proposed_GG;my @proposed_GT;my @proposed_TA;my @proposed_TC;my @proposed_TG;my @proposed_TT;my @simulated_AA;my @simulated_AC;my @simulated_AG;my @simulated_AT;my @simulated_CA;my @simulated_CC;my @simulated_CG;my @simulated_CT;my @simulated_GA;my @simulated_GC;my @simulated_GG;my @simulated_GT;my @simulated_TA;my @simulated_TC;my @simulated_TG;my @simulated_TT;
-my $running_total_simsubs = 0, 
+my $running_total_simsubs = 0,
 my $running_total_prosubs=0;
 
 my (@simulated_subst_per_model_condition);
@@ -258,7 +258,7 @@ for my $i (0 .. @matrix-1) {
 			for my $k (0 .. $num_replicates-1) {
 				sleep(0.1);
 				print STDERR "********$matrix[$i], $branch_length[$j]******rep $k/$num_replicates*************\n";
-	
+
 				&outputTreefile($treefile, $branch_length[$j]);
 				my $command_line_options = "";
 				$command_line_options .= "-m $matrix[$i] ";
@@ -266,7 +266,7 @@ for my $i (0 .. @matrix-1) {
 				$command_line_options .= "$iSG_gamma_cats[$i] ";
 				$command_line_options .= "$iSG_rel_rates[$i] ";
 				$command_line_options .= "-f $iSG_freqs[$i] ";
-				$command_line_options .= "-C $CpG_multiplier[$c] "; 
+				$command_line_options .= "-C $CpG_multiplier[$c] ";
 				$command_line_options .= "-w a ";
 				$command_line_options .= "-d 001010 ";
 				$command_line_options .= "-e $file_root ";
@@ -280,7 +280,7 @@ for my $i (0 .. @matrix-1) {
 				open IN, "$file_root.ma";
 				$slurp = <IN>;
 				close IN;
-				@tmp = split(">", $slurp);	
+				@tmp = split(">", $slurp);
 
 				my (@seqs);
 				for my $g (1 .. @tmp) {
@@ -288,9 +288,9 @@ for my $i (0 .. @matrix-1) {
 					$seqs[$g-1] = $tmp1[1];
 				}
 
-				
-				$simulated_subst[$k] = 
-				$simulated_subst_per_model_condition[$i] 
+
+				$simulated_subst[$k] =
+				$simulated_subst_per_model_condition[$i]
 				= &getSubstitutions("$file_root.trace", "FORWARD");
 				$running_total_simsubs += $simulated_subst[$k];
 				print STDERR "Gathered simsubs: $simulated_subst[$k]\n";
@@ -299,7 +299,7 @@ for my $i (0 .. @matrix-1) {
 				open IN, "$junkfile_sim[$i]";
 				$slurp = <IN>;
 				close IN;
-			
+
 				@tmp = split("<<", $slurp);
 				@tmp1 = split /\n/, $tmp[0];
 				for my $i ( 0 .. @tmp1-1 ) {
@@ -315,7 +315,7 @@ for my $i (0 .. @matrix-1) {
 					$command_line_options .= "$iSG_rel_rates[$i] ";
 					$command_line_options .= "-f $iSG_freqs[$i] ";
 					$command_line_options .= "-d 000010 ";
-					$command_line_options .= "-C $CpG_multiplier[$c] "; 
+					$command_line_options .= "-C $CpG_multiplier[$c] ";
 					$command_line_options .= "-e path_proposal ";
 					$command_line_options .= "-E $file_root.ma ";
 					$command_line_options .= "< $treefile > $junkfile_pro[$i]";
@@ -368,8 +368,8 @@ for my $i (0 .. @matrix-1) {
 						  @y_axis_stats[$y],
 						  $gnuplot_options[$y],
 						  $file_root . "_$y",
-						  $matrix[$i], 
-						  $branch_length[$j], 
+						  $matrix[$i],
+						  $branch_length[$j],
 						  $path_gamma_cats[$i],
 						  $CpG_multiplier[$c],
 						  $num_replicates
@@ -392,8 +392,8 @@ for my $i (0 .. @matrix-1) {
 				  "binhits.dat",
 				  "data points in bin",
 				  $file_root . "_binhits",
-				  $matrix[$i], 
-				  $branch_length[$j], 
+				  $matrix[$i],
+				  $branch_length[$j],
 				  $path_gamma_cats[$i],
 				  $CpG_multiplier[$c],
 				  $num_replicates
@@ -413,8 +413,8 @@ for my $i (0 .. @matrix-1) {
 				  "subst.dat",
 				  "number of substitutions in bin",
 				  $file_root . "_subst",
-				  $matrix[$i], 
-				  $branch_length[$j], 
+				  $matrix[$i],
+				  $branch_length[$j],
 				  $path_gamma_cats[$i],
 				  $CpG_multiplier[$c],
 				  $num_replicates
@@ -454,7 +454,7 @@ sub plot {
 	print OUT "set xlabel \"$statistics[$x_axis_stat-1]\"\n";
 	print OUT "set output \"$file_root.eps\"\n";
 	print OUT "plot ";
-	
+
 	print " " . (scalar @{ $y_axis_ref }) . "\n";
 	for my $i (0 .. @{ $y_axis_ref }-1) {
 		print OUT " \"mu.dat\" usi $x_axis_stat:$y_axis_ref->[$i] ti \"$statistics[$y_axis_ref->[$i]-1]\"";
@@ -516,7 +516,7 @@ sub outGnuplotFile
 			$outpro[$prosub_ptr->[$i]]++;
 		}
 	}
-	
+
 	open OUT, ">$file_root.simgnu" or die "WTFGNU?\n";
 	for my $i ($min_x_val .. $max_x_val) {
 		if ($outsim[$i] ne "") {
@@ -563,9 +563,9 @@ sub outGnuplotFile
 sub mu_sigma
 {
 	my ($ref) = @_;
-	
+
 	my ($average, $stdev);
-	
+
 	for my $i (0 .. @{ $ref }-1) {
 		$average += $ref->[$i];
 	}
@@ -575,7 +575,7 @@ sub mu_sigma
 	for my $i (0 .. @{ $ref }-1) {
 		$stdev += ($average - $ref->[$i]) * ($average - $ref->[$i]);
 	}
-	
+
 	$stdev /= scalar(@{ $ref });
 
 	return ($average, sqrt($stdev));
@@ -584,7 +584,7 @@ sub mu_sigma
 sub outputPathFile
 {
 	my ($pathfile, $seqs_ref) = @_;
-	
+
 	open OUT, ">$pathfile" or die "WTF2??\n";
 	for my $i (0 .. @{ $seqs_ref }) {
 		print OUT ($seqs_ref->[$i]) . "\n";

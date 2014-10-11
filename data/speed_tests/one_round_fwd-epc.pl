@@ -13,7 +13,7 @@ my $return_val_epc;
 my @ret_split;
 
 
-my $branch_length = 
+my $branch_length =
 #		 0.01,
 #		 1.0,
 #		 2.0,
@@ -27,7 +27,7 @@ my $dependence_superscript =
 #		 2,		#squared
 #		 5,
 		;
-		
+
 my $filename = "one_round_fwdepc-$branch_length-$dependence_superscript";
 my $seq_size = 1000;
 my $indel_seq_gen = "isg-test-one";

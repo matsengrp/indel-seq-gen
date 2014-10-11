@@ -67,7 +67,7 @@ class inTree : private Counter<inTree>
 public:
 	using Counter<inTree>::howMany;
 	// Variables
-	bool randomInvariableAssignment;	
+	bool randomInvariableAssignment;
 	bool scaleBranches;
 	bool scaleTree;
 	char ma_columnCollapseMethod;

@@ -56,7 +56,7 @@ for my $s (0 .. @S-1) {
 	print OUT "plot \"$file-$S[$s].dat\" usi 1:2 w points ti \"$S[$s] Qi.\",";
 	print OUT " \"$file-$S[$s].dat\" usi 1:3 w points ti \"$S[$s] Qi.|k(t)\"\n";
 	close OUT;
-	
+
 	system("gnuplot $file-$S[$s].0.gnu");
 	system("open $file-$S[$s].0.eps");
 
@@ -68,7 +68,7 @@ for my $s (0 .. @S-1) {
 	print OUT "plot \"$file-$S[$s].dat\" usi 1:2 w points ti \"$S[$s] Qi.\",";
 	print OUT " \"$file-$S[$s].dat\" usi 1:3 w points ti \"$S[$s] Qi.|k(t)\"\n";
 	close OUT;
-	
+
 	system("gnuplot $file-$S[$s].1.5.gnu");
 	system("open $file-$S[$s].1.5.eps");
 
@@ -80,7 +80,7 @@ for my $s (0 .. @S-1) {
 	print OUT "plot \"$file-$S[$s].dat\" usi 1:2 w points ti \"$S[$s] Qi.\",";
 	print OUT " \"$file-$S[$s].dat\" usi 1:3 w points ti \"$S[$s] Qi.|k(t)\"\n";
 	close OUT;
-	
+
 	system("gnuplot $file-$S[$s].2.75.gnu");
 	system("open $file-$S[$s].2.75.eps");
 

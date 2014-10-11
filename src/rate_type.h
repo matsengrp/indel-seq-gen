@@ -15,7 +15,7 @@ public:
 	void set_Qptr(bool Qd, bool Pc, bool Nij);
 
 	// Pointers to functions for initializing and updating rates. //
-	
+
 	setRates() { }
 };
 

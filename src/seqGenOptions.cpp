@@ -49,7 +49,7 @@ seqGenOptions::seqGenOptions(int max, int prec, bool deb):max_subseqs(max)
 	init();
 }
 
-void seqGenOptions::SpoolWarnings(string warn, bool program_end) 
+void seqGenOptions::SpoolWarnings(string warn, bool program_end)
 {
 	if (program_end) {
 		if ( !warnings.empty() ) cerr << "WARNINGS: " << endl;
@@ -107,14 +107,14 @@ void seqGenOptions::postProcess()
 			exit(EXIT_FAILURE);
 		}
 	}
-	if (output_files == DEFAULT_STRING) 
+	if (output_files == DEFAULT_STRING)
 		for (vector<bool>::iterator it = output_file_flags.begin(); it != output_file_flags.end(); ++it)
 			(*it) = false;
 	if (isNucModel && random_sequence_proportion_motif) {
 		SpoolWarnings("PROSITE motifs can only be used for amino acid sequence runs. Deactivating option.", false);
 		random_sequence_proportion_motif = 0;
 	}
-	
+
 	// This is primarily written so that I can run tailor made EPC simulations for manuscript.
 	if ( dependence_model_counts.empty() && !neutral_model_counts.empty() ) {
 		cerr << "Not set up for user defined model of neutral rates and no dependence model." << endl;
@@ -125,8 +125,8 @@ void seqGenOptions::postProcess()
 }
 
 string convertDelims(
-					 string& str, 
-					 string fromDelim, 
+					 string& str,
+					 string fromDelim,
 					 string toDelim
 					)
 {
@@ -200,13 +200,13 @@ void seqGenOptions::init()
 	neutral_model_counts.clear();
 }
 
-void seqGenOptions::InitGlobals() 
+void seqGenOptions::InitGlobals()
 {
 	isNucModel = -1;
 }
 
 void seqGenOptions::readOptions(
-								int argc, 
+								int argc,
 								char  *argv[]
 							   )
 {
@@ -223,7 +223,7 @@ void seqGenOptions::readOptions(
 	size_t acc;
 
 	while (1) {
-	
+
 		static struct option long_options[] =
 		{
             {"alpha",     			required_argument,  0, 'a'},
@@ -272,12 +272,12 @@ void seqGenOptions::readOptions(
 
         // getopt_long stores the option index here.
         int option_index = 0;
-     
+
         c = getopt_long (argc, argv, "a:b:c:Cd:D:e:E:f:F:g:hi:I:j:k:K:l:Lm:M:n:o:O:p:P:qr:s:t:T:u:Uvwxy:z:1:2:3:",long_options, &option_index);
-     
+
         // Detect the end of the options.
         if (c == -1) break;
-	
+
 		switch(c) {
 			case 'a':
 				if(default_rateHetero==CodonRates) {
@@ -383,7 +383,7 @@ void seqGenOptions::readOptions(
 				if(default_proportion_invariable < 0.0 || default_proportion_invariable >= 1.0) {
 					cerr << "Bad proportion invariable sites: " << default_proportion_invariable << endl;
 					exit(EXIT_FAILURE);
-				} 
+				}
 				invariableSites = true;
 				break;
 			case 'I':
@@ -571,12 +571,12 @@ void seqGenOptions::readOptions(
 				abort();
 		}
 	}
-	
+
 	postProcess();
 }
 
-void seqGenOptions::setEventTracking( 
-									 string eventsToTrack 
+void seqGenOptions::setEventTracking(
+									 string eventsToTrack
 									)
 {
 	if ( eventsToTrack.find_first_of("Ff") != string::npos ) events_to_track[track_fossil] = true;
@@ -603,7 +603,7 @@ void seqGenOptions::printHelp()
 	cout << "Options (short long)  Input     Description" << endl;
 	cout << "--------------------  -----     -----------\n";
 	cout << "-a --alpha            <float>   Shape (alpha) for gamma rate heterogeneity.\n";
-	cout << "-b --option_width     <int>     The number of residues per line on the multiple\n"; 
+	cout << "-b --option_width     <int>     The number of residues per line on the multiple\n";
 	cout << "                                alignment output [default = 60].\n";
 	cout << "-c --codon_rates      <list>    #1,#2,#3 = rates for codon position heterogeneity.\n";
 	cout <<	"-d --spec_outfiles    123456    Specify which files to output, where each is either a 0 or a 1:\n";
@@ -614,10 +614,10 @@ void seqGenOptions::printHelp()
 	cout << "                                  5: .trace\n";
 	cout << "                                  6: .verb \n";
 	cout <<	"-e --outfile          <string>  Output file name for the .root, .seq, and .ma files.\n";
-	cout <<	"-f --frequencies      <list>    4 or 20 floats separated by commas. Represent\n"; 
+	cout <<	"-f --frequencies      <list>    4 or 20 floats separated by commas. Represent\n";
 	cout << "                                nucleotide or amino acid frequencies.\n";
 	cout << "                                order: ACGT or ARNDCQEGHILKMFPSTWYV, resp., or\n";
-	cout <<	"                                use \"e\" for equal freqs. [default = matrix freqs].\n"; 
+	cout <<	"                                use \"e\" for equal freqs. [default = matrix freqs].\n";
 	cout <<	"-g --num_gamma_cats   <float>   Shape for gamma rate heterogeneity [default = none].\n";
 	cout <<	"-h --help             none      Give this help message.\n";
 	cout << "-H --Help             none      Print help message for nucleotide models (see --rel_rates).\n";
@@ -627,13 +627,13 @@ void seqGenOptions::printHelp()
 	cout << "                                 trs = time relative steps,\n";
 	cout << "                                 gil = time relative, using gillespie algorithm\n";
 	cout << "-k --lineage          <string>  Filename that lists the lineage and motif specifications.\n";
-	cout <<	"-l --length           <int>     Sequence length [default = 1000].\n"; 
-	cout << "-L --treelength       <float>   Scale trees, where average root-to-tip path length equals input value.\n"; 
-	cout <<	"-m --matrix           <string>  MODEL = JC69, K80, K81, K81ne, F81, HKY, F84, T92, TN93, TN93eq, TIM, TIMeq, TVM, TVMeq, SYM, GTR, PAM,\n"; 
-	cout << "								 JTT, MTREV, GENERAL\n"; 
+	cout <<	"-l --length           <int>     Sequence length [default = 1000].\n";
+	cout << "-L --treelength       <float>   Scale trees, where average root-to-tip path length equals input value.\n";
+	cout <<	"-m --matrix           <string>  MODEL = JC69, K80, K81, K81ne, F81, HKY, F84, T92, TN93, TN93eq, TIM, TIMeq, TVM, TVMeq, SYM, GTR, PAM,\n";
+	cout << "								 JTT, MTREV, GENERAL\n";
 	cout << "                                Models listed before model GTR are for nucleotides and\n";
 	cout << "                                the rest are for amino acids\n";
-	cout <<	"-n --num_runs         <int>     Number of simulated datasets per tree [default = 1].\n"; 
+	cout <<	"-n --num_runs         <int>     Number of simulated datasets per tree [default = 1].\n";
 	cout <<	"-o --outfile_format   <char>    Output file format (p = phylip, n = nexus, f = fasta)\n";
 	cout <<	"                                [default = p].\n";
 	cout << "-p --path                       Used only for suiteMSA run if indel-seq-gen.\n";
@@ -647,12 +647,12 @@ void seqGenOptions::printHelp()
 	cout << "                                * a,b,c       = TIM rate matrix only.\n";
 	cout << "                                * a,b         = TN93 (a=K1,b=K2) and K81 (a=K,b=alpha) rate matrices.\n";
 	cout << "                                * a           = K80, HKY, and F84 (a=kappa for all).\n";
-	cout <<	"-s --branch_scale     <float>   Branch length scaling factor [default = 1.0].\n"; 
+	cout <<	"-s --branch_scale     <float>   Branch length scaling factor [default = 1.0].\n";
 	cout << "-t --tstv             <float>   transition-transversion ratio.\n";
 	cout << "-T --perturb_tree     <float>   Randomly rescale each branch by value between [1/value, value].\n";
 	cout <<	"-u --indel_fill       <string>  INDEL FILL MODEL, based on neighbor effects:\n";
 	cout <<	"                                  'xia' = E. coli K-12 proteins,\n";
-	cout <<	"                                  'sp'  = all Swiss-Prot proteins,\n"; 
+	cout <<	"                                  'sp'  = all Swiss-Prot proteins,\n";
 	cout <<	"                                  'ran' = no neighbor effect\n";
 	cout << "-v --all_gaps_out     none      Output all-gap columns in the true alignment.\n";
 	cout <<	"-w --write_anc        none      Write ancestral sequences.\n";

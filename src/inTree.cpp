@@ -20,8 +20,8 @@
 using namespace std;
 
 inTree::inTree(
-			   const seqGenOptions *options, 
-			   int num, 
+			   const seqGenOptions *options,
+			   int num,
 			   inClade *globalEnv
 			  )
 	   : randomInvariableAssignment( ((options->invariableSites) ? true : false) ),
@@ -66,7 +66,7 @@ void inTree::perturbTree(
 }
 
 void inTree::setPerturb(
-						TNode *node, 
+						TNode *node,
 						double perturb_value
 					   )
 {
@@ -78,7 +78,7 @@ void inTree::setPerturb(
 }
 
 void inTree::Print_Newick_Tree(
-						ostream& out, 
+						ostream& out,
 						bool scale
 					   )
 {
@@ -95,14 +95,14 @@ void inTree::Print_Newick_Tree(
 }
 
 void inTree::PrintSubtree(
-						  TTree *tree, 
-						  TNode *node, 
-						  ostream& out, 
-						  bool writeAncestors, 
-						  int *nodeNo, 
+						  TTree *tree,
+						  TNode *node,
+						  ostream& out,
+						  bool writeAncestors,
+						  int *nodeNo,
 						  bool time_rel,
 						  bool scale
-						) 
+						)
 {
 	int my_nodeNo;
 	if(node->tipNo==-1) {
@@ -144,9 +144,9 @@ void inTree::nameAncestralNode(
 }
 
 bool inTree::CheckPhylogeneticAncestralNodes(
-											 string& node_names, 
+											 string& node_names,
 											 int action
-											) 
+											)
 {
 	bool write = true;
 
@@ -163,7 +163,7 @@ bool inTree::CheckPhylogeneticAncestralNodes(
 
 void inTree::SortTaxonTips(
 						   vector<string>& otu_names
-						  ) 
+						  )
 {
 	TNode **permute_tips;
 	int which_otu;
@@ -188,18 +188,18 @@ void inTree::SortTaxonTips(
 
 		(*itn)=permute_tips[which_otu];
 	}
-	
+
 	free(permute_tips);
 }
 
 void inTree::CPAN(
-				  TNode *node, 
-				  string& node_names, 
-				  int action, 
+				  TNode *node,
+				  string& node_names,
+				  int action,
 				  bool *inval
-				 ) 
+				 )
 {
-	
+
 	if(action == SET) {
 		for (int i = 0; i < my_tree->numTips; i++) node_names += node->bipartition.at(i);
 		node_names += ",";
@@ -210,7 +210,7 @@ void inTree::CPAN(
 	} else {
 		string tmp = "";
 		size_t found;
-		for (int i = 0; i < my_tree->numTips; i++) tmp += node->bipartition.at(i);		
+		for (int i = 0; i < my_tree->numTips; i++) tmp += node->bipartition.at(i);
 		found = node_names.find(tmp);
 		if(found == string::npos) *inval = false;
 		else {
@@ -222,7 +222,7 @@ void inTree::CPAN(
 	}
 }
 
-double inTree::CalculatePathLengths( void ) 
+double inTree::CalculatePathLengths( void )
 {
 	my_tree->root->branch->branch1_max_path = SearchPath(my_tree->root,my_tree->root->branch1,DIST_CALC);
 	my_tree->root->branch->branch1_time_relative_length = my_tree->root->branch->length1;
@@ -230,24 +230,24 @@ double inTree::CalculatePathLengths( void )
 	my_tree->root->branch->branch2_max_path = SearchPath(my_tree->root,my_tree->root->branch2,DIST_CALC);
 	my_tree->root->branch->branch2_time_relative_length = my_tree->root->branch->length2;
 
-	return ( (my_tree->root->branch->branch1_max_path > my_tree->root->branch->branch2_max_path) ? 
+	return ( (my_tree->root->branch->branch1_max_path > my_tree->root->branch->branch2_max_path) ?
 			  my_tree->root->branch->branch1_max_path : my_tree->root->branch->branch2_max_path );
 }
 
 double inTree::SearchPath(
-						  TNode *anc, 
-						  TNode *des, 
+						  TNode *anc,
+						  TNode *des,
 						  int flag
-						 ) 
+						 )
 {
 	if (flag == DIST_CALC)
 		des->branch->branch0_time_relative_length = des->branch->anc_length();
 
-    if (des->tipNo==-1) { 
-		if(flag == DIST_CALC) 
+    if (des->tipNo==-1) {
+		if(flag == DIST_CALC)
 			des->branch->branch1_time_relative_length = des->branch->length1;
 		des->branch->branch1_max_path = SearchPath(des,des->branch1,flag);
-		if(flag == DIST_CALC) 
+		if(flag == DIST_CALC)
 			des->branch->branch2_time_relative_length = des->branch->length2;
 		des->branch->branch2_max_path = SearchPath(des,des->branch2,flag);
 	} else {
@@ -255,17 +255,17 @@ double inTree::SearchPath(
 		return des->branch->branch0_time_relative_length;
 	}
 
-	return ( (des->branch->branch1_max_path > des->branch->branch2_max_path) ? 
-			 (des->branch->branch0_time_relative_length + des->branch->branch1_max_path) : 
-			 (des->branch->branch0_time_relative_length + des->branch->branch2_max_path) 
+	return ( (des->branch->branch1_max_path > des->branch->branch2_max_path) ?
+			 (des->branch->branch0_time_relative_length + des->branch->branch1_max_path) :
+			 (des->branch->branch0_time_relative_length + des->branch->branch2_max_path)
 		   );
 }
 
 void inTree::Print_Trace_Header(
-								stringstream& header, 
-								vector<string> otu_names, 
+								stringstream& header,
+								vector<string> otu_names,
 								seqGenOptions* options
-							   ) 
+							   )
 {
 	int numTaxa = otu_names.size();
 	vector<string>::iterator taxon_names;
@@ -277,18 +277,18 @@ void inTree::Print_Trace_Header(
 			header << (*it);
 		header << endl;
 	}
-	
+
 	Print_Branch(my_tree->root->branch1,header, taxon_names, numTaxa, options);
 	Print_Branch(my_tree->root->branch2,header, taxon_names, numTaxa, options);
 }
 
 void inTree::Print_Branch(
-						  TNode *node, 
-						  stringstream& header, 
-						  vector<string>::iterator& taxon_names, 
-						  int& num, 
+						  TNode *node,
+						  stringstream& header,
+						  vector<string>::iterator& taxon_names,
+						  int& num,
 						  seqGenOptions *options
-						 ) 
+						 )
 {
 
 	if (node->tipNo == -1) {
@@ -311,14 +311,14 @@ void inTree::Print_Branch(
 }
 
 double inTree::SearchMinBranch(
-							   TNode *node, 
+							   TNode *node,
 							   double curr_min
 							  )
 {
 	double min1, min2;
 
 	if (node->branch->anc_length() < curr_min) curr_min = node->branch->anc_length();
-	
+
 	if (node->tipNo==-1) {
 		min1 = SearchMinBranch(node->branch1, curr_min);
 		min2 = SearchMinBranch(node->branch2, curr_min);
@@ -328,35 +328,35 @@ double inTree::SearchMinBranch(
 
 		if (min1 < curr_min) curr_min = min1;
 		if (min2 < curr_min) curr_min = min2;
-	} 
-	
+	}
+
 	return curr_min;
 }
 
 void inTree::TimeScale_Tree(
-							double max_path, 
+							double max_path,
 							TNode *node
-						   ) 
+						   )
 {
 	double multiplier1, multiplier2;
-	
+
 	if(node->tipNo==-1) {
 		//////////
 		/// Calculate multipliers. If one of these is zero, set to negative of largest one as a
 		/// signal that it is a manual setting.
 		//////////
 		if (node->branch->branch1_max_path == 0) {
-			if (node->branch->branch2_max_path == 0) 
+			if (node->branch->branch2_max_path == 0)
 				cerr << "Why is there a branching point with two zero-length branches?" << endl
 					 << " Behavior of output .anc_tree file has not been pondered by developer." << endl;
-			node->branch1->branch->branch0_time_relative_length 
-			= node->branch->branch1_time_relative_length 
+			node->branch1->branch->branch0_time_relative_length
+			= node->branch->branch1_time_relative_length
 			= node->branch->branch2_max_path;
 			multiplier1 = 1.0;
 		} else multiplier1 = max_path / node->branch->branch1_max_path;
 		if (node->branch->branch2_max_path == 0) {
-			node->branch2->branch->branch0_time_relative_length 
-			= node->branch->branch2_time_relative_length 
+			node->branch2->branch->branch0_time_relative_length
+			= node->branch->branch2_time_relative_length
 			= node->branch->branch1_max_path;
 			multiplier2 = 1.0;
 		} else multiplier2 = max_path / node->branch->branch2_max_path;
@@ -380,16 +380,16 @@ void inTree::TimeScale_Tree(
 }
 
 void inTree::BranchScale_Tree(
-							  TNode *anc, 
-							  TNode *des, 
+							  TNode *anc,
+							  TNode *des,
 							  double scale
-							 ) 
+							 )
 {
 	des->branch->branch0_time_relative_length *= scale;
 	des->trDistanceFromRoot = anc->trDistanceFromRoot + des->branch->branch0_time_relative_length;
 	des->DistanceFromRoot   = anc->DistanceFromRoot   + des->branch->length0;
 
-    if (des->tipNo==-1) { 
+    if (des->tipNo==-1) {
 		des->branch->branch1_time_relative_length *= scale;
 		des->branch->branch2_time_relative_length *= scale;
 		BranchScale_Tree(des, des->branch1, scale);
@@ -404,13 +404,13 @@ void inTree::calcDistancesFromRoot( void )
 }
 
 void inTree::calcDist(
-					  TNode *anc, 
+					  TNode *anc,
 					  TNode *des
-					 ) 
+					 )
 {
 	des->DistanceFromRoot   = anc->DistanceFromRoot   + des->branch->length0;
 
-    if (des->tipNo==-1) { 
+    if (des->tipNo==-1) {
 		calcDist(des, des->branch1);
 		calcDist(des, des->branch2);
 	}
@@ -432,7 +432,7 @@ void inTree::apply_branchScales(
 }
 
 double inTree::apply2Subtree(
-							 TNode *node, 
+							 TNode *node,
 							 double scalar
 							)
 {
@@ -445,7 +445,7 @@ double inTree::apply2Subtree(
 	return node->branch->length0;
 }
 
-void inTree::Define_Ancestors( void ) 
+void inTree::Define_Ancestors( void )
 {
 	int node_num = -1;
 	stringstream x;
@@ -460,10 +460,10 @@ void inTree::Define_Ancestors( void )
 }
 
 void inTree::Define_Anc(
-						TNode *anc, 
-						TNode *des, 
+						TNode *anc,
+						TNode *des,
 						int *node_num
-					   ) 
+					   )
 {
 	stringstream x;
 	des->anc = anc;
@@ -479,7 +479,7 @@ void inTree::Define_Anc(
 
 void inTree::Define_Bipartitions(
 								 vector<string>& otu_names
-								) 
+								)
 {
 	vector<bool>::iterator it;
 
@@ -489,7 +489,7 @@ void inTree::Define_Bipartitions(
 		(*itn)->bipartition.insert(it, my_tree->numTips, false);
 	}
 
-	// Define ancestors for the Push_Bipartition recursive routine.	
+	// Define ancestors for the Push_Bipartition recursive routine.
 	my_tree->root->bipartition.assign(my_tree->numTips, true);
 	my_tree->root->nodeEnv->bipartition.assign(my_tree->numTips, true);
 
@@ -498,7 +498,7 @@ void inTree::Define_Bipartitions(
 
 	for(vector<TNode*>::iterator itn = my_tree->tips.begin(); itn != my_tree->tips.end(); itn++, i++) {
 		which_otu=0;
-		while ( (my_tree->names.at(i)).compare(otu_names.at(which_otu)) != 0 && which_otu < my_tree->numTips) 
+		while ( (my_tree->names.at(i)).compare(otu_names.at(which_otu)) != 0 && which_otu < my_tree->numTips)
 			which_otu++;
 		if ( (my_tree->names.at(i)).compare(otu_names.at(which_otu)) != 0) {
 			cerr << "Taxon " << my_tree->names.at(i) << " not found." << endl;
@@ -528,21 +528,21 @@ void inTree::Define_Clade_Bipartitions( void )
 }
 
 void inTree::Push_Bipartition(
-							  TNode *node, 
+							  TNode *node,
 							  int which_tip
 							 )
 {
 	if(node->tipNo == ROOT_FLAG) ;
-	else {	
+	else {
 		node->bipartition.at(which_tip) = true;
 		Push_Bipartition(node->anc, which_tip);
 	}
 }
 
 void inTree::Print_Time_Rel_Tree(
-								 ostream& out, 
+								 ostream& out,
 								 bool writeAncestors
-								) 
+								)
 {
 	// Name clades as internal node numbers (ancestors).
 	int nodeNo = my_tree->numTips + 2;
@@ -556,23 +556,23 @@ void inTree::Print_Time_Rel_Tree(
 }
 
 void inTree::perform_checks(
-							string& input, 
+							string& input,
 							seqGenOptions *options
 						   )
 {
 	size_t found;
-		
+
 	found = input.find('{');
 	if (found != string::npos) {
 		my_tree->treeEnv.front()->indelFlag = true;
 	}
-	
+
 	found = input.find("[:");
 	if (found != string::npos) {
 		//inputRoot = true;
 		proportion_invariable = 0;
 	}
-	
+
 }
 
 string inTree::tree_only(
@@ -580,7 +580,7 @@ string inTree::tree_only(
 						)
 {
 	size_t found, found2, found_tmp, found_tmp2;
-	
+
 	found2 = input.rfind(')');
 	if (found2 == string::npos) {
 		cerr << "Missing closing parentheses in input guide tree." << endl;
@@ -595,9 +595,9 @@ string inTree::tree_only(
 	if (found_tmp != string::npos) {
 		found_tmp2 = input.find(']');
 		if (found_tmp2 != string::npos)
-			if (found < found_tmp2) 
+			if (found < found_tmp2)
 				found = found_tmp2;
-	}	
+	}
 
 	//////////
 	/// Remove ##
@@ -605,8 +605,8 @@ string inTree::tree_only(
 	found_tmp = input.find('#');
 	if (found_tmp != string::npos) {
 		found_tmp2 = input.find('#', found_tmp+1);
-		if (found_tmp2 != string::npos) 
-			if (found < found_tmp2) 
+		if (found_tmp2 != string::npos)
+			if (found < found_tmp2)
 				found = found_tmp2;
 
 		//////////
@@ -637,7 +637,7 @@ string inTree::tree_only(
 }
 
 void inTree::parseTree(
-					   string input, 
+					   string input,
 					   seqGenOptions *options
 					  )
 {
@@ -651,14 +651,14 @@ void inTree::parseTree(
 		//////////
 		/// If branchScale is < 0, then the tree is expected to be tree scaled. However, a
 		/// treescaling will return a tree with average path length equal to the branchScale
-		/// value, which makes a treelength_check pointless. Thus, unset the branchScale, and 
+		/// value, which makes a treelength_check pointless. Thus, unset the branchScale, and
 		/// assume the user wants the unscaled tree treelengths.
 		//////////
 		if (branchScale < 0) { branchScale = 1; }
-		my_tree->ReadTree(tree, &start_pos, my_tree, (my_tree->names).empty());	
+		my_tree->ReadTree(tree, &start_pos, my_tree, (my_tree->names).empty());
 			return;
 	}
-	
+
 	//Find the label
 	found = input.find('"');
 	if (found != string::npos) {
@@ -829,9 +829,9 @@ void inTree::parseTree(
 		warning << "Tree " << treeNum << ": No root sequence length or file detected. Assumed a random, length 500 sequence." << endl;
 		options->SpoolWarnings(warning.str());
 	}
-	
+
 	//////////
-	/// Find the tree 	
+	/// Find the tree
 	//////////
 	found = input.find('(');
 	if (found != string::npos) {
@@ -841,23 +841,23 @@ void inTree::parseTree(
 			input.erase(found, found2 - found + 2);
 		}
 	}
-	
+
 	//my_tree->treeEnv.front()->Print_Environment();
-	
+
 	//Check if there is anything left in input
 	trim(input);
 	if (input != "") {
 		cerr << "Unrecognized tree format: " << input << endl;
 		exit(EXIT_FAILURE);
 	}
-	
-	my_tree->ReadTree(tree, &start_pos, my_tree, (my_tree->names).empty());	
+
+	my_tree->ReadTree(tree, &start_pos, my_tree, (my_tree->names).empty());
 	my_tree->root->nodeEnv = my_tree->treeEnv.front();
 }
 
 void inTree::parseLineages(
 						   seqGenOptions *options
-						  ) 
+						  )
 {
 	fstream file;
     string line;
@@ -887,16 +887,16 @@ void inTree::parseLineages(
 	remove_whitespace = Remove_Whitespace(remove_whitespace);
 
 cerr << "inTree::parseLineages:  input = " << remove_whitespace << endl;
-	
+
 	found = remove_whitespace.find("MOTIFS");
 	found1 = remove_whitespace.find("LINEAGES");
-	
+
 	//////////
 	/// These two if stmts remove any mention of the MOTIF stuff from remove_whitespace. They will
 	/// be taken care of in line_append.
 	//////////
 	if (found != string::npos) {
-		if (found1 != string::npos) 
+		if (found1 != string::npos)
 			if (found > found1) remove_whitespace.erase(found);
 			else remove_whitespace.erase(0,found1);
 		else remove_whitespace.clear();
@@ -973,7 +973,7 @@ cerr << "inTree::parseLineages: line_append = " << line_append << endl;
 }
 
 void inTree::parseMotif(
-						string& motif_string, 
+						string& motif_string,
 						seqGenOptions *options
 					   )
 {
@@ -983,7 +983,7 @@ void inTree::parseMotif(
 	inClade *clade;
 
 cerr << "inTree::parseMotif entered: motif_string:" << motif_string << endl;
-	
+
 	list<string> statements = split(motif_string, ";");
 	list<string> each_motif;
 	string this_motif = "";
@@ -1043,7 +1043,7 @@ cerr << "inTree::parseMotif entered: motif_string:" << motif_string << endl;
 					if (found_name < found_marker) name = (*it).substr(found_name, found_marker-found_name);
 					else name = (*it).substr(found_name, found_name-found_pattern);
 				}
-			} else { 
+			} else {
 				if(found_marker < found_pattern) {
 					marker = (*it).substr(found_marker, found_pattern-found_marker);
 					pattern = (*it).substr(found_pattern);
@@ -1106,13 +1106,13 @@ cerr << "end report." << endl;
 			cerr << "Motifs must have a specified marker and pattern." << endl;
 			exit(EXIT_FAILURE);
 		}
-	} 
+	}
 }
 
 void inTree::parseClade(
-						string& clade_string, 
+						string& clade_string,
 						seqGenOptions *options
-					   ) 
+					   )
 {
 	size_t found, found2, found3, found4;
 	string clade_str;
@@ -1143,7 +1143,7 @@ void inTree::parseClade(
 				clade_tmp = (*it).substr(0, found);
 				clade_members = split(clade_tmp, ",");
 				(*it).erase(0,found+1);
-				
+
 				for (list<string>::iterator sit = clade_members.begin(); sit != clade_members.end(); ++sit) {
 					if ((*sit).find_first_of("(") != string::npos) {
 						// Will be a taxon spec.
@@ -1171,7 +1171,7 @@ void inTree::parseClade(
 							}
 						}
 						(*sit).assign(taxon_str);
-					} 
+					}
 					if (sit == clade_members.begin()) {
 						clade_label = (*sit);
 					}
@@ -1212,13 +1212,13 @@ void inTree::parseClade(
 							(*vit)->clade_label = taxon_name;
 						}
 					}
-				}		
+				}
 
 			//////////
 			/// Check to see if it is a valid taxon. If so, it is active for all trees.
 			/// If not, it should be a clade name.
 			//////////
-			} else { 
+			} else {
 				vector<TNode*>::iterator vit = this->my_tree->tips.begin();
 				bool pushed = false;
 				for (vector<string>::iterator sit = this->my_tree->names.begin(); sit != this->my_tree->names.end(); ++sit, ++vit) {
@@ -1264,11 +1264,11 @@ void inTree::parseClade(
 				parsePound((*it), clade, 1, options);
 				// clade->Print_Environment();
 			}
-		} 
+		}
 	} // end of clade processing.
 
 	int which_clade;
-	if ( (which_clade = CladeUnprocessed(my_tree)) ) {	// Not all clades of tree were processed.		
+	if ( (which_clade = CladeUnprocessed(my_tree)) ) {	// Not all clades of tree were processed.
 		warning << "Clade " << CladeName(my_tree, which_clade) << " is an invalid clade for tree " << treeNum << ".";
 		warning << " NOTE: Clade names are case-sensitive." << endl;
 		options->SpoolWarnings(warning.str());
@@ -1298,7 +1298,7 @@ void inTree::propagateTreePointers()
 
 void inTree::propagateCladePointers(
 									TNode *node
-								   ) 
+								   )
 {
 	if ( !(node->nodeEnv = FindEnvironment(my_tree, node->clade_label)))
 		node->nodeEnv = node->anc->nodeEnv;
@@ -1312,18 +1312,18 @@ void inTree::propagateCladePointers(
 }
 
 string inTree::addFilePath(
-						   string& suffix, 
+						   string& suffix,
 						   string& prefix
-						  ) 
+						  )
 {
 	return (prefix + "/" + suffix);
 }
 
 void inTree::parseIndel(
-						string& input, 
-						inClade *clade, 
+						string& input,
+						inClade *clade,
 						seqGenOptions *options
-					   ) 
+					   )
 {
 	size_t found, found2;
 	string insert_lengthDistFile;
@@ -1345,7 +1345,7 @@ void inTree::parseIndel(
 			//Remove Whitespace.
 			trim(splitcomma.front());
 			// Verify there is a number and that no non-numbers exist.
-			if ( splitcomma.front().find_first_of("0123456789") == string::npos 
+			if ( splitcomma.front().find_first_of("0123456789") == string::npos
 				 || splitcomma.front().empty()
 				 || splitcomma.front().find_first_not_of("0123456789") != string::npos) {
 				cerr << "Incorrect maxIndel specification: \"" << splitcomma.front() << "\"." << endl;
@@ -1418,7 +1418,7 @@ void inTree::parseIndel(
 						exit(EXIT_FAILURE);
 					}
 					dist_input.close();
-			
+
 					delete_lengthDistFile = (*splitcomma.begin()).substr(found + 1);
 					trim(delete_lengthDistFile);
 					delete_lengthDistFile = addFilePath(delete_lengthDistFile, options->filePath);
@@ -1516,8 +1516,8 @@ void inTree::parseIndel(
 				}
 				double sum = 0.0;
 				for(int j=0; j<clade->maxIndel; j++) {
-					clade->insert_lengthDistribution.at(j+1) = 2628.0 * pow(j+1,-1.821); 
-      				clade->delete_lengthDistribution.at(j+1) = 2628.0 * pow(j+1,-1.821); 
+					clade->insert_lengthDistribution.at(j+1) = 2628.0 * pow(j+1,-1.821);
+      				clade->delete_lengthDistribution.at(j+1) = 2628.0 * pow(j+1,-1.821);
    					sum += clade->insert_lengthDistribution.at(j+1);
 				}
 				for(int j=0; j<clade->maxIndel; j++) {
@@ -1533,11 +1533,11 @@ void inTree::parseIndel(
 }
 
 void inTree::parsePound(
-					    string& input, 
-					    inClade *clade, 
-					    bool local, 
+					    string& input,
+					    inClade *clade,
+					    bool local,
 					    seqGenOptions *options
-					   ) 
+					   )
 {
 	size_t found, found2;
 
@@ -1601,7 +1601,7 @@ void inTree::parsePound(
 				} else if ((*tok)[0] == 'g') {
 					clade->rateHetero = DiscreteGammaRates;
 					clade->numCats = atoi((*tok).substr(1).c_str());
-					clade->set_in_clade[__rateHetero__] = true;	
+					clade->set_in_clade[__rateHetero__] = true;
 					if (clade->numCats <= 0 || clade->numCats > MAX_RATE_CATS) {
 						cerr << "Bad number of gamma categories in lineages." << endl;
 					}
@@ -1710,7 +1710,7 @@ void inTree::parsePound(
 
 void inTree::Setup_Tree(
 						seqGenOptions *options
-					   ) 
+					   )
 {
 	size_t found;
 	inMotif *thisMotif;
@@ -1780,7 +1780,7 @@ void inTree::Reset_inMotif()
 void inTree::setupTreeStructs(
 							  int partitionLength,
 							  seqGenOptions *options
-							 ) 
+							 )
 {
 	//////////
 	/// Set categories of evolvingSequence sites (if GammaRates or DiscreteGammaRates... perhaps CodonRates, too)
@@ -1795,7 +1795,7 @@ void inTree::setupTreeStructs(
 
 void inTree::ConvertRootSequence(
 								 TTree *tree
-								) 
+								)
 {
 	string stateCharacters;
 	if(isNucModel) stateCharacters = "ACGT";
@@ -1807,7 +1807,7 @@ void inTree::ConvertRootSequence(
 	for(int i = 0; i < partitionLength; i++) {
 		if(rootseq_by_partition.at(i) == 'U' && isNucModel) rootseq_by_partition.at(i) = 'T';
 		if(stateCharacters.find(rootseq_by_partition.at(i)) > (size_t)numStates) {
-			cerr << "Invalid character '" << rootseq_by_partition.at(i) << "' at position " << i 
+			cerr << "Invalid character '" << rootseq_by_partition.at(i) << "' at position " << i
 				 << " in input file:" << endl << rootseq_by_partition << endl;;
 			exit(EXIT_FAILURE);
 		}
@@ -1816,7 +1816,7 @@ void inTree::ConvertRootSequence(
 }
 
 void inTree::Read_MA(
-					 string& ma_filename, 
+					 string& ma_filename,
 					 seqGenOptions *options
 					)
 {
@@ -1895,9 +1895,9 @@ void inTree::Read_MA(
 }
 
 int inTree::getRootSeq_and_Motif(
-								 int type, 
+								 int type,
 								 seqGenOptions *options
-								) 
+								)
 {
 	int from_pos, to_pos;
 	size_t num_seqs_in_MA = 0;
@@ -1912,12 +1912,12 @@ int inTree::getRootSeq_and_Motif(
 	if (type == MULTIPLE_ALIGNMENT_ROOT) {
 		num_seqs_in_MA = input_MA.size();
 		// Initialize sitemap, to be built later.
-		for (list<inMotif*>::iterator it = motif_specs.begin(); it != motif_specs.end(); ++it) 
+		for (list<inMotif*>::iterator it = motif_specs.begin(); it != motif_specs.end(); ++it)
 			(*it)->sitemap.clear();
 
 		// Parse range
 		if(!ma_range.empty()) {
-			list<string> splitrange = split(ma_range, ":");		
+			list<string> splitrange = split(ma_range, ":");
 			from_pos = atoi((*splitrange.begin()).c_str()) - 1;
 			splitrange.pop_front();
 			to_pos = atoi((*splitrange.begin()).c_str()) - 1;
@@ -1934,7 +1934,7 @@ int inTree::getRootSeq_and_Motif(
 		vector<string> data_MA;
 		if(ma_numSeqsToUse == -1) {
 			ma_numSeqsToUse = num_seqs_in_MA;
-			for(int i=0; i<ma_numSeqsToUse; i++) 
+			for(int i=0; i<ma_numSeqsToUse; i++)
 				data_MA.push_back(input_MA.at(i));
 		} else {
 			int random_number;
@@ -1961,13 +1961,13 @@ int inTree::getRootSeq_and_Motif(
 					exit(EXIT_FAILURE);
 				}
 				if(isNucModel) {
-					if (stateChar.at(elem_pos) == 'Y') 
+					if (stateChar.at(elem_pos) == 'Y')
 						count.at(stateChar.find('C'))+=50, count.at(stateChar.find('T'))+=50;
-					if (stateChar.at(elem_pos) == 'R') 
+					if (stateChar.at(elem_pos) == 'R')
 						count.at(stateChar.find('A'))+=50, count.at(stateChar.find('G'))+=50;
 					else if (stateChar.at(elem_pos) == 'U')
 						count.at(stateChar.find('T'))+=100;
-					else if (stateChar.at(elem_pos) == 'N') 
+					else if (stateChar.at(elem_pos) == 'N')
 						count.at(0)+=25,count.at(1)+=25,count.at(2)+=25,count.at(3)+=25;
 					else count.at(elem_pos)+=100;
 				} else {
@@ -1977,7 +1977,7 @@ int inTree::getRootSeq_and_Motif(
 						count.at(stateChar.find('E'))+=50, count.at(stateChar.find('Q'))+=50;
 					else if (stateChar.at(elem_pos) == 'J')
 						count.at(stateChar.find('L'))+=50, count.at(stateChar.find('I'))+=50;
-					else if (stateChar.at(elem_pos) == 'X') 
+					else if (stateChar.at(elem_pos) == 'X')
 						for(size_t x = stateChar.find('A'); x <= stateChar.find('V'); x++)
 							count.at(x)+=100/20;
 					else
@@ -2028,7 +2028,7 @@ int inTree::getRootSeq_and_Motif(
 						tmp_bits.reset();
 						which_regEx_position = 1, j = 1;
 						for (list<inMotif*>::iterator it2 = motif_specs.begin(); it2 != motif_specs.end(); ++it2) {
-							if ( (*it).at(i) == (*it2)->marker ) { 
+							if ( (*it).at(i) == (*it2)->marker ) {
 								which_motif = (*it2);
 							}
 						}
@@ -2043,7 +2043,7 @@ int inTree::getRootSeq_and_Motif(
 							non_null = true;
 						} else {
 							state_bits |= tmp_bits;
-						} 
+						}
 					}
 				}
 
@@ -2053,7 +2053,7 @@ int inTree::getRootSeq_and_Motif(
 					if (state_bits.none()) rootseq_by_partition += "-";
 					else {
 						state_set.clear();
-						for (size_t q = 0; q < state_bits.size(); q++) 
+						for (size_t q = 0; q < state_bits.size(); q++)
 							if (state_bits.test(q)) state_set += stateCharacters.at(q);
 						random_number = rand() % state_set.size();
 						rootseq_by_partition += state_set.at(random_number);
@@ -2068,7 +2068,7 @@ int inTree::getRootSeq_and_Motif(
 				}
 			}
 		}
-	} else if (type == SINGLE_ROOT) { 
+	} else if (type == SINGLE_ROOT) {
 		rootseq_by_partition = input_MA.at(0);	// Reset rootseq (no longer has '-').
 		invariable_by_partition = invariable;
 		setMultiStateCharacters();
@@ -2080,7 +2080,7 @@ int inTree::getRootSeq_and_Motif(
 		delete[] cstr;
 		invariable_by_partition.assign(rootseq_by_partition.size(), '0');
 		if (options->random_sequence_proportion_motif)
-			motif_specs = my_tree->DrawMotifs(rootseq_by_partition, options->random_sequence_proportion_motif);		
+			motif_specs = my_tree->DrawMotifs(rootseq_by_partition, options->random_sequence_proportion_motif);
 		else if (options->default_proportion_invariable) {
 			for (string::iterator it = invariable_by_partition.begin(); it != invariable_by_partition.end(); ++it) {
 				if (rndu() < options->default_proportion_invariable) {
@@ -2099,7 +2099,7 @@ int inTree::getRootSeq_and_Motif(
 	} else {
 		my_tree->constructRootMotifSites(motif_specs, rootseq_by_partition, invariable_by_partition);
 	}
-	
+
 	return rootseq_by_partition.size();
 }
 
@@ -2144,10 +2144,10 @@ void inTree::setMultiStateCharacters()
 			case 'V':	// ACG -- not T
 				three_state_rand = rand() % 3;
 				(
-				 (three_state_rand % 3 == 0) 
-				  ? ((*it) = 'A') 
+				 (three_state_rand % 3 == 0)
+				  ? ((*it) = 'A')
 				  : (
-				     (three_state_rand % 3 == 1) 
+				     (three_state_rand % 3 == 1)
 					  ? ((*it) = 'C')
 					  : ((*it) = 'G')
 				    )
@@ -2156,10 +2156,10 @@ void inTree::setMultiStateCharacters()
 			case 'H':	// ACT -- not g
 				three_state_rand = rand() % 3;
 				(
-				 (three_state_rand % 3 == 0) 
-				  ? ((*it) = 'A') 
+				 (three_state_rand % 3 == 0)
+				  ? ((*it) = 'A')
 				  : (
-				     (three_state_rand % 3 == 1) 
+				     (three_state_rand % 3 == 1)
 					  ? ((*it) = 'C')
 					  : ((*it) = 'T')
 				    )
@@ -2168,10 +2168,10 @@ void inTree::setMultiStateCharacters()
 			case 'D':	// AGT -- not C
 				three_state_rand = rand() % 3;
 				(
-				 (three_state_rand % 3 == 0) 
-				  ? ((*it) = 'A') 
+				 (three_state_rand % 3 == 0)
+				  ? ((*it) = 'A')
 				  : (
-				     (three_state_rand % 3 == 1) 
+				     (three_state_rand % 3 == 1)
 					  ? ((*it) = 'T')
 					  : ((*it) = 'G')
 				    )
@@ -2180,10 +2180,10 @@ void inTree::setMultiStateCharacters()
 			case 'B':	// CGT -- not A
 				three_state_rand = rand() % 3;
 				(
-				 (three_state_rand % 3 == 0) 
-				  ? ((*it) = 'T') 
+				 (three_state_rand % 3 == 0)
+				  ? ((*it) = 'T')
 				  : (
-				     (three_state_rand % 3 == 1) 
+				     (three_state_rand % 3 == 1)
 					  ? ((*it) = 'C')
 					  : ((*it) = 'G')
 				    )
@@ -2222,11 +2222,11 @@ void inTree::setMultiStateCharacters()
 
 list<string>
 split(
-	  string str, 
-	  string delim, 
-	  bool mixedDelim, 
+	  string str,
+	  string delim,
+	  bool mixedDelim,
 	  bool merge
-	 ) 
+	 )
 {
 	list<string> tokins;
 	size_t found;
@@ -2240,7 +2240,7 @@ split(
 		found = str.find(delim);
 	}
 	p_found = -offset;
-	
+
 	while (found != string::npos) {
 		possibleTokin = str.substr(p_found + offset, found - (p_found + offset));
 		if ((merge && possibleTokin != "") || !merge) {
@@ -2252,7 +2252,7 @@ split(
 		} else {
 			found = str.find(delim, p_found + offset);
 		}
-		
+
 	}
 	possibleTokin = str.substr(p_found + offset);
 	if ((merge && possibleTokin != "") || !merge) {
@@ -2263,14 +2263,14 @@ split(
 
 string& trim(
 			 string& str
-			) 
+			)
 {
 	char const * delims = " \t\r\n\v\f";
 	size_t found;
 	//Leading whitespace
 	found = str.find_first_not_of(delims);
 	str.erase(0, found);
-	
+
 	//Trailing whitespace
 	found = str.find_last_not_of(delims);
 	return str.erase(found + 1);
@@ -2278,7 +2278,7 @@ string& trim(
 
 string& Remove_Whitespace(
 						  string& str
-						 ) 
+						 )
 {
 	for(int i = 0; i < str.size(); i++) {
 		if(isspace(str.at(i)))

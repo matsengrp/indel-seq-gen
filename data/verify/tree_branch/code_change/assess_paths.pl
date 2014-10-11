@@ -25,7 +25,7 @@ my ($global_min, $global_max) = (10000, 0);
 
 	open my $infile, '<', $filename or die "Cannot open file $filename: $?\n";
 	my ($tree, $sequence_data, $initial_cycle) = &read_init($infile);
-	my ($i_0, $k_0, $sequence_size) = &set_endpoints($sequence_data);	
+	my ($i_0, $k_0, $sequence_size) = &set_endpoints($sequence_data);
 
 	## Output MCMC cycle data for heat map. ##
 	$time_bins = 1000;
@@ -84,24 +84,24 @@ sub build_distance_matrix
 ### Compare each individual path against all other paths. Build the distance matrix.
 sub compare_individual_paths
 {
-	my ($distmat_ref, 
+	my ($distmat_ref,
 		$rowfh,
 		$colfh,
-		$i_0, 
-		$t_0, 
-		$T, 
-		$time_increment, 
-		$time_bins, 
-		$initial_cycle, 
+		$i_0,
+		$t_0,
+		$T,
+		$time_increment,
+		$time_bins,
+		$initial_cycle,
 		$first_cycle_to_sample
 	   ) = @_;
 
 	my ($row_idx, $col_idx) = (0,0);	## Row and column index for the dist matrix. ##
 
-	my ($rpath, $rcurrent_cycle, $rnextpath_cycle) 
+	my ($rpath, $rcurrent_cycle, $rnextpath_cycle)
 	= &advance_to_first_sample(
-							   $rowfh, 
-							   $initial_cycle, 
+							   $rowfh,
+							   $initial_cycle,
 							   $first_cycle_to_sample
 							  );
 	## Next sample is set to -1 when there are no more paths to be read from MCMC
@@ -111,10 +111,10 @@ sub compare_individual_paths
 	for ($row_idx = 0; $rnextpath_cycle != -1; $row_idx++) {
 		### Get the next path ###
 		($rpath, $rnextpath_cycle, $rcurrent_cycle) = &get_next_sample(
-						   											   $rowfh, 
-																       $rcurrent_cycle, 
-										 						       $sample_each_x_cycles, 
-						  										 	   $rpath, 
+						   											   $rowfh,
+																       $rcurrent_cycle,
+										 						       $sample_each_x_cycles,
+						  										 	   $rpath,
 						   											   $rnextpath_cycle
 							 									      );
 		## Place column pointer on "diagonal" of the dist matrix (point to same record as row). ##
@@ -130,10 +130,10 @@ sub compare_individual_paths
 		for ($col_idx = 1; $cnextpath_cycle != -1; $col_idx++) {
 			### Get next path ###
 			($cpath, $cnextpath_cycle, $ccurrent_cycle) = &get_next_sample(
-							   											   $colfh, 
-																	       $ccurrent_cycle, 
-											 						       $sample_each_x_cycles, 
-							  										 	   $cpath, 
+							   											   $colfh,
+																	       $ccurrent_cycle,
+											 						       $sample_each_x_cycles,
+							  										 	   $cpath,
 							   											   $cnextpath_cycle
 								 									   	  );
 			### Compare sampled sequences ###
@@ -158,16 +158,16 @@ sub output_mcmc_heatmap_table
 		### Set the work sequence to the initial state ###
 		@work = split //, $i_0;
 		### Get the next path ###
-		($path, $nextpath_cycle, $current_cycle) 
+		($path, $nextpath_cycle, $current_cycle)
 		= &get_next_sample(
-						   $fh, 
-						   $current_cycle, 
-						   $sample_each_x_cycles, 
-						   $path, 
+						   $fh,
+						   $current_cycle,
+						   $sample_each_x_cycles,
+						   $path,
 						   $nextpath_cycle
 						  );
 		## Should have path to profile && cycle of interest.
-		print STDERR "$current_cycle $nextpath_cycle\n"; 
+		print STDERR "$current_cycle $nextpath_cycle\n";
 		#print STDERR $path . "\n";
 		print "cycle_$current_cycle";
 		&print_path($i_0, $t_0, $T, $path, $time_increment, $time_bins);
@@ -227,7 +227,7 @@ sub print_path
 				if ($EPC) {
 					if ($Qidot_k < $global_min) { $global_min = $Qidot_k; }
 					if ($Qidot_k > $global_max) { $global_max = $Qidot_k; }
-					print "\t$Qidot_k"; 
+					print "\t$Qidot_k";
 					$Qidot_avg[$Qidot_avg_idx++] += $Qidot_k;
 				} else {
 					if ($Qidot < $global_min) { $global_min = $Qidot; }
@@ -246,7 +246,7 @@ sub print_path
 			if ($t2 < $time_bin && $t2 > $t && $t != 0) {
 				my $bin_val = $Qidot;
 				while ($t2 < $time_bin && $t2 > $t) {
-					($t2, $site2, $change2, $Qidot2, $Qidot_k2) 
+					($t2, $site2, $change2, $Qidot2, $Qidot_k2)
 					= split(",", $path_events[$last_event_ptr+$num_in_bin]);
 					if ($EPC) {
 						$bin_val += $Qidot_k2;
@@ -260,7 +260,7 @@ sub print_path
 				if ($EPC) {
 					if ($Qidot_k < $global_min) { $global_min = $Qidot_k; }
 					if ($Qidot_k > $global_max) { $global_max = $Qidot_k; }
-					print "\t$Qidot_k"; 
+					print "\t$Qidot_k";
 					$Qidot_avg[$Qidot_avg_idx++] += $Qidot_k;
 				} else {
 					if ($Qidot < $global_min) { $global_min = $Qidot; }
@@ -276,7 +276,7 @@ sub print_path
 				if ($EPC) {
 					if ($Qidot_k < $global_min) { $global_min = $Qidot_k; }
 					if ($Qidot_k > $global_max) { $global_max = $Qidot_k; }
-					print "\t$Qidot_k"; 
+					print "\t$Qidot_k";
 					$Qidot_avg[$Qidot_avg_idx++] += $Qidot_k;
 				} else {
 					if ($Qidot < $global_min) { $global_min = $Qidot; }
@@ -316,7 +316,7 @@ sub compare_sequences
 		$dt,				## Amount of time to increment at each step.
 		$total_time_bins	## To increment the array at the proper point.
 	   ) = @_;
-	
+
 
 	my @path1_events = split /\n/, $path1;
 	my @seq1 = split //, $i_0;
@@ -326,7 +326,7 @@ sub compare_sequences
 
 	pop @path1_events;
 	pop @path2_events;
-	
+
 	my $rlast_event_ptr = 0;
 	my $clast_event_ptr = 0;
 	my ($prof_site_idx) = (0);
@@ -342,7 +342,7 @@ sub compare_sequences
 		while ($rt < $time_bin and $rlast_event_ptr < @path1_events ) {
 			## Make change to sequence
 			my @nucl_pair = split //, $rchange;
-			if ($seq1[$rsite] ne $nucl_pair[0]) { die "Odd... $seq1[$rsite] != $nucl_pair[0].\n"; } 
+			if ($seq1[$rsite] ne $nucl_pair[0]) { die "Odd... $seq1[$rsite] != $nucl_pair[0].\n"; }
 			else { $seq1[$rsite] = $nucl_pair[1]; }
 			$rlast_event_ptr++;
 			($rt, $rsite, $rchange, $rQidot, $rQidot_k) = split(",", $path1_events[$rlast_event_ptr]);
@@ -351,7 +351,7 @@ sub compare_sequences
 		while ($ct < $time_bin and $clast_event_ptr < @path2_events ) {
 			## Make change to sequence
 			my @nucl_pair = split //, $cchange;
-			if ($seq2[$csite] ne $nucl_pair[0]) { die "Odd... $seq2[$csite] != $nucl_pair[0].\n"; } 
+			if ($seq2[$csite] ne $nucl_pair[0]) { die "Odd... $seq2[$csite] != $nucl_pair[0].\n"; }
 			else { $seq2[$csite] = $nucl_pair[1]; }
 			$clast_event_ptr++;
 			($ct, $csite, $cchange, $cQidot, $cQidot_k) = split(",", $path2_events[$clast_event_ptr]);
@@ -371,7 +371,7 @@ sub seq_diff
 	for my $i (0 .. @{ $seq1_ref }-2) {
 		if ($seq1_ref->[$i] ne $seq2_ref->[$i]) { $diff++; }
 	}
-	return $diff;	
+	return $diff;
 }
 
 sub advance_to_first_sample
@@ -398,7 +398,7 @@ sub advance_to_first_sample
 	## number of possible samples of the "current" path state.
 	$current_cycle = $first_cycle_to_sample;
 	($path, $nextpath_cycle) = &get_next_sample($fh, $current_cycle, $sample_each_x_cycles);
-	
+
 	return ($path, $current_cycle, $nextpath_cycle); # Path corresponding to the first cycle to sample.
 }
 
@@ -415,16 +415,16 @@ sub compare_to_average_path
 		### Set the work sequence to the initial state ###
 		@work = split //, $i_0;
 		### Get the next path ###
-		($path, $nextpath_cycle, $current_cycle) 
+		($path, $nextpath_cycle, $current_cycle)
 		= &get_next_sample(
-						   $fh, 
-						   $current_cycle, 
-						   $sample_each_x_cycles, 
-						   $path, 
+						   $fh,
+						   $current_cycle,
+						   $sample_each_x_cycles,
+						   $path,
 						   $nextpath_cycle
 						  );
 		## Should have path to profile && cycle of interest.
-		print "$current_cycle "; 
+		print "$current_cycle ";
 		&compare_to_profile($i_0, $t_0, $T, $path, $profile_ref, $time_increment, $time_bins);
 	}
 }
@@ -440,7 +440,7 @@ sub compare_to_profile
 		$dt,				## Amount of time to increment at each step.
 		$total_time_bins	## To increment the array at the proper point.
 	   ) = @_;
-	
+
 	my @path_events = split /\n/, $path_to_add;
 	pop @path_events;		## Branch ending event. ##
 	my @work_sequence = split //, $i_0;
@@ -456,7 +456,7 @@ sub compare_to_profile
 		while ($t < $time_bin and $last_event_ptr < @path_events ) {
 			## Make change to sequence
 			my @nucl_pair = split //, $change;
-			if ($work_sequence[$site] ne $nucl_pair[0]) { die "Odd... $work_sequence[$site] != $nucl_pair[0].\n"; } 
+			if ($work_sequence[$site] ne $nucl_pair[0]) { die "Odd... $work_sequence[$site] != $nucl_pair[0].\n"; }
 			else { $work_sequence[$site] = $nucl_pair[1]; }
 
 			## Finished event, get data of next event.
@@ -483,7 +483,7 @@ sub compare_to_profile
 sub profile_diff
 {
 	my ($prof_ref, $seqdata_ref, $time_idx) = @_;
-	
+
 	my $diff = 0;
 	for my $i (0 .. @{ $seqdata_ref }-2) {
 		$diff += 1 - $prof_ref->[$time_idx] [$i] [&pattern_idx($seqdata_ref->[$i])];
@@ -506,16 +506,16 @@ sub calculate_average_path
 		### Set the work sequence to the initial state ###
 		@work = split //, $i_0;
 		### Get the next path ###
-		($path, $nextpath_cycle, $current_cycle) 
+		($path, $nextpath_cycle, $current_cycle)
 		= &get_next_sample(
-						   $fh, 
-						   $current_cycle, 
-						   $sample_each_x_cycles, 
-						   $path, 
+						   $fh,
+						   $current_cycle,
+						   $sample_each_x_cycles,
+						   $path,
 						   $nextpath_cycle
 						  );
 		## Should have path to profile && cycle of interest.
-		print STDERR "$current_cycle $nextpath_cycle\n"; 
+		print STDERR "$current_cycle $nextpath_cycle\n";
 		&add_to_profile($i_0, $t_0, $T, $path, $profile_ref, $time_increment, $time_bins);
 	}
 }
@@ -567,13 +567,13 @@ sub set_endpoints
 	@work = split //, $i_0;
 	$sequence_size = scalar @work;
 
-	return ($i_0, $k_0, $sequence_size);	
+	return ($i_0, $k_0, $sequence_size);
 }
 
 sub print_profile
 {
 	my ($prof_ref, $time_bins, $sequence_size, $numStates) = @_;
-	
+
 	open OUT, ">avg_path.stat";
 
 	for my $i ( 0 .. $time_bins ) {
@@ -617,7 +617,7 @@ sub add_to_profile
 		$dt,				## Amount of time to increment at each step.
 		$total_time_bins	## To increment the array at the proper point.
 	   ) = @_;
-	
+
 	my @path_events = split /\n/, $path_to_add;
 	pop @path_events;		## Branch ending event. ##
 	my @work_sequence = split //, $i_0;
@@ -631,7 +631,7 @@ sub add_to_profile
 		while ($t < $time_bin and $last_event_ptr < (scalar @path_events) ) {
 			## Make change to sequence
 			my @nucl_pair = split //, $change;
-			if ($work_sequence[$site] ne $nucl_pair[0]) { die "Odd... $work_sequence[$site] != $nucl_pair[0].\n"; } 
+			if ($work_sequence[$site] ne $nucl_pair[0]) { die "Odd... $work_sequence[$site] != $nucl_pair[0].\n"; }
 			else { $work_sequence[$site] = $nucl_pair[1]; }
 
 			&increment_profile($profile_array_ref, \@work_sequence, $time_bin * $total_time_bins);
@@ -647,7 +647,7 @@ sub add_to_profile
 sub increment_profile
 {
 	my ($prof_ref, $seqdata_ref, $time_idx) = @_;
-	
+
 	for my $i (0 .. @{ $seqdata_ref }-2) {
 		$prof_ref->[$time_idx] [$i] [&pattern_idx($seqdata_ref->[$i])]++;
 		#print "prof_ref->[$time_idx][$i][(&pattern_idx($seqdata_ref->[$i]))]++\n";
@@ -658,7 +658,7 @@ sub pattern_idx
 {
 	my ($pattern) = @_;
 	my @elements = split //, $pattern;
-	
+
 	## Naturally, this will have to be better done for higher order Markov models.
 	if ($elements[0] eq "A") { return 0; }
 	if ($elements[0] eq "C") { return 1; }
@@ -688,12 +688,12 @@ sub get_next_sample
 	return ($path, $next_path_cycle, $current_cycle);
 }
 
-sub get_next_path 
+sub get_next_path
 {
 	my $fh = shift;
 	my ($path, $pathID);
 	my $line;
-	
+
 	my $cont = 1;
 	while ($cont and $line = <$fh>) {
 		if ($line !~ m/^\#/) {
@@ -705,15 +705,15 @@ sub get_next_path
 	$pathID = $tmp[1];
 	chomp($pathID);
 
-	return ($path, $pathID);	
+	return ($path, $pathID);
 }
 
 sub mu_sigma
 {
 	my ($ref) = @_;
-	
+
 	my ($average, $stdev);
-	
+
 	for my $i (0 .. @{ $ref }-1) {
 		$average += $ref->[$i];
 	}
@@ -723,7 +723,7 @@ sub mu_sigma
 	for my $i (0 .. @{ $ref }-1) {
 		$stdev += ($average - $ref->[$i]) * ($average - $ref->[$i]);
 	}
-	
+
 	$stdev /= scalar(@{ $ref });
 
 	return ($average, sqrt($stdev));

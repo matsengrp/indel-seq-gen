@@ -28,14 +28,14 @@ template <class T> string to_string2 (
 
 eventTrack::eventTrack(
 					   int events_to_track
-					  ) 
+					  )
 {
 	init(events_to_track);
 }
 
 void eventTrack::init(
 					  int events_to_track
-					 ) 
+					 )
 {
 	ID = -1;
 	eventTime = -1;
@@ -54,11 +54,11 @@ bool isEvent ( string& str )
 		str.erase(str.size()-1);	// Erase the ']'
 		return true;
 	}
-	
+
 	return false;
 }
 
-vector<eventTrack*> sortEventsByTime( list<eventTrack*> *events ) 
+vector<eventTrack*> sortEventsByTime( list<eventTrack*> *events )
 {
 	vector<eventTrack*> sorted_events;
 	double curr_event_time = -1;
@@ -106,7 +106,7 @@ void eventTrack::assign_Q(
 	/// "Forward" rates away:
 	/// * These are not summed during the rate away calculation, so we need to sum them for idot.
 	/// * The current state of the site represents the change that happened, thus we just use the
-	///   current state to retrieve the ij rates. 
+	///   current state to retrieve the ij rates.
 	/// "End-point Conditioned" rates away:
 	/// * These are summed, so we simply retrieve the back value for idot_k__T__. Need to subtract
 	///   the previous value to get the if_k__T__.
@@ -132,11 +132,11 @@ void eventTrack::assign_Q(
 }
 
 int eventTrack::Compute_MSA_Positions(
-									  TTree *tree, 
+									  TTree *tree,
 									  int start_msa_pos
-									 ) 
+									 )
 {
-	int curr_pos = 0; 
+	int curr_pos = 0;
 	for (vector<insertSite>::iterator it = tree->global_alignment->insert_sites.begin(); it != tree->global_alignment->insert_sites.end(); ++it, curr_pos++) {
 		for (list<siteModifier>::iterator jt = (*it).modifiers.begin(); jt != (*it).modifiers.end(); ++jt) {
 			if (ID == (*jt).indelNo) {
@@ -153,7 +153,7 @@ int eventTrack::Compute_MSA_Positions(
 string eventTrack::Print_Short_Event()
 {
 	stringstream short_event;
-	
+
 	if (eventType == INSERT) short_event << "I";
 	else if (eventType == DELETE) short_event << "D";
 	else if (eventType == SUBSTITUTION) short_event << "S";
@@ -162,7 +162,7 @@ string eventTrack::Print_Short_Event()
 	else if (eventType == BRANCH_END) short_event << "E";		// END of branch for MCMC. //
 	else short_event << "X";
 	short_event << ",";
-	if (eventTime!=-1) 
+	if (eventTime!=-1)
 		short_event << eventTime;
 	short_event << ",";
 	for (vector<bool>::iterator it = bipartitionInduced.begin(); it != bipartitionInduced.end(); ++it)
@@ -174,11 +174,11 @@ string eventTrack::Print_Short_Event()
 			short_event << (*it);
 		}
 	} else short_event << "X";
-	
+
 	return short_event.str();
 }
 
-string eventTrack::Print_Event() 
+string eventTrack::Print_Event()
 {
 	stringstream event;
 
@@ -207,7 +207,7 @@ string eventTrack::Print_Event()
 string eventTrack::write_path_event()
 {
 	stringstream event;
-	
+
 	event << eventTime << ",";
 	if (eventType != FOSSIL && eventType != BRANCH_BEGIN && eventType != NO_EVENT && eventType != BRANCH_END) {
 		for (vector<int>::iterator it = MSA_positions.begin(); it != MSA_positions.end(); ++it) {
@@ -216,21 +216,21 @@ string eventTrack::write_path_event()
 		}
 	} else event << "X";
 
-	event << "," << size 
-		  << "," << Q.idot 
+	event << "," << size
+		  << "," << Q.idot
 		  << "," << Q.idot_k__T__ << endl;
 
 	return event.str();
 }
 
-void 
+void
 eventTrack::ratesAway::assign (
-									long double idot_in, 
-									long double ij_in, 
-									long double idot_k__T___in, 
-									long double ij_k__T___in, 
-									long double Pjk_in, 
-									long double Pik_in, 
+									long double idot_in,
+									long double ij_in,
+									long double idot_k__T___in,
+									long double ij_k__T___in,
+									long double Pjk_in,
+									long double Pik_in,
 									int i2k_in
 								   )
 {
@@ -243,7 +243,7 @@ eventTrack::ratesAway::assign (
 	i2k = i2k_in;
 }
 
-void 
+void
 eventTrack::ratesAway::print()
 {
 	cerr << "Q values: " << endl;
@@ -258,11 +258,11 @@ eventTrack::ratesAway::print()
 }
 
 eventTrack *branch_terminal_event(
-								  int which_node, 
-								  int type, 
-								  double distance_from_root, 
-								  vector<bool>& bipartition, 
-								  double branch_start, 
+								  int which_node,
+								  int type,
+								  double distance_from_root,
+								  vector<bool>& bipartition,
+								  double branch_start,
 								  double branch_end
 								 )
 {
@@ -275,6 +275,6 @@ eventTrack *branch_terminal_event(
 							      bipartition,	/// Who are the ancestors of this node. ///
 								  str,
 							      branch_end-branch_start
-							     ); 
+							     );
 	return return_event;
 }

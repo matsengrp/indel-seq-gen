@@ -68,7 +68,7 @@ private:
 public:
 	using Counter<seqGenOptions>::howMany;
 	static const char *modelTitles[];
-	
+
 	bool	deposit_fossils;
 	bool	treelength_check;
 	bool 	treelength_scale;
@@ -132,7 +132,7 @@ public:
 	unsigned long randomSeed;
 	vector<unsigned int> gil_Seed;
 	vector<string>	warnings;
-	
+
 	enum {
 		track_insertion,
 		track_deletion,

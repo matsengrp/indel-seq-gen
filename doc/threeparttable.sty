@@ -14,8 +14,8 @@
 %
 % Inside a threeparttable there should be a caption, followed by a tabular
 % environment (tabular, tabular* or tabularx), possibly followed by a series
-% of itemized "tablenotes".  The caption can also go after the tabular. 
-% 
+% of itemized "tablenotes".  The caption can also go after the tabular.
+%
 % \begin{table}
 %  \begin{threeparttable}[b]
 %   \caption{...}
@@ -32,10 +32,10 @@
 %
 % The {threeparttable} environment takes an optional vertical-placement
 % parameter, [t], [b], or [c]; the default is [t].
-% 
+%
 % At present, there is nothing automatic about the notes; you must specify the
 % identifier in the body of the table ("\tnote{a}") and in the notes below
-% ("\item[a]...").  I chose this method because automatic numbering with 
+% ("\item[a]...").  I chose this method because automatic numbering with
 % \footnote would be very hard to use, particularly because many tables make
 % repeated reference to a single note.  If someone has a convenient, elegant,
 % automatic system, I'll listen!  \tnote commands can be given in the caption
@@ -73,12 +73,12 @@
 %   \TPTtagStyle: Command with one argument to set appearance of the tag
 %        (number) in \tnote{tag}.  It defaults to nil.  It could be \textit.
 %   \tnote: Yes, you can redefine the \tnote command.
-%   \TPTnoteLabel: Command with one argument to format the item label in 
+%   \TPTnoteLabel: Command with one argument to format the item label in
 %        the tablenotes list (\makelabel); default uses \tnote.
 %   \TPTnoteSettings: A command to issue all the list-environment setup
 %        commands for the tablenotes.
 %   \tablenotes or \TPTdoTablenotes: Yes, you can redefine the whole
-%        tablenotes environment. (\tablenotes processes optional 
+%        tablenotes environment. (\tablenotes processes optional
 %        parameters, then invokes \TPTdoTablenotes; the [para] option
 %        replaces \TPTdoTablenotes.)
 %
@@ -146,7 +146,7 @@
 
 %  "begin" code common for tables and figures
 \def\TPT@common#1#2{%
- \ifx\TPT@LA@caption\relax\else  
+ \ifx\TPT@LA@caption\relax\else
   \PackageError{threeparttable}%
     {Illegal nested #1 environments}%
     {Maybe you have a missing \string\end{#1}?^^J%
@@ -172,8 +172,8 @@
 % begin and the end code (using \TPT@hookin).  The hook-in is defined
 % generically so it is easy to add new supported environments.
 %
-% I will add \TPT@begintabhook and \TPT@endtabhook to \tabular and 
-% \endtabular.  These will do the measurement at the outer level, 
+% I will add \TPT@begintabhook and \TPT@endtabhook to \tabular and
+% \endtabular.  These will do the measurement at the outer level,
 % but will be no-ops inside.
 
 \def\TPT@unhook{%
@@ -183,7 +183,7 @@
 
 \let\TPT@endtabhook\egroup
 
-%  This is simple -- Hook into tabular types that are given explicit width 
+%  This is simple -- Hook into tabular types that are given explicit width
 \def\TPT@hookarg#1{% #1 = width
  \expandafter\let\csname TPTsav@#1\expandafter\endcsname\csname #1\endcsname
  \expandafter\edef\csname #1\endcsname##1{\noexpand\TPT@tabarghook{##1}%
@@ -218,8 +218,8 @@
 
 \def\TPT@endtabbox{% Inserted after ending \@tempboxb
  \TPT@measurement
- \endgroup 
- \TPT@hsize  \aftergroup\TPT@sethsize 
+ \endgroup
+ \TPT@hsize  \aftergroup\TPT@sethsize
  \@ignoretrue
 }
 
@@ -255,7 +255,7 @@
       \g@addto@macro\TPT@docapt{\label{#1}}\fi
 }
 
-\def\tablenotes{\TPT@defaults 
+\def\tablenotes{\TPT@defaults
   \@ifnextchar[\TPT@setuptnotes\TPTdoTablenotes} % ]
 \let\endtablenotes\endlist
 \def\TPT@setuptnotes [#1]{% process formatting options
@@ -264,8 +264,8 @@
 }
 
 \def\TPTdoTablenotes{%
- \par \prevdepth\z@ \TPT@hsize 
- \list{}{\topsep\z@skip \partopsep\z@skip 
+ \par \prevdepth\z@ \TPT@hsize
+ \list{}{\topsep\z@skip \partopsep\z@skip
   \itemsep\z@ \parsep\z@ \itemindent\z@
   \TPTnoteSettings
   \let\makelabel\TPTnoteLabel
@@ -274,7 +274,7 @@
 
 
 % \TPToverlap is a hook, to be used in \tnote, for making the note tag
-% hang over the right-edge of the column.  It takes different meanings 
+% hang over the right-edge of the column.  It takes different meanings
 % at different places, and it should disappear, like this, outside of
 % a threeparttable environment.
 %
@@ -282,10 +282,10 @@
 
 % \TPTrlap is the meaning of \TPToverlap within the tabular environment.
 % I could do some fancy definition so that it only acts at the right-edge
-% of a column, but it is left simple for compatibility and sanity. 
+% of a column, but it is left simple for compatibility and sanity.
 \let\TPTrlap\rlap
 
-\def\tnote#1{\protect\TPToverlap{\textsuperscript{\TPTtagStyle{#1}}}}% 
+\def\tnote#1{\protect\TPToverlap{\textsuperscript{\TPTtagStyle{#1}}}}%
 
 \def\TPTtagStyle#1{#1}
 
@@ -327,7 +327,7 @@
        \advance\hsize 10em % \hsize is scratch register, based on real hsize
        \penalty -45 \hskip\z@\@plus\hsize \penalty-19
        \hskip .15\hsize \penalty 9999 \hskip-.15\hsize
-       \hskip .01\hsize\@plus-\hsize\@minus.01\hsize 
+       \hskip .01\hsize\@plus-\hsize\@minus.01\hsize
        \hskip 1em\@plus .3em
       \endgroup\fi
       \tnote{##1}\,\ignorespaces}%
@@ -370,7 +370,7 @@ float because it is not in a {table} or {table*} environment.
 
 \end{center}
 
-Notes:  
+Notes:
 
 May 15, 2001: changed hook-in to use \setbox in a wrapper macro (or
 explicit width of tabular*).  I don't remember why I used \everyhbox

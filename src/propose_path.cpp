@@ -29,8 +29,8 @@ vector<double> exp_mean_draws;
 ////////////////////
 ////// Sets the sequences for all nodes that are specified in the fasta-format input file.
 ////////////////////
-void 
-PathProposal::setNodeSequences( 
+void
+PathProposal::setNodeSequences(
 							   TTree *tree
 							  )
 {
@@ -51,7 +51,7 @@ PathProposal::setNodeSequences(
 				/// Internal node found.
 				if (it == tree->nodeList.begin()) tree->epc_root_is_set = true;
 				found = (*it);
-			} 
+			}
 		}
 
 		if (found) {
@@ -64,7 +64,7 @@ PathProposal::setNodeSequences(
 	}
 }
 
-void 
+void
 PathProposal::setUnspecifiedNodeSequences(
 										  TTree *tree,
 										  int sequence_length
@@ -74,7 +74,7 @@ PathProposal::setUnspecifiedNodeSequences(
 	sequence.assign(sequence_length, 0);	/// All A's
 
 	if (!tree->epc_root_is_set) {
-		for (vector<Site>::iterator jt = tree->root->seq_evo.begin(); jt != tree->root->seq_evo.end(); ++jt) 
+		for (vector<Site>::iterator jt = tree->root->seq_evo.begin(); jt != tree->root->seq_evo.end(); ++jt)
 			(*jt).setState(-1);
 	}
 
@@ -95,13 +95,13 @@ PathProposal::setUnspecifiedNodeSequences(
 ////////////////////
 ////// Lists all of the paths that will be simulated
 ////////////////////
-void 
+void
 PathProposal::displayPaths(
 								TTree *tree
 							   )
 {
 	for (vector<TNode*>::iterator it = tree->tips.begin(); it != tree->tips.end(); ++it) {
-		cerr << "From sequence: " 
+		cerr << "From sequence: "
 			 << (*it)->anc->printSequence()
 			 << endl << "  to sequence: "
 			 << (*it)->printSequence()
@@ -109,7 +109,7 @@ PathProposal::displayPaths(
 	}
 }
 
-void 
+void
 PathProposal::parseEndpointInfile(
 								  string& filename
 								 )
@@ -142,7 +142,7 @@ PathProposal::parseEndpointInfile(
 	}
 }
 
-vector<Taxon*> 
+vector<Taxon*>
 PathProposal::parseFastaFile(
 							 string& fasta_data
 							)
@@ -188,7 +188,7 @@ void Taxon::Taxon_Dump()
 	cerr << "+++++++++++++++++++++++++++++++" << endl;
 }
 
-void 
+void
 PathProposal::Evolve(
 					 TTree *tree,
 					 list<eventTrack*> *events
@@ -216,14 +216,14 @@ PathProposal::Evolve(
 	/// the sequence will simply be copied.
 	//////////
 	tree->sample_root_sequence();
-	
+
 	cerr << "********************************************************************************" << endl;
 	cerr << "Evolving sequence: " << endl;
 	cerr << tree->root->printSequence() << " to " << endl;
 	cerr << tree->root->branch1->printSequence() << " and" << endl;
 	cerr << tree->root->branch2->printSequence() << endl;
 	cerr << "********************************************************************************" << endl;
-	
+
 	cerr << "Point-> PathProposal::Evolve(tree, *events) Entering EvolveToEndPoint." << endl;
 	//////////
 	/// Evolve both branches.
@@ -231,13 +231,13 @@ PathProposal::Evolve(
 	this->EvolveToEndPoint(tree, tree->root, tree->root->branch1, events);
 	this->EvolveToEndPoint(tree, tree->root, tree->root->branch2, events);
 
-	for (vector<Taxon*>::iterator it = taxa.begin(); it != taxa.end(); ++it) 
+	for (vector<Taxon*>::iterator it = taxa.begin(); it != taxa.end(); ++it)
 		delete (*it);
 
 	cerr << "EVENTS:" << eventNo << endl;	//XOUT
 }
 
-void 
+void
 PathProposal::EvolveToEndPoint(
 							   TTree *tree,
 							   TNode *anc,
@@ -269,7 +269,7 @@ PathProposal::EvolveToEndPoint(
 	des->updateSequence(work);
 
 	cerr << "Point-> PathProposal::EvolveToEndPoint(....) Recursing EvolveToEndPoint()" << endl;
-    if (des->tipNo==-1) { 
+    if (des->tipNo==-1) {
 	    EvolveToEndPoint(tree, des, des->branch1, events);
 	   	EvolveToEndPoint(tree, des, des->branch2, events);
     }
@@ -281,7 +281,7 @@ PathProposal::EvolveToEndPoint(
 	delete work;
 }
 
-void 
+void
 PathProposal::EvolveIndependentStep(
 						 			TTree *tree,
 						 			TNode *i_z,
@@ -305,13 +305,13 @@ PathProposal::EvolveIndependentStep(
 	i_z->calculateForwardRateAwayFromSequence__order3Markov(tree, 0);
 
 	// Independent. Rate away from sequence is based on forward rates, and there are no EPC rates.
-	begin_event = branch_terminal_event(k_0->mytipNo, BRANCH_BEGIN, k_0->DistanceFromRoot, k_0->bipartition, t_0, T); 
+	begin_event = branch_terminal_event(k_0->mytipNo, BRANCH_BEGIN, k_0->DistanceFromRoot, k_0->bipartition, t_0, T);
 	begin_event->assign_Q(i_z, i_z->seq_evo.at(0), SUBSTITUTION, 1);
 	begin_event->Q.idot_k__T__ = 0;
 	(*events).push_back(begin_event);
 
 	//////////
-	// Indel routine	
+	// Indel routine
 	//  * Should codonRates affect the probability of an indel occurring?
 	//////////
 	cerr << i_z->printBipartition() << "(0)  lambda_T(epc) SEQUENCE: " << i_z->evolvingSequence->returnRij() << endl; //XOUT
@@ -328,7 +328,7 @@ PathProposal::EvolveIndependentStep(
 	}	// NEXT SITE //
 
 	k_0->calculateForwardRateAwayFromSequence__order3Markov(tree, 0);
-	end_event = branch_terminal_event(k_0->mytipNo, BRANCH_END, k_0->DistanceFromRoot, k_0->bipartition, t_0, T); 
+	end_event = branch_terminal_event(k_0->mytipNo, BRANCH_END, k_0->DistanceFromRoot, k_0->bipartition, t_0, T);
 	end_event->assign_Q(i_z, i_z->seq_evo.at(0), SUBSTITUTION, 1);
 	(*events).push_back(end_event);
 
@@ -342,7 +342,7 @@ PathProposal::EvolveIndependentStep(
 	order_3_markov = true;
 }
 
-void 
+void
 PathProposal::evolve_independent_path(
 							  		  TTree *tree,
 							  		  TNode *i_z,
@@ -382,7 +382,7 @@ PathProposal::evolve_independent_path(
 		// If there is a difference between the start and end states, need to use special case to make sure
 		// there is a change
 		if (state_x0 != state_xT) {
-			// To determine the first change, we calculate the probability of a change occurring at time 
+			// To determine the first change, we calculate the probability of a change occurring at time
 			// t1, normalized by the probability of that a change will occur in time less than T:
 			// f(t1|t1<T) = \frac{Q_{X(0).}\exp{-Q_{X(0)t_1}} {1-\exp{-Q_{X(0).}T}}
 			lambda_T = i_z_site->forward_rate_away_from_site(i_z->branch);
@@ -451,7 +451,7 @@ PathProposal::evolve_independent_path(
 	//		cout << endl;		//XOUT
 
 			// isEndpoint = false, doesn't resample waiting time from exp for failed paths.
-			next_dt = select_next_dt(i_z, k_0, dt, lambda_T, T, &devnull, false); 	
+			next_dt = select_next_dt(i_z, k_0, dt, lambda_T, T, &devnull, false);
 			devnull++;
 		}
 		proposalNo++;
@@ -480,13 +480,13 @@ PathProposal::rasmus_select_next_dt(
 	// Simulation of the first substitution for the Nielsen method when A != E.
 	// t_1 = -\log(1-U(1-\exp{-q_AT})/q_A
 	// where q_A is the rate away from the ancestral state A, U~Uniform(0,1), and T is the branch length.
-	
+
 	next_dt = -log(1-rndu()*(1-exp(-lambda_T*T)))/lambda_T;
 
 	return next_dt;
 }
 
-void 
+void
 PathProposal::EvolveStep(
 						 TTree *tree,
 						 TNode *i_z,
@@ -514,7 +514,7 @@ PathProposal::EvolveStep(
 	//////////
 	/// Quick calculation of evolvingSequence->Qidot (forward rate away);
 	//////////
-	if (order_3_markov || Human_Data_simulation) 
+	if (order_3_markov || Human_Data_simulation)
 		i_z_rate_away = i_z->calculateForwardRateAwayFromSequence__order3Markov(tree, -1);
 	else i_z->evolvingSequence->Qidot = k_0->seq_evo.size();
 	num_diff = k_0->evolvingSequence->compare_sequence(i_z->evolvingSequence);
@@ -539,23 +539,23 @@ PathProposal::EvolveStep(
 	}
 
 	lambda_T = i_z->calculateEndpointRateAwayFromSequence(tree, k_0, T, t_0, -1);
-	begin_event = branch_terminal_event(k_0->mytipNo, BRANCH_BEGIN, k_0->DistanceFromRoot, k_0->bipartition, t_0, T); 
+	begin_event = branch_terminal_event(k_0->mytipNo, BRANCH_BEGIN, k_0->DistanceFromRoot, k_0->bipartition, t_0, T);
 	begin_event->assign_Q(i_z, i_z->seq_evo.at(0), SUBSTITUTION, num_diff);
 	begin_event->Q.idot_k__T__ = lambda_T;
 	(*events).push_back(begin_event);
 
 	//////////
-	// Indel routine	
+	// Indel routine
 	//  * Should codonRates affect the probability of an indel occurring?
 	//////////
 	//cout << lambda_T << endl << flush;	///TESTING_ONLY: FOR HEAT MAP.pl    isg-test-one
-	cerr << lambda_T << endl;	
+	cerr << lambda_T << endl;
 
 	/// TESTING ONLY: Proportion of rate away that is contained in differing positions.
 /*	double tot_iz = 0;
 	double same = 0;
 	double diff = 0;
-	vector<Site>::iterator jt = k_0->seq_evo.begin(); 
+	vector<Site>::iterator jt = k_0->seq_evo.begin();
 	for (vector<Site>::iterator it = i_z->seq_evo.begin(); it != i_z->seq_evo.end(); ++it, ++jt) {
 		tot_iz += (*it).site_rate_away.back();
 		if ( (*it).returnState() == (*jt).returnState() ) same += (*it).site_rate_away.back();
@@ -566,8 +566,8 @@ PathProposal::EvolveStep(
 
 	cerr << tot_iz << " s" << same << " d" << diff << endl;
 	exit(0);*/
-	
-	
+
+
 	cerr << i_z->printBipartition() << "(0)  lambda_T(epc): " << lambda_T << endl; //XOUT
 	//i_z->branch->rates->printCategories();
 	next_dt = select_next_dt(i_z, k_0, t_0, lambda_T, T, &num_diff, isEndpoint);
@@ -617,20 +617,20 @@ PathProposal::EvolveStep(
 			if (nij) {
 				i_z->branch->print_nij();
 				i_z->branch->print_nij(false);
-				
+
 				vector<double>::iterator pt = i_z->branch->rates->Pij.at(0).begin();
 				int i = 0;
 				cerr << endl << "Transition Probabilities (Jukes Cantor).";
 				for (; pt != i_z->branch->rates->Pij.at(0).end(); ++pt, ++i) {
 					if (i % numStates == 0) cerr << endl;
-					cerr << (*pt) << " ";	
+					cerr << (*pt) << " ";
 				}
 
 			}
 			eventNo++;
 		}
 
-		//JC_Rij 
+		//JC_Rij
 		//= Ns * (0.75 * ((1-exp(-(T-dt))) / (1+3*exp(-(T-dt)))) )
 		//+ Nd * (0.25 * ( (exp(-(T-dt)) + 3.0) / (1-exp(-(T-dt))) ) );
 
@@ -650,17 +650,17 @@ PathProposal::EvolveStep(
 
 	num_diff = k_0->evolvingSequence->compare_sequence(i_z->evolvingSequence);
 	if (num_diff > 0) {	cerr << "num_diff = " << num_diff << endl; exit(0); }
-	
-	end_event = branch_terminal_event(k_0->mytipNo, BRANCH_END, k_0->DistanceFromRoot, k_0->bipartition, t_0, T); 
+
+	end_event = branch_terminal_event(k_0->mytipNo, BRANCH_END, k_0->DistanceFromRoot, k_0->bipartition, t_0, T);
 	end_event->assign_Q(i_z, i_z->seq_evo.at(0), SUBSTITUTION, num_diff);
 	(*events).push_back(end_event);
 }
 
-double 
+double
 PathProposal::select_next_dt(
 							 TNode *i_z,
 							 TNode *k_0,
-							 double current_dt, 
+							 double current_dt,
 							 double lambda_T,
 							 double T,
 							 int *num_diff,
@@ -679,7 +679,7 @@ PathProposal::select_next_dt(
 			cerr << *num_diff << "  ";
 			cerr << "Ooops... still " << *num_diff << " change(s) to do: " << current_dt << " " << next_dt << "->";
 			do {
-				next_dt = current_dt + rand_exp(exp_mean); 
+				next_dt = current_dt + rand_exp(exp_mean);
 				if (num_trials++ > 1000) {
 					cerr << "Proposed parameters for end-point conditioning may be unsuitable."
 						 << endl;
@@ -690,14 +690,14 @@ PathProposal::select_next_dt(
 			cerr << next_dt << " " << T << endl;
 		}
 	}
-	
+
 	return next_dt;
 }
 
-void 
+void
 PathProposal::emulateForwardSimulation (
 						  				TTree *tree,
-										list<eventTrack*> *events 
+										list<eventTrack*> *events
 									   )
 {
 	tree->setStateLikelihoods(1);
@@ -709,10 +709,10 @@ PathProposal::emulateForwardSimulation (
 	this->emulateToEndPoint(tree, tree->root, tree->root->branch1, events);
 //	this->emulateToEndPoint(tree, tree->root, tree->root->branch2, events);
 
-	
+
 }
 
-list<eventTrack*>::iterator 
+list<eventTrack*>::iterator
 PathProposal::setSequenceAtTimePoint(
 									 TTree *tree,
 									 TNode *node,
@@ -723,7 +723,7 @@ PathProposal::setSequenceAtTimePoint(
 {
 	while ( (*et)->ID == -1 ) ++et;
 	while ( et != (*events).end() && ((*et)->eventTime < to_time)) {	// Check if et is at end, short-circuit and avoid seg fault.
-		if ( (*et)->ID == -1 ) { 
+		if ( (*et)->ID == -1 ) {
 			et = (*events).end(); 	// Sets et 1 event past the last event.
 			et--; 					// Set to last event.
 			break;
@@ -739,7 +739,7 @@ PathProposal::setSequenceAtTimePoint(
 	return et;
 }
 
-void 
+void
 PathProposal::emulateToEndPoint(
 								TTree *tree,
 								TNode *anc,
@@ -758,16 +758,16 @@ PathProposal::emulateToEndPoint(
 	work->branch->rates->Qij = anc->branch->rates->Qij;
 
 	EmulateStep(tree, work, des, 0, des->branch->length0, events);
-//  For now, I am happy simple emulating a single branch as testcase. 
+//  For now, I am happy simple emulating a single branch as testcase.
 //	des->updateSequence(work);
-//    if (des->tipNo==-1) { 
+//    if (des->tipNo==-1) {
 //	    emulateToEndPoint(tree, des, des->branch1, events);
 //	   	emulateToEndPoint(tree, des, des->branch2, events);
 //	  }
 
 }
 
-void 
+void
 PathProposal::EmulateStep(
 						  TTree *tree,
 						  TNode *i_z,
@@ -781,7 +781,7 @@ PathProposal::EmulateStep(
 	eventTrack *begin_event, *end_event;
 	int num_diff = 0;
 	double i_z_rate_away;
-	
+
 	assert(T-t_0>0);
 	if (!(*events).empty())
 	assert((*events).front()->ID != -1);
@@ -821,7 +821,7 @@ PathProposal::EmulateStep(
 
 	// BRANCH BEGIN:
 	lambda_T = i_z->calculateEndpointRateAwayFromSequence(tree, k_0, T, t_0, -1);
-	begin_event = branch_terminal_event(k_0->mytipNo, BRANCH_BEGIN, k_0->DistanceFromRoot, k_0->bipartition, t_0, T); 
+	begin_event = branch_terminal_event(k_0->mytipNo, BRANCH_BEGIN, k_0->DistanceFromRoot, k_0->bipartition, t_0, T);
 	begin_event->assign_Q(i_z, i_z->seq_evo.at(0), SUBSTITUTION, num_diff);
 
 //	cerr << "Pre-looping thru events:" << endl;
@@ -834,7 +834,7 @@ PathProposal::EmulateStep(
 	//////////
 	string event = "XX";
 	for (list<eventTrack*>::iterator et = (*events).begin(); et != (*events).end(); ++et) {
-		// Emulate substitution: 
+		// Emulate substitution:
 		// * MSA_position where this substitution occurred w.r.t. MSA.
 		// * size.at(1), for a substitution, is the nature of the change, where 0th position is old state, first is new state.
 		event.at(0) = stateCharacters.at(i_z->seq_evo.at( (*et)->MSA_positions.at(0)).returnState());
@@ -860,10 +860,10 @@ PathProposal::EmulateStep(
 //		cout << endl;		//XOUT
 
 		eventNo++;
-	}	
+	}
 
 	// BRANCH END
-	end_event = branch_terminal_event(k_0->mytipNo, BRANCH_END, k_0->DistanceFromRoot, k_0->bipartition, t_0, T); 
+	end_event = branch_terminal_event(k_0->mytipNo, BRANCH_END, k_0->DistanceFromRoot, k_0->bipartition, t_0, T);
 	end_event->assign_Q(i_z, i_z->seq_evo.at(0), SUBSTITUTION, num_diff);
 	(*events).push_front(begin_event);
 	(*events).push_back(end_event);
@@ -917,19 +917,19 @@ void PathProposal::setEventHistory (
 	} else {
 		cerr << "Unable to open file \"" << event_history_file << "\"." << endl;
 		exit(EXIT_FAILURE);
-	}	
+	}
 
 	cerr << "Number of events: " << (*events).size() << endl;
 //	for (list<eventTrack*>::iterator it = (*events).begin(); it != (*events).end(); ++it)
 //		cerr << (*it)->Print_Event();
 }
 
-vector<bool> 
+vector<bool>
 make_vector_bool (string str)
 {
 	string::iterator it;
 	vector<bool> bool_vector;
-	
+
 	for (it = str.begin(); it != str.end(); ++it)
 		if ((*it) == '1')
 			bool_vector.push_back(true);
@@ -943,7 +943,7 @@ make_vector_bool (string str)
 	return bool_vector;
 }
 
-double 
+double
 PathProbability::EPCProbability (
 						     	 list<eventTrack*> events,
 						     	 bool do_last_event
@@ -957,7 +957,7 @@ PathProbability::EPCProbability (
 	list<eventTrack*> branch_events;
 
 	double T, t_z, i_z_Qidot_k__T__;
-	
+
 	// Get single branch events, for now. NEED TO DO FOR ALL BRANCHES EVENTUALLY.
 	it = events.begin();
 	while (it != events.end() && (*it)->eventType != BRANCH_END) {
@@ -994,7 +994,7 @@ PathProbability::EPCProbability (
 	}
 
 	// it and prev2it are exactly where we want them to be for this calculation.
-	if (do_last_event) { 
+	if (do_last_event) {
 		dt = T - t_z;
 		log_sum_epc += EPC_NoEvent(i_z_Qidot_k__T__, dt);
 	}
@@ -1003,7 +1003,7 @@ PathProbability::EPCProbability (
 	return log_sum_epc;
 }
 
-double 
+double
 PathProbability::EPC_NoEvent(
 									double Qidot_k__T__,
 									double dt
@@ -1014,7 +1014,7 @@ PathProbability::EPC_NoEvent(
 	return -Qidot_k__T__ * dt;
 }
 
-double 
+double
 PathProbability::EPC_Step(
 								double Qij_k__T__,
 								double Qidot_k__T__,
@@ -1025,7 +1025,7 @@ PathProbability::EPC_Step(
 							   )
 {
 	// Calculation of the overstep penalty (t_z+dt > T) when i!=k,
-	// i.e., log( 1 - ( ((*it)->Q.i2k != 0) ? exp_value_dt : 0 )) 
+	// i.e., log( 1 - ( ((*it)->Q.i2k != 0) ? exp_value_dt : 0 ))
 	// NOTE: if exp_value_dt is effectively 0, then this function is log(1) = 0, thus overstep_penalty
 	// is originally set to 0. However, when exp_value is significant enough to care about calculating it,
 	// (to XX decimal places of accuracy), then we need to calculate both the log and the exp. Otherwise,
@@ -1034,13 +1034,13 @@ PathProbability::EPC_Step(
 	double exp_value = -Qidot_k__T__ * (T-t_z);
 	double overstep_penalty = 0;
 	if (exp_value > -115) // -115: 50 decimal places of accuracy; -230: 100 decimal places.
-		if (Qi2k != 0) 
+		if (Qi2k != 0)
 			overstep_penalty = log( 1 - exp( exp_value ) );
 	//cerr <<	"log(" << Qij_k__T__  << ") - (" << Qidot_k__T__ << " * " << dt << ") - " << overstep_penalty;
 	return 	log( Qij_k__T__ ) - (Qidot_k__T__ * dt) - overstep_penalty;
 }
 
-double 
+double
 PathProbability::Forward_NoEvent(
 								 double Qidot,
 								 double dt
@@ -1050,7 +1050,7 @@ PathProbability::Forward_NoEvent(
 	return -Qidot * dt;
 }
 
-double 
+double
 PathProbability::Forward_Step(
 							  double Qij,
 							  double Qidot,
@@ -1058,12 +1058,12 @@ PathProbability::Forward_Step(
 							 )
 {
 	assert(Qij != 0);
-	
+
 	//cerr << log(Qij) << " + ";
 	return log(Qij) + Forward_NoEvent(Qidot, dt);
 }
 
-double 
+double
 PathProbability::ForwardProbability (
 						   	   	 	 list<eventTrack*> events,
 						   	   	 	 bool do_last_event
@@ -1075,7 +1075,7 @@ PathProbability::ForwardProbability (
 	list<eventTrack*>::iterator prev2it, end_event, it;
 	double T, t_z;
 	double i_z_Qidot;
-	
+
 
 	// Get single branch events, for now. NEED TO DO FOR ALL BRANCHES EVENTUALLY.
 	branch_events = getBranchEvents(events.begin(), events.end()/*?*/);
@@ -1097,7 +1097,7 @@ PathProbability::ForwardProbability (
 		// last event occurrence (end of the branch). Will need to test for -1 as the event ID eventually.
 		//
 		// it: holds the Qij of the current change, time of current change, rate away of sequence AFTER change
-		// prev2it: holds the time of previous change, rate away of sequence BEFORE change -> Qi. for calculating current probability 
+		// prev2it: holds the time of previous change, rate away of sequence BEFORE change -> Qi. for calculating current probability
 		//it = branch_events.begin();
 		//prev2it = branch_events.begin();
 		end_event = branch_events.end(); end_event--;
@@ -1134,9 +1134,9 @@ PathProbability::ForwardProbability (
 		dt = T - t_z;		// For full path, T. For subpath, next event (possibly T).
 		log_sum_forward += Forward_NoEvent(i_z_Qidot, dt);
 	}
-	
+
 	// assert(log_sum_forward < 0);	// For high dependency models, this may not be true, e.g., BL=1, depsup=2.
-	cerr << "LOG_SUM_FORWARD:  " << log_sum_forward << endl;	
+	cerr << "LOG_SUM_FORWARD:  " << log_sum_forward << endl;
 	return log_sum_forward;
 }
 
@@ -1163,7 +1163,7 @@ PathProbability::IndependentForwardProbability (
 	t_0 = events.front()->eventTime;
 	T = events.back()->eventTime;
 	subpath_length = T - t_0;
-	
+
 	if (events.size() > 2) {
 		it = events.begin();
 		end_event = events.end(); end_event--;
@@ -1174,7 +1174,7 @@ PathProbability::IndependentForwardProbability (
 		bool first_event_processed = false;
 		for (; it != end_event; ++it, ++prev2it) {
 			from = stateCharacters.find_first_of((*it)->size.at(0));	// NOTE: size, for a substitution, is the nature of the event.
-			to = stateCharacters.find_first_of((*it)->size.at(1));	
+			to = stateCharacters.find_first_of((*it)->size.at(1));
 			Qij = rates->Qij.at(from*numStates + to);
 			Qidot = -rates->Qij.at(from*numStates + from);	// -Qii
 			dt = (*it)->eventTime - (*prev2it)->eventTime;
@@ -1195,7 +1195,7 @@ PathProbability::IndependentForwardProbability (
 		t_z = 0;
 		i_z_Qidot = -rates->Qij.at(start_state*numStates+start_state);
 	}
-	
+
 	//////////
 	/// Finally, the probability of no events happening from the last event to the end of the
 	/// branch.
@@ -1220,7 +1220,7 @@ PathProposal::remove_site_events(
 	}
 }
 
-list<eventTrack*> 
+list<eventTrack*>
 PathProposal::extract_site_events (int site)
 {
 	list<eventTrack*> site_events;
@@ -1232,7 +1232,7 @@ PathProposal::extract_site_events (int site)
 	return site_events;
 }
 
-list<eventTrack*>  
+list<eventTrack*>
 getBranchEvents(
 				list<eventTrack*>::iterator begin,
 				list<eventTrack*>::iterator end
@@ -1250,7 +1250,7 @@ getBranchEvents(
 	return branch_events;
 }
 
-void 
+void
 PathProposal::write_path(ofstream& stream, int pathID)
 {
 	stream << "#" << pathID << endl;
@@ -1260,7 +1260,7 @@ PathProposal::write_path(ofstream& stream, int pathID)
 	}
 }
 
-void 
+void
 PathProposal::Print_Path_Events()
 {
 	for (list<eventTrack*>::iterator it = epc_events.begin(); it != epc_events.end(); ++it) {

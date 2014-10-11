@@ -48,7 +48,7 @@ int TauIJ2_calls = 0;
 
 TNode::TNode(
 			 TTree *tree
-			) 
+			)
 	  : evolvingSequence(NULL),
 	    branch0(NULL),
 	    branch1(NULL),
@@ -68,9 +68,9 @@ TNode::TNode(
 	tree->numNodes++;
 	bipartition.clear();
 	addGeneral_varSites();
-} 
+}
 
-TNode::TNode() 
+TNode::TNode()
 	  : evolvingSequence(NULL),
 	    branch0(NULL),
 	    branch1(NULL),
@@ -89,7 +89,7 @@ TNode::TNode()
 	clade_label.clear();
 	bipartition.clear();
 	addGeneral_varSites();
-} 
+}
 
 void TTree::setTransitionProbabilities()
 {
@@ -99,8 +99,8 @@ void TTree::setTransitionProbabilities()
 //	cerr << "At root: BLs: " << root->branch->length1 << " " << root->branch->length2 << endl;
 
 	root->branch1->branch->rates->setPij(
-	 							root->seq_evo.at(position), 
-								root->branch->length1 * branch_length_scalar, 
+	 							root->seq_evo.at(position),
+								root->branch->length1 * branch_length_scalar,
 								root->nodeEnv->rateHetero
 						 	   );
 
@@ -108,8 +108,8 @@ void TTree::setTransitionProbabilities()
 
 	root->branch1->setBranchTransitionProbabilities();
 	root->branch2->branch->rates->setPij(
-	 							root->seq_evo.at(position), 
-								root->branch->length2 * branch_length_scalar, 
+	 							root->seq_evo.at(position),
+								root->branch->length2 * branch_length_scalar,
 								root->nodeEnv->rateHetero
 						 	   );
 	root->branch2->setBranchTransitionProbabilities();
@@ -122,21 +122,21 @@ void TNode::setBranchTransitionProbabilities()
 
 	if (tipNo == -1) {
 		branch1->branch->rates->setPij(
-		 					  seq_evo.at(position), 
-							  branch->length1 * branch_length_scalar, 
+		 					  seq_evo.at(position),
+							  branch->length1 * branch_length_scalar,
 							  nodeEnv->rateHetero
 							 );
 		branch1->setBranchTransitionProbabilities();
 		branch2->branch->rates->setPij(
-		 					  seq_evo.at(position), 
-							  branch->length2 * branch_length_scalar, 
+		 					  seq_evo.at(position),
+							  branch->length2 * branch_length_scalar,
 							  nodeEnv->rateHetero
 							 );
 		branch2->setBranchTransitionProbabilities();
 	}
 }
 
-void TTree::setStateLikelihoods( 
+void TTree::setStateLikelihoods(
 								double branch_length_scalar
 							   )
 {
@@ -151,7 +151,7 @@ void TTree::setStateLikelihoods(
 		root->branch2->setStateLikelihood(position, cat, branch_length_scalar);
 
 		root->seq_evo.at(position).L_i.calculateStateLikelihood(
-																root, 
+																root,
 																cat,
 																position,
 																branch_length_scalar
@@ -160,13 +160,13 @@ void TTree::setStateLikelihoods(
 		size_t pi_position = 0;
 		for (vector<double>::iterator it = root->seq_evo.at(position).L_i.Li_xi_.begin(); it != root->seq_evo.at(position).L_i.Li_xi_.end(); ++it, pi_position++) {
 			(*it) *= root->branch->rates->pi.at(pi_position);
-		//	cerr << (*it) << " "; 
+		//	cerr << (*it) << " ";
 		}
 		//cerr << endl;
 	}
 }
 
-void TNode::setStateLikelihood( 
+void TNode::setStateLikelihood(
 						       size_t position,
 						       int category,
 						       double branch_length_scalar
@@ -181,9 +181,9 @@ void TNode::setStateLikelihood(
 	if ( seq_evo.at(position).isSet() == true ) {
 		bool a_one_set = false;
 		for (int i = 0; i < numStates; i++)
-			if (i == seq_evo.at(position).returnState()) 
+			if (i == seq_evo.at(position).returnState())
 				seq_evo.at(position).L_i.Li_xi_.at(i) = 1;
-			else 
+			else
 				seq_evo.at(position).L_i.Li_xi_.at(i) = 0;
 	}
 	//
@@ -191,7 +191,7 @@ void TNode::setStateLikelihood(
 
 	//cerr << "Node: " << mytipNo << endl;
 	//for (vector<double>::iterator it = seq_evo.at(position).L_i.Li_xi_.begin(); it != seq_evo.at(position).L_i.Li_xi_.end(); ++it) {
-	//	cerr << (*it) << " "; 
+	//	cerr << (*it) << " ";
 	//}
 	//cerr << endl;
 
@@ -206,12 +206,12 @@ void TNode::setStateLikelihood(
 
 		if ( !seq_evo.at(position).isSet() )
 			seq_evo.at(position).L_i.calculateStateLikelihood(
-															  this, 
-															  category, 
-															  position, 
+															  this,
+															  category,
+															  position,
 															  branch_length_scalar
 															 );
-	} 
+	}
 }
 
 //////////
@@ -276,8 +276,8 @@ void TTree::setCatLikelihoods(
 			// and utilize these to calculate the likelihoods at the current node.
 			// ** P( X_1,X_2,X_3 | C=j,\theta ) in the numerator.
 		    my_Li =(*it).L_i.calculateCatLikelihood(
-											 		root, 
-													cat, 
+											 		root,
+													cat,
 													position,
 													b1_Li,
 													b2_Li
@@ -287,10 +287,10 @@ void TTree::setCatLikelihoods(
 			/// Test code to calculate the proper likelihoods.
 			//////////
 			//cerr << "b1_node_likelihood, cat " << cat
-			//	 << "  A: " << my_Li.at(0) 
-			//	 << "  C: " << my_Li.at(1) 
-			//	 << "  G: " << my_Li.at(2) 
-			//	 << "  T: " << my_Li.at(3) 
+			//	 << "  A: " << my_Li.at(0)
+			//	 << "  C: " << my_Li.at(1)
+			//	 << "  G: " << my_Li.at(2)
+			//	 << "  T: " << my_Li.at(3)
 			//	 << endl;
 
 			//////////
@@ -332,19 +332,19 @@ void TTree::setCatLikelihoods(
 		}
 
 //		cerr << sitePattern(position) << ":   "
-//			 << ((category == 0) ? "*" : "") << cat_likelihood.at(0) << " " 
-//			 << ((category == 1) ? "*" : "") << cat_likelihood.at(1) << " " 
-//			 << ((category == 2) ? "*" : "") << cat_likelihood.at(2) << " " 
-//			 << ((category == 3) ? "*" : "") << cat_likelihood.at(3) 
+//			 << ((category == 0) ? "*" : "") << cat_likelihood.at(0) << " "
+//			 << ((category == 1) ? "*" : "") << cat_likelihood.at(1) << " "
+//			 << ((category == 2) ? "*" : "") << cat_likelihood.at(2) << " "
+//			 << ((category == 3) ? "*" : "") << cat_likelihood.at(3)
 //			 << endl;
 
 		(*it).setCategory(category);
 	}
-	
+
 	cerr << "Path Category breakdown: " << endl;
 	vector<short> cats (4,0);
 	vector<Site>::iterator anc_it;
-	for (anc_it = root->seq_evo.begin(); anc_it != root->seq_evo.end(); ++anc_it) 
+	for (anc_it = root->seq_evo.begin(); anc_it != root->seq_evo.end(); ++anc_it)
 		cats.at((*anc_it).returnCategory())++;
 
 	double overall_rate_multiplier = 0;
@@ -372,7 +372,7 @@ vector<double> TNode::setCatLikelihood(
 	//////////
 	/// If this site is set, the likelihood of the state at the site is set to 1, other states = 0.
 	//////////
-	if (seq_evo.at(position).isSet() == true) 
+	if (seq_evo.at(position).isSet() == true)
 		my_Li.at(seq_evo.at(position).returnState()) = 1;
 	if (tipNo == -1) {
 		//////////
@@ -383,10 +383,10 @@ vector<double> TNode::setCatLikelihood(
 		//
 		// If this site is unset previously, then set the conditional likelihoods.
 		if ( !seq_evo.at(position).isSet() ) {
-			my_Li 
+			my_Li
 			= seq_evo.at(position).L_i.calculateCatLikelihood(
-														      this, 
-														      category, 
+														      this,
+														      category,
 														      position,
 														      b1_Li,
 														      b2_Li
@@ -395,22 +395,22 @@ vector<double> TNode::setCatLikelihood(
 	}
 
 	//cerr << "b1_node_likelihood, cat " << category
-	//	 << "  A: " << my_Li.at(0) 
-	//	 << "  C: " << my_Li.at(1) 
-	//	 << "  G: " << my_Li.at(2) 
-	//	 << "  T: " << my_Li.at(3) 
+	//	 << "  A: " << my_Li.at(0)
+	//	 << "  C: " << my_Li.at(1)
+	//	 << "  G: " << my_Li.at(2)
+	//	 << "  T: " << my_Li.at(3)
 	//	 << endl;
 
 	//cerr << "Node: " << mytipNo << endl;
 	//for (vector<double>::iterator it = my_Li.begin(); it != my_Li.end(); ++it) {
-	//	cerr << (*it) << " "; 
+	//	cerr << (*it) << " ";
 	//}
 	//cerr << endl;
 
 	return my_Li;
 }
 
-string 
+string
 TTree::sitePattern(
 				   int position
 				  )
@@ -423,22 +423,22 @@ TTree::sitePattern(
 	return pattern;
 }
 
-string 
+string
 TNode::subtreePattern(
 					   		 int position
-					  		) 
+					  		)
 {
 	string pattern = "";
-	
+
 	if (tipNo == -1) {
 		pattern += branch1->subtreePattern(position);
 		pattern += branch2->subtreePattern(position);
 	} else pattern = stateCharacters.at(seq_evo.at(position).returnState());
 
 	return pattern;
-}					  
+}
 
-void 
+void
 TTree::calculateJCLikelihoods()
 {
 	double X, Y;
@@ -455,7 +455,7 @@ TTree::calculateJCLikelihoods()
 		squared[i] = i * numStates_squared;
 		power_1[i] = i * numStates;
 	}
-	//root->branch->rates->setPij(root->seq_evo.front(), branch_length, DiscreteGammaRates);	
+	//root->branch->rates->setPij(root->seq_evo.front(), branch_length, DiscreteGammaRates);
 	for (int x = 0; x < TTree::root->TNode::branch->Branch::rates->RateMatrix::num_categories; x++) {
 		gamma_rate = root->branch->rates->catRate.at(x);
 		//cerr << "Category " << x << " rate: " << gamma_rate << endl;
@@ -496,10 +496,10 @@ TTree::calculateJCLikelihoods()
 					}
 
 
-					cerr << "cat(" << x << ") " 
-						 << stateCharacters.at(i) 
-						 << stateCharacters.at(j) 
-						 << stateCharacters.at(k) 
+					cerr << "cat(" << x << ") "
+						 << stateCharacters.at(i)
+						 << stateCharacters.at(j)
+						 << stateCharacters.at(k)
 						 << "  num_same: " << num_same
 						 << "  Li: " << Pr.at(ptr)
 					;
@@ -528,15 +528,15 @@ TTree::calculateJCLikelihoods()
 		j = sites / 4;
 		sites -= j*4;
 		k = sites;
-		
+
 		(*st) /= 4.0;
 
-		cerr << stateCharacters.at(i) 
-			 << stateCharacters.at(j) 
-			 << stateCharacters.at(k) 
+		cerr << stateCharacters.at(i)
+			 << stateCharacters.at(j)
+			 << stateCharacters.at(k)
 			 << " " << (*st) << endl;
 	}
-	
+
 
 	cerr << "Sanity checks: " << endl;
 	for (int x = 0; x < TTree::root->TNode::branch->Branch::rates->RateMatrix::num_categories; x++) {
@@ -547,13 +547,13 @@ TTree::calculateJCLikelihoods()
 	cerr << "  total Likelihood = " << total_Pr << endl;
 }
 
-void 
+void
 TTree::sample_root_sequence()
 {
 	double sum;
 	double RND;
 	vector<double>::iterator jt;
-	
+
 	for (vector<Site>::iterator it = root->seq_evo.begin(); it != root->seq_evo.end(); ++it) {
 		sum = 0;
 		for (jt = (*it).L_i.Li_xi_.begin(); jt != (*it).L_i.Li_xi_.end(); ++jt)
@@ -580,11 +580,11 @@ TTree::sample_root_sequence()
 		//	if (sum == state) cerr << "*";
 		//	cerr << (*jt) << "  ";
 		//} cerr << endl;
-		
+
 	}
 }
 
-void 
+void
 TNode::setRateAway(
 				   int step_type
 				  )
@@ -594,15 +594,15 @@ TNode::setRateAway(
 	/// First discover the maximum values of Qii and gamma.
 	//////////
 	if (step_type == UNIFORMIZATION) {
-		for (int i = 0; i < numStates; i++) 
-			if (-branch->rates->Qij[i*numStates+i] > max_Qii) 
+		for (int i = 0; i < numStates; i++)
+			if (-branch->rates->Qij[i*numStates+i] > max_Qii)
 				max_Qii = -branch->rates->Qij[i*numStates+i];
 		for (vector<Site>::iterator it = seq_evo.begin(); it != seq_evo.end(); ++it) {
 			if ( (*it).returnGamma() == 0 ) {
 				max_gamma = nodeEnv->catRate[nodeEnv->numCats-1];
 				it = seq_evo.end()-1;
 			} else {
-				if ( (*it).returnGamma() > max_gamma ) 
+				if ( (*it).returnGamma() > max_gamma )
 					max_gamma = (*it).returnGamma();
 			}
 		}
@@ -611,7 +611,7 @@ TNode::setRateAway(
 		for (vector<Site>::iterator it = seq_evo.begin(); it != seq_evo.end(); ++it)
 			(*it).setSiteRateAway
 				(
-				 rate_away_site_width, 
+				 rate_away_site_width,
 				 (
 				   (nodeEnv->rateHetero == DiscreteGammaRates)
 				   ? nodeEnv->catRate[(*it).returnCategory()]
@@ -631,7 +631,7 @@ TNode::setRateAway(
 	}
 }
 
-double 
+double
 TNode::calculateForwardRateAwayFromSequence( void )
 {
 	double R_D = 0;
@@ -639,7 +639,7 @@ TNode::calculateForwardRateAwayFromSequence( void )
 	bool is_dependent;
 	int times_thru_D = 0;
 	double forward_sum_away = 0;
-	
+
 	for (vector<Site>::iterator it = seq_evo.begin(); it != seq_evo.end(); ++it) {
 		is_dependent = false;
 		(*it).forward_rate_away.assign(numStates, 0);
@@ -655,7 +655,7 @@ TNode::calculateForwardRateAwayFromSequence( void )
 		}
 		for (list<siteDependencies*>::iterator jt = (*it).interactions.begin(); jt != (*it).interactions.end(); ++jt) {
 			if ((*jt)->isDependentInteraction()) {
-				rate_away = (*it).setSiteRateAway(branch->rates->Qij, branch->rates);	
+				rate_away = (*it).setSiteRateAway(branch->rates->Qij, branch->rates);
 				is_dependent = true;
 				times_thru_D++;
 			}
@@ -671,17 +671,17 @@ TNode::calculateForwardRateAwayFromSequence( void )
 	return R_D;
 }
 
-void 
+void
 TNode::set_site_window(
-					   int order, 
-					   int *start_site, 
+					   int order,
+					   int *start_site,
 					   unsigned int *end_site
 					  )
 {
 	if (order_3_markov) {
-		if (*start_site == -1) { 
-			*start_site = 0; 
-			*end_site = seq_evo.size(); 
+		if (*start_site == -1) {
+			*start_site = 0;
+			*end_site = seq_evo.size();
 		} else if ( *start_site > seq_evo.size() - (order+1) ) {
 			*end_site = seq_evo.size();
 			*start_site -= order;
@@ -692,12 +692,12 @@ TNode::set_site_window(
 		}
 	} else {
 		int event_site = *start_site, last_site = *end_site;
-		if (*start_site == -1) { 
+		if (*start_site == -1) {
 			*start_site = 0;
 			*end_site = seq_evo.size();
 
-			event_site = 0; 
-			last_site = seq_evo.size(); 
+			event_site = 0;
+			last_site = seq_evo.size();
 
 		} else {
 
@@ -729,10 +729,10 @@ TNode::set_site_window(
 	//cerr << "Point-> TNode::set_site_window(order, *start, *end) EXIT" << endl;
 }
 
-double 
-TNode::calculateForwardRateAwayFromSequence__order3Markov( 
-														  TTree *tree, 
-														  int event_site 
+double
+TNode::calculateForwardRateAwayFromSequence__order3Markov(
+														  TTree *tree,
+														  int event_site
 														 )
 {
 	double R_D = 0;
@@ -745,9 +745,9 @@ TNode::calculateForwardRateAwayFromSequence__order3Markov(
 	} else end_site = event_site+1;
 
 	//////////
-	/// Calculating the rates away from sequence i per 
-	/// S.-C. Choi, B.D. Redelings, and J.L. Thorne. 2008. "Basing population genetic inferences 
-	/// 	and models of molecular evolution upoon desired stationary distributions of DNA or 
+	/// Calculating the rates away from sequence i per
+	/// S.-C. Choi, B.D. Redelings, and J.L. Thorne. 2008. "Basing population genetic inferences
+	/// 	and models of molecular evolution upoon desired stationary distributions of DNA or
 	/// 	protein sequences". Phil. Trans. R. Soc. B 363:3931-3939. doi:10.1098/rstb.2008.0167.
 	///
 	///	This representation is different since we are (currently) not calculating the VLMM on
@@ -778,10 +778,10 @@ TNode::calculateForwardRateAwayFromSequence__order3Markov(
 	//if (Human_Data_simulation) {
 		//evolvingSequence->printSequenceRateAway();
 		//cerr << "Rate away from sequence: " << R_D << endl;
-		
+
 		//int i = 0;
 		//for (vector<Site>::iterator seqi = seq_evo.begin(); seqi != seq_evo.end(); ++seqi, i++) {
-		//	cerr << i << " " << stateCharacters.at((*seqi).returnState()) << " " 
+		//	cerr << i << " " << stateCharacters.at((*seqi).returnState()) << " "
 		//	<< (*seqi).return_lookup_table_environment_index() << " "
 		//	<< (*seqi).return_lookup_table_sequence_index() << endl;
 		//}
@@ -792,10 +792,10 @@ TNode::calculateForwardRateAwayFromSequence__order3Markov(
 	return R_D;
 }
 
-double 
+double
 TNode::Rij (
-			TTree *tree, 
-			unsigned int start_position, 
+			TTree *tree,
+			unsigned int start_position,
 			unsigned int end_position
 		   )
 {
@@ -820,7 +820,7 @@ TNode::Rij (
 	if (start == seq_evo.begin() && end == seq_evo.end()) {
 		initial_rates_calculation = true;
 		sum_rate_away = 0;
-	} else sum_rate_away = evolvingSequence->returnRij(); 
+	} else sum_rate_away = evolvingSequence->returnRij();
 
 	//cerr << "Point-> TNode::Rij() Begin rate away loop." << endl;
 	position = start_position;
@@ -831,17 +831,17 @@ TNode::Rij (
 			if (j != (*i).returnState()) {
 				if (Qd) {
 					//////////
-					/// Calculating the rates away from sequence i per 
-					/// S.-C. Choi, B.D. Redelings, and J.L. Thorne. 2008. "Basing population genetic inferences 
-					/// 	and models of molecular evolution upoon desired stationary distributions of DNA or 
+					/// Calculating the rates away from sequence i per
+					/// S.-C. Choi, B.D. Redelings, and J.L. Thorne. 2008. "Basing population genetic inferences
+					/// 	and models of molecular evolution upoon desired stationary distributions of DNA or
 					/// 	protein sequences". Phil. Trans. R. Soc. B 363:3931-3939. doi:10.1098/rstb.2008.0167.
 					//////////
 					tau_ij = TauIJ3(
-								    tree, 
+								    tree,
 								    position,
-								    (*i).return_lookup_table_environment_index(), 
-								    (*i).return_lookup_table_sequence_index(), 
-								    (*i).returnState(), 
+								    (*i).return_lookup_table_environment_index(),
+								    (*i).return_lookup_table_sequence_index(),
+								    (*i).returnState(),
 								    j
 								   );
 					//cerr << "Rij:: tau_ij value: " << tau_ij << endl << endl;
@@ -849,19 +849,19 @@ TNode::Rij (
 					/// Equation 1.9 from Choi et al, utilizing the equation from Yang & Nielsen:
 					/// 2N*Pr(Z_ij) ~ log(tau_ij)(1-1/tau_ij).
 					if (tau_ij != 1) {
-						rate_ij 
+						rate_ij
 						= branch->rates->pi.at(j)
 						  *
 						  ( log(tau_ij)/(1 - 1.0/tau_ij) );
 					} else if (order_3_markov || Human_Data_simulation) {
 						// If we are working with a non-standard model, then a value of tau_ij = 0 is the approporiate
 						// choice
-						rate_ij = numeric_limits<double>::min(); 
-					} else { 
+						rate_ij = numeric_limits<double>::min();
+					} else {
 						// Although the check has already been done (if Qd, above), we may still want to have this
 						// code here for times that a non- order3markov or human data set are used. In any case,
 						// this remnant will act as a reminder later...
-						tree->root->branch->rates->pi.at(j); 
+						tree->root->branch->rates->pi.at(j);
 					}
 				} else rate_ij = tree->root->branch->rates->pi.at(j);
 			//////////
@@ -880,7 +880,7 @@ TNode::Rij (
 	return sum_rate_away;
 }
 
-double 
+double
 TNode::TauIJ3 (
 			  TTree *tree,
 			  int sequence_position,
@@ -904,7 +904,7 @@ TNode::TauIJ3 (
 
 	//cerr << "  env: " << env_index << endl;
 	//cerr << "  j_seq_index = " << i_seq_index << " + ";
-	//cerr << tree->dep.front()->context.getOffset(env_index, sequence_position,  residue_i, residue_j) 
+	//cerr << tree->dep.front()->context.getOffset(env_index, sequence_position,  residue_i, residue_j)
 	//	 << endl;
 
 	//////////
@@ -929,12 +929,12 @@ TNode::TauIJ3 (
 	/// ------------------------------------
 	/// P(i_1,i_2,i_3)P(i_4|i_1,i_2,i_3)
 	///
-	/// Rest of sequences cancel out, since none depend on the i_1->j_1 change. Upon close 
+	/// Rest of sequences cancel out, since none depend on the i_1->j_1 change. Upon close
 	/// inspection, one can see that this formula is simply tau_{ij} from Choi et al., solved
 	/// for P(J). Thus, P(J) is P(I) times a ratio of P(J)'/P(I)', where the ' indicates the
 	/// probabilities changed by the i->j change.
 	//////////
-	diffPji 
+	diffPji
 	= tree->dep.front()->context.lt_markov_ratio(
 											     env_index,			// env.
 											     i_seq_index,		// i
@@ -952,7 +952,7 @@ TNode::TauIJ3 (
 														 i_seq_index,
 														 j_seq_index
 														);
-	
+
 	//////////
 	/// Equation 1.7 from Choi et al, tau_ij.
 	//////////
@@ -966,7 +966,7 @@ TNode::TauIJ3 (
 	return tau_ij;
 }
 
-void 
+void
 TNode::printForwardRateAway()
 {
 	double rate_away = 0;
@@ -975,7 +975,7 @@ TNode::printForwardRateAway()
 	}
 }
 
-void 
+void
 TNode::updateSequence(
 					  TNode *update_node
 					 )
@@ -987,7 +987,7 @@ TNode::updateSequence(
 	}
 }
 
-string 
+string
 TNode::printBipartition()
 {
 	string out = "";
@@ -1001,7 +1001,7 @@ TNode::printBipartition()
 ///  * Currently, only applicable for EPC runs,
 ///  * Function designed so that sequences can be guided to motifs more realistically in FWD sim.
 ////////////////////
-void 
+void
 TNode::calculateEndpointRateAwayFromSite(
 										 vector<Site>::iterator evolver_it,
 										 vector<Site>::iterator target_it,
@@ -1045,10 +1045,10 @@ TNode::calculateEndpointRateAwayFromSite(
 	//
 	// sum_away_j_ = Qij * Lk
 	//
-	// Where 
+	// Where
 	// (i) sum_away_j_ is the ?probability? that the next substitution step will occur on
 	// the current site TO the value of j under consideration. To get the true probability, this
-	// value is divided by the total sum away for the sequence, and 
+	// value is divided by the total sum away for the sequence, and
 	// (ii) Lk is the likelihoods of the target state k, calculated by pruning.
 	//////////
 	seq_away_it = (*evolver_it).site_rate_away.begin();
@@ -1071,15 +1071,15 @@ TNode::calculateEndpointRateAwayFromSite(
 				CHK_PJK = branch->rates->Pij.at((*evolver_it).returnCategory()).at(from(j)+to(k));
 				if (profile) {
 					cerr << "NIJ: ";
-					cerr << "state: " << stateCharacters.at((*evolver_it).returnState()) 
-						 << "->" << stateCharacters.at(j) << "|" << stateCharacters.at(k) 
-						 << "  s_a: " << sum_away << " += " 
-						 << Qij << " * " 
-						 << (*evolver_it).Pjk0.at(j) 
+					cerr << "state: " << stateCharacters.at((*evolver_it).returnState())
+						 << "->" << stateCharacters.at(j) << "|" << stateCharacters.at(k)
+						 << "  s_a: " << sum_away << " += "
+						 << Qij << " * "
+						 << (*evolver_it).Pjk0.at(j)
 						 << " * " << Pik_inverse << endl;	//XOUT
 
 					cerr << "PIJ: ";
-					cerr << Qij << " * " 
+					cerr << Qij << " * "
 						 << CHK_PJK<< " * " << CHK_PIK << endl;	//XOUT
 				}
 				sum_away += Qij * ( (*evolver_it).Pjk0.at(j) * Pik_inverse );
@@ -1121,8 +1121,8 @@ TNode::calculateEndpointRateAwayFromSite(
 				numerator = 0;
 				for (k = 0; k < numStates; k++) {
 					Lk  = (*target_it).L_i.Li_xi_.at(k);
-					//Pjk = branch->rates->Pij.at((*evolver_it).returnCategory()).at(from(j)+to(k));						
-					Pjk = rate_matrix->Pij.at((*evolver_it).returnCategory()).at(from(j)+to(k));						
+					//Pjk = branch->rates->Pij.at((*evolver_it).returnCategory()).at(from(j)+to(k));
+					Pjk = rate_matrix->Pij.at((*evolver_it).returnCategory()).at(from(j)+to(k));
 					numerator += Qij * Pjk * Lk;
 					(*evolver_it).Pjk0.at(j) += Pjk * Lk;
 				}
@@ -1152,7 +1152,7 @@ TNode::calculateEndpointRateAwayFromSite(
 	(*cumulative_site_sum_away) += sum_away;
 }
 
-double 
+double
 TNode::calculateEndpointRateAwayFromSequence(
 											 TTree *tree,
 											 TNode *k_0,		// Target sequence. //
@@ -1232,7 +1232,7 @@ TNode::initialize_rate_matrices(
 		//////////
 		/// Independent sites: Copy the global model in for each site.
 		//////////
-		for (vector<Site>::iterator it = k_0->seq_evo.begin(); it != k_0->seq_evo.end(); ++it) 
+		for (vector<Site>::iterator it = k_0->seq_evo.begin(); it != k_0->seq_evo.end(); ++it)
 			(*it).e_QijDt = k_0->branch->rates->Qij;
 	}
 
@@ -1269,7 +1269,7 @@ TNode::initialize_rate_matrices(
 		// setPij uses the Root and Cijk matrices, already set up for branch->rates
 		branch->rates->setPij(seq_evo.front(), branch->S*(T-at_dt), nodeEnv->rateHetero);	// setPij dependes on the root Matrix
 		// Transfer independent rates into the initial_rates holding the dependent Qij's.
-		vector<vector<double> >::iterator ppt = initial_rates.Pij.begin(); 
+		vector<vector<double> >::iterator ppt = initial_rates.Pij.begin();
 		for (vector<vector<double> >::iterator PPt = branch->rates->Pij.begin(); PPt != branch->rates->Pij.end(); ++PPt, ++ppt) {
 			vector<double>::iterator pt = (*ppt).begin();
 			for(vector<double>::iterator Pt = (*PPt).begin(); Pt != (*PPt).end(); ++Pt, ++pt) {
@@ -1277,7 +1277,7 @@ TNode::initialize_rate_matrices(
 			}
 		}
 	}
-	
+
 	return initial_rates;
 }
 
@@ -1307,7 +1307,7 @@ TNode::update_rate_matrices(
 	}
 }
 
-void 
+void
 TNode::site_specific_Qmat(
 						  TTree *tree,
 						  int start, 		// Start position for calculating Q matrix.
@@ -1317,7 +1317,7 @@ TNode::site_specific_Qmat(
 	int seq_pos = 0;
 	int i,j;
 	vector<unsigned int> power_1 (numStates, 0);
-	for (i = 0; i < numStates; i++) power_1[i]=i*numStates; 
+	for (i = 0; i < numStates; i++) power_1[i]=i*numStates;
 	vector<Site>::iterator it;
 	vector<double>::iterator jt;
 	short actual_state;
@@ -1342,7 +1342,7 @@ TNode::site_specific_Qmat(
 					= TauIJ3(
 							 tree,
 							 seq_pos,
-							 (*it).return_lookup_table_environment_index(), 
+							 (*it).return_lookup_table_environment_index(),
 							 (*it).return_lookup_table_sequence_index(),
 							 i,
 							 j
@@ -1352,7 +1352,7 @@ TNode::site_specific_Qmat(
 						= branch->rates->pi.at(j)
 						  *
 						  ( log(tau_ij)/(1 - 1.0/tau_ij) );
-					} else (*it).e_QijDt.at(power_1[i]+j) = 0.25; 
+					} else (*it).e_QijDt.at(power_1[i]+j) = 0.25;
 					row_total += (*it).e_QijDt.at(power_1[i]+j);
 				}
 			}
@@ -1436,7 +1436,7 @@ bool TNode::EndpointCheck( void )
 ////////////////////
 ////// Returns true if the node is a descendant of the listed ancestral node.
 ////////////////////
-bool 
+bool
 TNode::isDescendant(
 						 TTree *tree,
 						 TNode *ancestor
@@ -1456,22 +1456,22 @@ TNode::isDescendant(
 
 }
 
-size_t 
+size_t
 TNode::findForwardNumberOfConstrained(
-											 size_t fromSite, 
+											 size_t fromSite,
 											 size_t numSites
-											) 
+											)
 {
 	int num_unconstrained = 0;
 	varSite *curr_varSite[2], *new_varSite[2];
 	int num_chomped[2];
-	
+
 	num_chomped[0] = num_chomped[1] = 1;
-	curr_varSite[0] 
-	= new_varSite[0] 
+	curr_varSite[0]
+	= new_varSite[0]
 	= seq_evo.at(fromSite).motif.active_properties.indel->del->my_sequence_template_varSite;
-	curr_varSite[1] 
-	= new_varSite[1] 
+	curr_varSite[1]
+	= new_varSite[1]
 	= seq_evo.at(fromSite).motif.active_properties.indel->del->my_motif_varSite;
 
 																						 // short circuit... use later //
@@ -1481,7 +1481,7 @@ TNode::findForwardNumberOfConstrained(
 		if (curr_varSite[0] != new_varSite[0]) {
 			num_chomped[0] = 1;
 			curr_varSite[0] = new_varSite[0];
-		} 
+		}
 		if (curr_varSite[1] != new_varSite[1]) {
 			num_chomped[1] = 1;
 			curr_varSite[1] = new_varSite[1];
@@ -1501,21 +1501,21 @@ TNode::findForwardNumberOfConstrained(
 	return num_unconstrained;
 }
 
-size_t 
+size_t
 TNode::findBackwardNumberOfConstrained(
-											  size_t fromSite, 
+											  size_t fromSite,
 											  size_t numSites
-											 ) 
+											 )
 {
 	int num_unconstrained = 0;
 	varSite *curr_varSite[2], *new_varSite[2];
 	int num_chomped[2];
 
-	curr_varSite[0] 
-	= new_varSite[0] 
+	curr_varSite[0]
+	= new_varSite[0]
 	= seq_evo.at((seq_evo.size()-1)-fromSite).motif.active_properties.indel->del->my_sequence_template_varSite;
-	curr_varSite[1] 
-	= new_varSite[1] 
+	curr_varSite[1]
+	= new_varSite[1]
 	= seq_evo.at((seq_evo.size()-1)-fromSite).motif.active_properties.indel->del->my_motif_varSite;
 	num_chomped[0] = num_chomped[1] = 1;
 																						 // short circuit... use later //
@@ -1525,7 +1525,7 @@ TNode::findBackwardNumberOfConstrained(
 		if (curr_varSite[0] != new_varSite[0]) {
 			num_chomped[0] = 1;
 			curr_varSite[0] = new_varSite[0];
-		} 
+		}
 		if (curr_varSite[1] != new_varSite[1]) {
 			num_chomped[1] = 1;
 			curr_varSite[1] = new_varSite[1];
@@ -1544,7 +1544,7 @@ TNode::findBackwardNumberOfConstrained(
 	return num_unconstrained;
 }
 
-void 
+void
 TNode::addGeneral_varSites()
 {
 	variable_region_list.clear();
@@ -1552,7 +1552,7 @@ TNode::addGeneral_varSites()
 	unconstrained_varSite = new varSite(0,numeric_limits<int>::max(),this);
 }
 
-void 
+void
 TNode::report_varSites()
 {
 	size_t total_varSites = 0;
@@ -1567,7 +1567,7 @@ TNode::report_varSites()
 	cout << "The total number of varSites is: " << total_varSites << endl;
 }
 
-void 
+void
 TNode::report_on_sites()
 {
 	for (vector<Site>::iterator site_it = seq_evo.begin(); site_it != seq_evo.end(); ++site_it) {
@@ -1584,7 +1584,7 @@ TNode::Generic_varSite()
 	return one_site_varSite;
 }
 
-void 
+void
 TNode::inheritCategories(
 					   		  TNode *anc
 					  		 )
@@ -1594,7 +1594,7 @@ TNode::inheritCategories(
 		(*des_it).setCategory( (*anc_it).returnCategory() );
 }
 
-void 
+void
 TNode::Print_Substitution_Properties()
 {
 	vector<Site>::iterator jt = branch1->seq_evo.begin();
@@ -1603,25 +1603,25 @@ TNode::Print_Substitution_Properties()
 	for (vector<Site>::iterator it = seq_evo.begin(); it != seq_evo.end(); ++it, ++jt) {
 		printf(
 			   "%c %c %3d %8d\n",
-			   stateCharacters.at((*it).returnState()), 
+			   stateCharacters.at((*it).returnState()),
 			   stateCharacters.at((*jt).returnState()),
 			   (*it).returnCategory(),
-			   ( 
+			   (
 			     (
 			      (*it).numSubstAway
-			     ) 
-			     ? (*it).numSubstAway 
-			     : (*jt).numSubstAway 
+			     )
+			     ? (*it).numSubstAway
+			     : (*jt).numSubstAway
 			   )
 		);
 		num_cat.at((*it).returnCategory())++;
-		cat_avg.at((*it).returnCategory()) += 
-			( 
+		cat_avg.at((*it).returnCategory()) +=
+			(
 			 (
 			  (*it).numSubstAway
-			 ) 
-			 ? (*it).numSubstAway 
-			 : (*jt).numSubstAway 
+			 )
+			 ? (*it).numSubstAway
+			 : (*jt).numSubstAway
 			);
 	}
 
@@ -1633,8 +1633,8 @@ TNode::Print_Substitution_Properties()
 //////////
 /// Copies varSites from ancestor to descendant.
 //////////
-void 
-TNode::Inherit_varSites() 
+void
+TNode::Inherit_varSites()
 {
 	size_t i = 0;
 
@@ -1658,17 +1658,17 @@ TNode::Inherit_varSites()
 //////////
 /// Copy the motif sites. Does this happen by default when copying the sequence from the ancestor?
 //////////
-void 
+void
 TNode::InheritMotifSites()
-{	
+{
 	//////////
 	/// Create new positions for each. Setting active sites will copy new things into each pos.
 	//////////
 	// SITE
 	vector<Site>::iterator des_site_it = seq_evo.begin();
-	for (vector<Site>::iterator anc_site_it = anc->seq_evo.begin(); 
-								anc_site_it != anc->seq_evo.end(); 
-								++anc_site_it, ++des_site_it) 
+	for (vector<Site>::iterator anc_site_it = anc->seq_evo.begin();
+								anc_site_it != anc->seq_evo.end();
+								++anc_site_it, ++des_site_it)
 		(*des_site_it).motif.copy(&((*anc_site_it).motif));
 	//
 	// postProcess
@@ -1677,19 +1677,19 @@ TNode::InheritMotifSites()
 	//
 	// SITE
 	//
-	seq_evo.front().motif.site_props.front()->indel.del->my_motif_varSite 
+	seq_evo.front().motif.site_props.front()->indel.del->my_motif_varSite
 	= seq_evo.front().motif.site_props.front()->indel.L_ins_->my_motif_varSite_left
 	= seq_evo.front().motif.site_props.front()->indel.L_ins_->my_motif_varSite_right
 	= NULL;
-	seq_evo.front().motif.site_props.back()->indel.del->my_sequence_template_varSite 
+	seq_evo.front().motif.site_props.back()->indel.del->my_sequence_template_varSite
 	= seq_evo.front().motif.site_props.back()->indel.L_ins_->my_sequence_template_varSite_left
 	= seq_evo.front().motif.site_props.back()->indel.L_ins_->my_sequence_template_varSite_right
 	= NULL;
-	seq_evo.front().motif.site_props.front()->indel.del->my_sequence_template_varSite 
+	seq_evo.front().motif.site_props.front()->indel.del->my_sequence_template_varSite
 	= seq_evo.front().motif.site_props.front()->indel.L_ins_->my_sequence_template_varSite_left
 	= seq_evo.front().motif.site_props.front()->indel.L_ins_->my_sequence_template_varSite_right
 	= one_site_varSite;
-	seq_evo.front().motif.site_props.back()->indel.del->my_motif_varSite 
+	seq_evo.front().motif.site_props.back()->indel.del->my_motif_varSite
 	= seq_evo.front().motif.site_props.back()->indel.L_ins_->my_motif_varSite_left
 	= seq_evo.front().motif.site_props.back()->indel.L_ins_->my_motif_varSite_right
 	= one_site_varSite;
@@ -1702,11 +1702,11 @@ TNode::InheritMotifSites()
 	//exit(0);
 }
 
-void 
+void
 TNode::setInvariableArrayPos()
 {
 	// Nearly all set, but still have to represent the invariable array constraints, applies as motif.
-	if (nodeEnv->invariableSites) { 
+	if (nodeEnv->invariableSites) {
 		vector<Site>::iterator sit = seq_evo.begin();
 		for (vector<Site>::iterator site_it = seq_evo.begin(); site_it != seq_evo.end(); ++site_it) {
 			bool last_site = ( (site_it == seq_evo.end()-1) ? true : false );
@@ -1727,9 +1727,9 @@ TNode::setInvariableArrayPos()
 					= (*site_it).motif.active_properties.indel->L_ins_->my_motif_varSite_right
 					= (*site_it).motif.active_properties.indel->R_ins_->my_motif_varSite_left
 					= one_site_varSite;
-					
-					(*site_it).motif.active_properties.indel->L_ins_->on_site_motif_varSite 
-					= (*site_it).motif.active_properties.indel->R_ins_->on_site_motif_varSite 
+
+					(*site_it).motif.active_properties.indel->L_ins_->on_site_motif_varSite
+					= (*site_it).motif.active_properties.indel->R_ins_->on_site_motif_varSite
 					= unconstrained_varSite;
 
 					(*site_it).motif.active_properties.subst->setInvariable((*site_it).returnState());
@@ -1747,9 +1747,9 @@ TNode::setInvariableArrayPos()
 						//////////
 						/// If either 2 or 3, this subsequece will be size 1 only throughout entire run.
 						//////////
-						if ( (*(site_it+1)).returnInvariableState() == NO_INDEL || 
+						if ( (*(site_it+1)).returnInvariableState() == NO_INDEL ||
 							 (*(site_it+1)).returnInvariableState() == INVAR_AND_NOINDEL ) {
-							(*site_it).motif.active_properties.indel->R_ins_->on_site_motif_varSite 
+							(*site_it).motif.active_properties.indel->R_ins_->on_site_motif_varSite
 							= one_site_varSite;
 						}
 					} // Else we don't set anything.
@@ -1762,17 +1762,17 @@ TNode::setInvariableArrayPos()
 					= (*site_it).motif.active_properties.indel->L_ins_->my_motif_varSite_right
 					= (*site_it).motif.active_properties.indel->R_ins_->my_motif_varSite_left
 					= one_site_varSite;
-	
+
 					if ( !last_site ) {
 						//////////
 						/// As above.
 						//////////
-						if ( (*(site_it+1)).returnInvariableState() == NO_INDEL || 
+						if ( (*(site_it+1)).returnInvariableState() == NO_INDEL ||
 							 (*(site_it+1)).returnInvariableState() == INVAR_AND_NOINDEL ) {
-							(*site_it).motif.active_properties.indel->R_ins_->on_site_motif_varSite 
+							(*site_it).motif.active_properties.indel->R_ins_->on_site_motif_varSite
 							= one_site_varSite;
 						}
-					} // Else we don't set anything.	
+					} // Else we don't set anything.
 					(*site_it).motif.active_properties.subst->setInvariable((*site_it).returnState());
 					break;
 				default:
@@ -1785,7 +1785,7 @@ TNode::setInvariableArrayPos()
 	}
 }
 
-bool 
+bool
 TNode::isVarSite(
 					  varSite *chk_varSite
 					 )
@@ -1798,10 +1798,10 @@ TNode::isVarSite(
 	return false;
 }
 
-void 
+void
 TNode::report(
 				   TTree *tree
-				  ) 
+				  )
 {
 	cerr << "Node " << mytipNo << ":" << endl << "  ";
 	for (vector<bool>::iterator it = bipartition.begin(); it != bipartition.end(); ++it)
@@ -1809,7 +1809,7 @@ TNode::report(
 	cerr << "  DistanceFromRoot: " << DistanceFromRoot << " trsDFR: " << trDistanceFromRoot << endl;
 }
 
-void 
+void
 TNode::FULL_REPORT()
 {
 	cout << "anc node: " << anc << endl;
@@ -1823,20 +1823,20 @@ TNode::FULL_REPORT()
 	}
 
 	vector<Site>::iterator anc_it = anc->seq_evo.begin();
-	vector<Site>::iterator des_it = seq_evo.begin();	
+	vector<Site>::iterator des_it = seq_evo.begin();
 	for ( ; anc_it != anc->seq_evo.end(); ++anc_it, ++des_it) {
 		cout << "subst: ";
-		cout << setw(10) << &(*anc_it).motif.active_properties 
-			 << setw(21) 
+		cout << setw(10) << &(*anc_it).motif.active_properties
+			 << setw(21)
 			 << (*anc_it).motif.active_properties.subst->report_bitset();
-		cout << setw(10) << &(*des_it).motif.active_properties 
-			 << setw(21) 
+		cout << setw(10) << &(*des_it).motif.active_properties
+			 << setw(21)
 			 << (*des_it).motif.active_properties.subst->report_bitset();
 		cout << endl;
 	}
 }
 
-void 
+void
 Branch::report()
 {
 	cout << "Branch Lengths:" << endl;
@@ -1847,9 +1847,9 @@ Branch::report()
 	rates->fullReport();
 }
 
-void 
+void
 Branch::update_nij(
-				   short from_state, 
+				   short from_state,
 				   short to_state,
 				   short target_state
 				  )
@@ -1886,8 +1886,8 @@ Branch::print_nij(bool absolute)
 	}
 }
 
-void 
-TNode::clearMotifSites() 
+void
+TNode::clearMotifSites()
 {
 	string seq = "";
 	for (vector<Site>::iterator site_it = anc->seq_evo.begin(); site_it != anc->seq_evo.end(); ++site_it)
@@ -1900,9 +1900,9 @@ TNode::clearMotifSites()
 	constructUnconstrainedSequence(seq);
 }
 
-string 
+string
 TNode::output_sequence(
-					   string::iterator start, 
+					   string::iterator start,
 					   string::iterator end
 				      )
 {
@@ -1913,7 +1913,7 @@ TNode::output_sequence(
 	return seqout;
 }
 
-string 
+string
 TNode::printSequence(bool print_nucleotide_sequence)
 {
 	string return_sequence;
@@ -1930,7 +1930,7 @@ TNode::printSequence(bool print_nucleotide_sequence)
 	return return_sequence;
 }
 
-void 
+void
 TNode::printGammaCategories()
 {
 	short cat = 0;
@@ -1945,21 +1945,21 @@ TNode::printGammaCategories()
 //////////
 /// REMOVE_OBJECTS
 //////////
-void 
+void
 TNode::Remove_Objects(
 						   bool root_node
 						  )
 {
 	size_t i = 0, j = 0;
 	delete seq_evo.front().motif.active_properties.indel->L_ins_;
-	for (vector<Site>::iterator site_it = seq_evo.begin(); 
-							    site_it != seq_evo.end(); 
-							    ++site_it,i++) 
+	for (vector<Site>::iterator site_it = seq_evo.begin();
+							    site_it != seq_evo.end();
+							    ++site_it,i++)
 	{
 		j = 0;
-		for (list<siteProperties*>::iterator it2 = (*site_it).motif.site_props.begin(); 
-											 it2 != (*site_it).motif.site_props.end(); 
-											 ++it2, ++j) 
+		for (list<siteProperties*>::iterator it2 = (*site_it).motif.site_props.begin();
+											 it2 != (*site_it).motif.site_props.end();
+											 ++it2, ++j)
 		{
 			///////////
 			/// General sites become activeProps. If I run across a general site, I don't want to
@@ -1984,27 +1984,27 @@ TNode::Remove_Objects(
 	Remove_varSites();
 }
 
-void 
+void
 TNode::Remove_varSites()
 {
 	// variable sites list.
 	for (list<varSite*>::iterator it = variable_region_list.begin(); it != variable_region_list.end(); ++it) {
 		delete (*it);
 	}
-	variable_region_list.clear();	
+	variable_region_list.clear();
 
 }
 
-void 
+void
 TNode::Remove_iz_Objects ( )
 {
-	for (vector<Site>::iterator site_it = seq_evo.begin(); site_it != seq_evo.end(); ++site_it) 
+	for (vector<Site>::iterator site_it = seq_evo.begin(); site_it != seq_evo.end(); ++site_it)
 		(*site_it).motif.site_props.clear();
 
 	Remove_varSites();
 }
 
-void 
+void
 TNode::Site_postProcess()
 {
 	// Set all pointers for the motifSite array and deeper structures.
@@ -2012,13 +2012,13 @@ TNode::Site_postProcess()
 		(*it).motif.setNode(this);
 }
 
-void 
+void
 TNode::Print_Active_Properties()
 {
 	int i = 0;
 	cerr << endl << "BIPARTITION: " << endl; report(); cerr << endl;
 	for (vector<Site>::iterator site_it = seq_evo.begin(); site_it != seq_evo.end(); ++site_it, i++) {
-		cerr << i << " " << (short)(*site_it).returnState() 
+		cerr << i << " " << (short)(*site_it).returnState()
 			 << " fromMotif:  ";
 		if (&(*site_it).motif.active_properties.fromMotif != NULL) {
 			cerr << (&(*site_it).motif.active_properties.fromMotif);
@@ -2027,15 +2027,15 @@ TNode::Print_Active_Properties()
  	 	if (&(*site_it).motif.active_properties.fromTemplate != NULL) {
 			cerr << &(*site_it).motif.active_properties.fromTemplate;
 		} else cerr << "NULL";
-		cerr << " site:  " << (&(*site_it)) 
-			 << " motif: " << (&(*site_it).motif) 
+		cerr << " site:  " << (&(*site_it))
+			 << " motif: " << (&(*site_it).motif)
 			 << " subst: " << (&(*site_it).motif.active_properties.subst)
 			 << " indel: " << (&(*site_it).motif.active_properties.indel) << endl << "  ";
 
 		cerr << "subst_bitstring: " << (*site_it).motif.active_properties.subst->report_bitset()
 			 << endl << "  ";
 		if ( (*site_it).motif.active_properties.indel->L_ins_ != NULL ) {
-			cerr << "L_ins_ " 
+			cerr << "L_ins_ "
 				 << (*site_it).motif.active_properties.indel->L_ins_
 				 << " ";
 			if ( (*site_it).motif.active_properties.indel->L_ins_->my_sequence_template_varSite_left != NULL)
@@ -2078,31 +2078,31 @@ TNode::Print_Active_Properties()
 				cerr << "-----------------------------------------NO mmv_r " << endl;
 				abort();
 			}
-			if ( (*site_it).motif.active_properties.indel->L_ins_->on_site_sequence_template_varSite != NULL && 
+			if ( (*site_it).motif.active_properties.indel->L_ins_->on_site_sequence_template_varSite != NULL &&
 				 isVarSite((*site_it).motif.active_properties.indel->L_ins_->on_site_sequence_template_varSite) )
 				cerr << "osst("
-					 << (*site_it).motif.active_properties.indel->L_ins_->on_site_sequence_template_varSite->min 
-					 << "," 
-					 << (*site_it).motif.active_properties.indel->L_ins_->on_site_sequence_template_varSite->max 
+					 << (*site_it).motif.active_properties.indel->L_ins_->on_site_sequence_template_varSite->min
+					 << ","
+					 << (*site_it).motif.active_properties.indel->L_ins_->on_site_sequence_template_varSite->max
 					 << ") ";
-			if ( (*site_it).motif.active_properties.indel->L_ins_->on_site_motif_varSite != NULL && 
-				 isVarSite((*site_it).motif.active_properties.indel->L_ins_->on_site_motif_varSite) ) 
-				cerr << "osm(" 
-					 << (*site_it).motif.active_properties.indel->L_ins_->on_site_motif_varSite->min 
-					 << "," 
-					 << (*site_it).motif.active_properties.indel->L_ins_->on_site_motif_varSite->max 
+			if ( (*site_it).motif.active_properties.indel->L_ins_->on_site_motif_varSite != NULL &&
+				 isVarSite((*site_it).motif.active_properties.indel->L_ins_->on_site_motif_varSite) )
+				cerr << "osm("
+					 << (*site_it).motif.active_properties.indel->L_ins_->on_site_motif_varSite->min
+					 << ","
+					 << (*site_it).motif.active_properties.indel->L_ins_->on_site_motif_varSite->max
 					 << ") ";
 		} else cerr << "NONE   ";
 
 		cerr << endl << "  ";
 
 		if ( (*site_it).motif.active_properties.indel->del != NULL) {
-			cerr << "del    " 
+			cerr << "del    "
 				 << (*site_it).motif.active_properties.indel->del
 				 << " ";
 			if ( (*site_it).motif.active_properties.indel->del->my_sequence_template_varSite != NULL) {
 			 	cerr << "st("
-			 		 << (*site_it).motif.active_properties.indel->del->my_sequence_template_varSite->min 
+			 		 << (*site_it).motif.active_properties.indel->del->my_sequence_template_varSite->min
 			 		 << ","
 			 		 << (*site_it).motif.active_properties.indel->del->my_sequence_template_varSite->max
 			 		 << ")["
@@ -2121,7 +2121,7 @@ TNode::Print_Active_Properties()
 					 < (*site_it).motif.active_properties.indel->del->my_sequence_template_varSite->member_set.size()
 					)
 					&&
-					( 
+					(
 					 (*site_it).motif.active_properties.indel->del->my_sequence_template_varSite->min != 1
 					 &&
 					 (*site_it).motif.active_properties.indel->del->my_sequence_template_varSite->max != 1
@@ -2138,7 +2138,7 @@ TNode::Print_Active_Properties()
 			}
 			if ( (*site_it).motif.active_properties.indel->del->my_motif_varSite != NULL)
 			 	cerr << "m("
-			 		 << (*site_it).motif.active_properties.indel->del->my_motif_varSite->min 
+			 		 << (*site_it).motif.active_properties.indel->del->my_motif_varSite->min
 			 		 << ","
 			 		 << (*site_it).motif.active_properties.indel->del->my_motif_varSite->max
 			 		 << ") ";
@@ -2146,7 +2146,7 @@ TNode::Print_Active_Properties()
 				cerr << "-----------------------------------------NO mmv in del " << endl;
 				abort();
 			}
-		} else 
+		} else
 			cerr << "NONE"
 				 << "    ";
 
@@ -2154,7 +2154,7 @@ TNode::Print_Active_Properties()
 
 
 		if ( (*site_it).motif.active_properties.indel->R_ins_ != NULL ) {
-			cerr << "R_ins_ " 
+			cerr << "R_ins_ "
 				 << (*site_it).motif.active_properties.indel->R_ins_
 				 << " ";
 			if ( (*site_it).motif.active_properties.indel->R_ins_->my_sequence_template_varSite_left != NULL)
@@ -2181,19 +2181,19 @@ TNode::Print_Active_Properties()
 					 << ","
 					 << (*site_it).motif.active_properties.indel->R_ins_->my_motif_varSite_right->max
 					 << ") ";
-			if ( (*site_it).motif.active_properties.indel->R_ins_->on_site_sequence_template_varSite != NULL && 
+			if ( (*site_it).motif.active_properties.indel->R_ins_->on_site_sequence_template_varSite != NULL &&
 				 isVarSite((*site_it).motif.active_properties.indel->R_ins_->on_site_sequence_template_varSite) )
 				cerr << "osst("
-					 << (*site_it).motif.active_properties.indel->R_ins_->on_site_sequence_template_varSite->min 
-					 << "," 
-					 << (*site_it).motif.active_properties.indel->R_ins_->on_site_sequence_template_varSite->max 
+					 << (*site_it).motif.active_properties.indel->R_ins_->on_site_sequence_template_varSite->min
+					 << ","
+					 << (*site_it).motif.active_properties.indel->R_ins_->on_site_sequence_template_varSite->max
 					 << ") ";
-			if ( (*site_it).motif.active_properties.indel->R_ins_->on_site_motif_varSite != NULL && 
+			if ( (*site_it).motif.active_properties.indel->R_ins_->on_site_motif_varSite != NULL &&
 				 isVarSite((*site_it).motif.active_properties.indel->R_ins_->on_site_motif_varSite) )
-				cerr << "osm(" 
-					 << (*site_it).motif.active_properties.indel->R_ins_->on_site_motif_varSite->min 
-					 << "," 
-					 << (*site_it).motif.active_properties.indel->R_ins_->on_site_motif_varSite->max 
+				cerr << "osm("
+					 << (*site_it).motif.active_properties.indel->R_ins_->on_site_motif_varSite->min
+					 << ","
+					 << (*site_it).motif.active_properties.indel->R_ins_->on_site_motif_varSite->max
 					 << ") ";
 		} else cerr << "NONE   ";
 
@@ -2201,9 +2201,9 @@ TNode::Print_Active_Properties()
 
 		cerr << "    Inactives: " << endl;
 		for (list<siteProperties*>::iterator jt = (*site_it).motif.site_props.begin(); jt != (*site_it).motif.site_props.end(); ++jt) {
-			cerr << "      " << (*jt) 
-				 << " indel: " << (&(*jt)->indel) 
-				 << " del: " << (*jt)->indel.del << " "	
+			cerr << "      " << (*jt)
+				 << " indel: " << (&(*jt)->indel)
+				 << " del: " << (*jt)->indel.del << " "
 				 << ( ((*jt)->indel.del->my_sequence_template_varSite != NULL) ? "s" : "-" )
 				 << ( ((*jt)->indel.del->my_motif_varSite != NULL) ? "m" : "-" )
 				 << " L_ins_: " << (*jt)->indel.L_ins_
@@ -2215,10 +2215,10 @@ TNode::Print_Active_Properties()
 
 //////////
 /// This is a patch function. At some point, the Sites in the evolving sequence maintain the
-/// original ancestral varSite. Although this does not crash the program, it modifies the 
-/// template constraints, causing unwanted output. This function resets all of the 
+/// original ancestral varSite. Although this does not crash the program, it modifies the
+/// template constraints, causing unwanted output. This function resets all of the
 //////////
-void 
+void
 TNode::setSitePointers(
 							string from_function
 						   )
@@ -2235,7 +2235,7 @@ TNode::setSitePointers(
 		// 	Deletion:: varSite *my_sequence_template_varSite;
 		prev_mstv = (*site_it).motif.active_properties.indel->del->my_sequence_template_varSite;
 		(*site_it).motif.active_properties.indel->del->my_sequence_template_varSite
-		= checkSitePointer( 
+		= checkSitePointer(
 			(*site_it).motif.active_properties.indel->del->my_sequence_template_varSite,
 			"(*site_it).motif.active_properties.indel->del->my_sequence_template_varSite"
 		);
@@ -2245,7 +2245,7 @@ TNode::setSitePointers(
 		//  Deletion:: varSite *my_motif_varSite;
 		prev_mstv = (*site_it).motif.active_properties.indel->del->my_motif_varSite;
 		(*site_it).motif.active_properties.indel->del->my_motif_varSite
-		= checkSitePointer( 
+		= checkSitePointer(
 			(*site_it).motif.active_properties.indel->del->my_motif_varSite,
 			"(*site_it).motif.active_properties.indel->del->my_motif_varSite"
 		);
@@ -2256,7 +2256,7 @@ TNode::setSitePointers(
 		// Insertion::R_ins_ varSite *my_sequence_template_varSite_left;
 		prev_mstv = (*site_it).motif.active_properties.indel->R_ins_->my_sequence_template_varSite_left;
 		(*site_it).motif.active_properties.indel->R_ins_->my_sequence_template_varSite_left
-		= checkSitePointer( 
+		= checkSitePointer(
 			(*site_it).motif.active_properties.indel->R_ins_->my_sequence_template_varSite_left,
 			"(*site_it).motif.active_properties.indel->R_ins_->my_sequence_template_varSite_left"
 		);
@@ -2266,17 +2266,17 @@ TNode::setSitePointers(
 		// Insertion::R_ins_ varSite*my_sequence_template_varSite_right;
 		prev_mstv = (*site_it).motif.active_properties.indel->R_ins_->my_sequence_template_varSite_right;
 		(*site_it).motif.active_properties.indel->R_ins_->my_sequence_template_varSite_right
-		= checkSitePointer( 
+		= checkSitePointer(
 			(*site_it).motif.active_properties.indel->R_ins_->my_sequence_template_varSite_right,
 			"(*site_it).motif.active_properties.indel->R_ins_->my_sequence_template_varSite_right"
 		);
 		if (prev_mstv != (*site_it).motif.active_properties.indel->R_ins_->my_sequence_template_varSite_right)
 			cerr << "Adjusted (*site_it).motif.active_properties.indel->R_ins_->my_sequence_template_varSite_right" << endl;
 		//
-		// Insertion::R_ins_ varSite *my_motif_varSite_left; 
+		// Insertion::R_ins_ varSite *my_motif_varSite_left;
 		prev_mstv = (*site_it).motif.active_properties.indel->R_ins_->my_motif_varSite_left;
 		(*site_it).motif.active_properties.indel->R_ins_->my_motif_varSite_left
-		= checkSitePointer( 
+		= checkSitePointer(
 			(*site_it).motif.active_properties.indel->R_ins_->my_motif_varSite_left,
 			"(*site_it).motif.active_properties.indel->R_ins_->my_motif_varSite_left"
 		);
@@ -2286,14 +2286,14 @@ TNode::setSitePointers(
 		// Insertion::R_ins_ varSite *my_motif_varSite_right;
 		prev_mstv = (*site_it).motif.active_properties.indel->R_ins_->my_motif_varSite_right;
 		(*site_it).motif.active_properties.indel->R_ins_->my_motif_varSite_right
-		= checkSitePointer( 
+		= checkSitePointer(
 			(*site_it).motif.active_properties.indel->R_ins_->my_motif_varSite_right,
 			"(*site_it).motif.active_properties.indel->R_ins_->my_motif_varSite_right"
 		);
 		if (prev_mstv != (*site_it).motif.active_properties.indel->R_ins_->my_motif_varSite_right)
 			cerr << "Adjusted (*site_it).motif.active_properties.indel->R_ins_->my_motif_varSite_right" << endl;
 		//
-		// Insertion::R_ins_ varSite *on_site_motif_varSite; 
+		// Insertion::R_ins_ varSite *on_site_motif_varSite;
 		prev_mstv = (*site_it).motif.active_properties.indel->R_ins_->on_site_motif_varSite;
 		(*site_it).motif.active_properties.indel->R_ins_->on_site_motif_varSite
 		= checkSitePointer(
@@ -2303,10 +2303,10 @@ TNode::setSitePointers(
 		if (prev_mstv != (*site_it).motif.active_properties.indel->R_ins_->on_site_motif_varSite)
 			cerr << "Adjusted (*site_it).motif.active_properties.indel->R_ins_->on_site_motif_varSite" << endl;
 		//
-		// Insertion::R_ins_ varSite *on_site_sequence_template_varSite;	
+		// Insertion::R_ins_ varSite *on_site_sequence_template_varSite;
 		prev_mstv = (*site_it).motif.active_properties.indel->R_ins_->on_site_sequence_template_varSite;
 		(*site_it).motif.active_properties.indel->R_ins_->on_site_sequence_template_varSite
-		= checkSitePointer( 
+		= checkSitePointer(
 			(*site_it).motif.active_properties.indel->R_ins_->on_site_sequence_template_varSite,
 			"(*site_it).motif.active_properties.indel->R_ins_->on_site_sequence_template_varSite"
 		);
@@ -2317,7 +2317,7 @@ TNode::setSitePointers(
 		// Insertion::L_ins_ varSite *my_sequence_template_varSite_left;
 		prev_mstv = (*site_it).motif.active_properties.indel->L_ins_->my_sequence_template_varSite_left;
 		(*site_it).motif.active_properties.indel->L_ins_->my_sequence_template_varSite_left
-		= checkSitePointer( 
+		= checkSitePointer(
 			(*site_it).motif.active_properties.indel->L_ins_->my_sequence_template_varSite_left,
 			"(*site_it).motif.active_properties.indel->L_ins_->my_sequence_template_varSite_left"
 		);
@@ -2327,17 +2327,17 @@ TNode::setSitePointers(
 		// Insertion::L_ins_ varSite*my_sequence_template_varSite_right;
 		prev_mstv = (*site_it).motif.active_properties.indel->L_ins_->my_sequence_template_varSite_right;
 		(*site_it).motif.active_properties.indel->L_ins_->my_sequence_template_varSite_right
-		= checkSitePointer( 
+		= checkSitePointer(
 			(*site_it).motif.active_properties.indel->L_ins_->my_sequence_template_varSite_right,
 			"(*site_it).motif.active_properties.indel->L_ins_->my_sequence_template_varSite_right"
 		);
 		if (prev_mstv != (*site_it).motif.active_properties.indel->L_ins_->my_sequence_template_varSite_right)
 			cerr << "Adjusted (*site_it).motif.active_properties.indel->L_ins_->my_sequence_template_varSite_right" << endl;
 		//
-		// Insertion::L_ins_ varSite *my_motif_varSite_left; 
+		// Insertion::L_ins_ varSite *my_motif_varSite_left;
 		prev_mstv = (*site_it).motif.active_properties.indel->L_ins_->my_motif_varSite_left;
 		(*site_it).motif.active_properties.indel->L_ins_->my_motif_varSite_left
-		= checkSitePointer( 
+		= checkSitePointer(
 			(*site_it).motif.active_properties.indel->L_ins_->my_motif_varSite_left,
 			"(*site_it).motif.active_properties.indel->L_ins_->my_motif_varSite_left"
 		);
@@ -2347,17 +2347,17 @@ TNode::setSitePointers(
 		// Insertion::L_ins_ varSite *my_motif_varSite_right;
 		prev_mstv = (*site_it).motif.active_properties.indel->L_ins_->my_motif_varSite_right;
 		(*site_it).motif.active_properties.indel->L_ins_->my_motif_varSite_right
-		= checkSitePointer( 
+		= checkSitePointer(
 			(*site_it).motif.active_properties.indel->L_ins_->my_motif_varSite_right,
 			"(*site_it).motif.active_properties.indel->L_ins_->my_motif_varSite_right"
 		);
 		if (prev_mstv != (*site_it).motif.active_properties.indel->L_ins_->my_motif_varSite_right)
 			cerr << "Adjusted (*site_it).motif.active_properties.indel->L_ins_->my_motif_varSite_right" << endl;
 		//
-		// Insertion::L_ins_ varSite *on_site_motif_varSite; 
+		// Insertion::L_ins_ varSite *on_site_motif_varSite;
 		prev_mstv = (*site_it).motif.active_properties.indel->L_ins_->on_site_motif_varSite;
 		(*site_it).motif.active_properties.indel->L_ins_->on_site_motif_varSite
-		= checkSitePointer( 
+		= checkSitePointer(
 			(*site_it).motif.active_properties.indel->L_ins_->on_site_motif_varSite,
 			"(*site_it).motif.active_properties.indel->L_ins_->on_site_motif_varSite"
 		);
@@ -2367,7 +2367,7 @@ TNode::setSitePointers(
 		// Insertion::L_ins_ varSite *on_site_sequence_template_varSite;
 		prev_mstv = (*site_it).motif.active_properties.indel->L_ins_->on_site_sequence_template_varSite;
 		(*site_it).motif.active_properties.indel->L_ins_->on_site_sequence_template_varSite
-		= checkSitePointer( 
+		= checkSitePointer(
 			(*site_it).motif.active_properties.indel->L_ins_->on_site_sequence_template_varSite,
 			"(*site_it).motif.active_properties.indel->L_ins_->on_site_sequence_template_varSite"
 		);
@@ -2380,12 +2380,12 @@ TNode::setSitePointers(
 
 varSite*
 TNode::checkSitePointer(
-								 varSite *site_ptr, 
+								 varSite *site_ptr,
 								 string message
 								)
 {
 	if (! isVarSite(site_ptr) )
-		if (anc->isVarSite(site_ptr)) 
+		if (anc->isVarSite(site_ptr))
 			//////////
 			/// We have discovered that the current varSite is contained in the ancestral node.
 			/// Thus, we reset this varSite to the equivalent varSite in the descendant node.
@@ -2405,9 +2405,9 @@ TTree::TTree()
 	InitTree();
 }
 
-void 
+void
 TTree::InitTree()
-{	
+{
 	treeEnv.clear();
 	root=NULL;
 	nodeList.clear(); numNodes=0;
@@ -2420,12 +2420,12 @@ TTree::InitTree()
 	epc_root_is_set = false;
 }
 
-void 
+void
 TTree::constructRootMotifSites(
-									list<inMotif*>& motif_specs, 
-									string& root_sequence, 
+									list<inMotif*>& motif_specs,
+									string& root_sequence,
 									string& invariable_in
-								   ) 
+								   )
 {
 	size_t found;
 	vector<siteProperties*> site_properties;
@@ -2471,7 +2471,7 @@ TTree::constructRootMotifSites(
 	}
 
 	//////////
-	/// Build the sites with which we will play 
+	/// Build the sites with which we will play
 	//////////
 	root->evolvingSequence = new Sequence(root, root_sequence.size());
 	root->evolvingSequence->init(root, root_sequence, treeEnv.front());
@@ -2480,7 +2480,7 @@ TTree::constructRootMotifSites(
 	/// Step 1: Relate all motifs to the root sequence.
 	//////////
 	size_t dot_additions_sum = 0;
-	for (vector<short>::iterator it = dot_additions2template.begin(); it != dot_additions2template.end(); ++it) 
+	for (vector<short>::iterator it = dot_additions2template.begin(); it != dot_additions2template.end(); ++it)
 		dot_additions_sum += (*it);
 
 	size_t motif_start_position, post_motif_size, post_motif, shouldbezero;
@@ -2494,7 +2494,7 @@ TTree::constructRootMotifSites(
 				exit(EXIT_FAILURE);
 			}
 			post_motif = (*it2)->sitemap.find_first_of("*", motif_start_position);
-			if (post_motif == string::npos) post_motif = root_sequence.size();			
+			if (post_motif == string::npos) post_motif = root_sequence.size();
 			shouldbezero = root_sequence.size() - (site_properties.size() + motif_start_position + (root_sequence.size()-post_motif));
 			if ( (*it2)->isTemplate() ) shouldbezero += dot_additions_sum;
 			if (shouldbezero != 0) {
@@ -2552,19 +2552,19 @@ TTree::constructRootMotifSites(
 	root->Site_postProcess();
 	root->seq_evo.front().motif.site_props.push_back(new siteProperties());
 	root->seq_evo.front().motif.site_props.back()->indel.createObjects();
-	root->seq_evo.front().motif.site_props.front()->indel.del->my_motif_varSite 
+	root->seq_evo.front().motif.site_props.front()->indel.del->my_motif_varSite
 	= root->seq_evo.front().motif.site_props.front()->indel.L_ins_->my_motif_varSite_left
 	= root->seq_evo.front().motif.site_props.front()->indel.L_ins_->my_motif_varSite_right
 	= NULL;
-	root->seq_evo.front().motif.site_props.back()->indel.del->my_sequence_template_varSite 
+	root->seq_evo.front().motif.site_props.back()->indel.del->my_sequence_template_varSite
 	= root->seq_evo.front().motif.site_props.back()->indel.L_ins_->my_sequence_template_varSite_left
 	= root->seq_evo.front().motif.site_props.back()->indel.L_ins_->my_sequence_template_varSite_right
 	= NULL;
-	root->seq_evo.front().motif.site_props.front()->indel.del->my_sequence_template_varSite 
+	root->seq_evo.front().motif.site_props.front()->indel.del->my_sequence_template_varSite
 	= root->seq_evo.front().motif.site_props.front()->indel.L_ins_->my_sequence_template_varSite_left
 	= root->seq_evo.front().motif.site_props.front()->indel.L_ins_->my_sequence_template_varSite_right
 	= root->one_site_varSite;
-	root->seq_evo.front().motif.site_props.back()->indel.del->my_motif_varSite 
+	root->seq_evo.front().motif.site_props.back()->indel.del->my_motif_varSite
 	= root->seq_evo.front().motif.site_props.back()->indel.L_ins_->my_motif_varSite_left
 	= root->seq_evo.front().motif.site_props.back()->indel.L_ins_->my_motif_varSite_right
 	= root->one_site_varSite;
@@ -2587,9 +2587,9 @@ TTree::constructRootMotifSites(
 	sit = root_sequence.begin();
 	sit2 = invariable_in.begin();
 	int site_number = 0, num = 0;
-	for (vector<Site>::iterator site_it = root->seq_evo.begin(); 
-								site_it != root->seq_evo.end(); 
-								++site_it) 
+	for (vector<Site>::iterator site_it = root->seq_evo.begin();
+								site_it != root->seq_evo.end();
+								++site_it)
 	{
 		if ( (*site_it).returnState() == '-') {
 			if (site_it != root->seq_evo.end()-1 ) {
@@ -2618,7 +2618,7 @@ TTree::constructRootMotifSites(
 void
 TNode::constructUnconstrainedSequence(
 										   string& sequence
-										  ) 
+										  )
 {
 	//////////
 	/// Build the sites with which we will play with
@@ -2630,19 +2630,19 @@ TNode::constructUnconstrainedSequence(
     //
 	seq_evo.front().motif.site_props.push_back(new siteProperties());
 	seq_evo.front().motif.site_props.back()->indel.createObjects();
-	seq_evo.front().motif.site_props.front()->indel.del->my_motif_varSite 
+	seq_evo.front().motif.site_props.front()->indel.del->my_motif_varSite
 	= seq_evo.front().motif.site_props.front()->indel.L_ins_->my_motif_varSite_left
 	= seq_evo.front().motif.site_props.front()->indel.L_ins_->my_motif_varSite_right
 	= NULL;
-	seq_evo.front().motif.site_props.back()->indel.del->my_sequence_template_varSite 
+	seq_evo.front().motif.site_props.back()->indel.del->my_sequence_template_varSite
 	= seq_evo.front().motif.site_props.back()->indel.L_ins_->my_sequence_template_varSite_left
 	= seq_evo.front().motif.site_props.back()->indel.L_ins_->my_sequence_template_varSite_right
 	= NULL;
-	seq_evo.front().motif.site_props.front()->indel.del->my_sequence_template_varSite 
+	seq_evo.front().motif.site_props.front()->indel.del->my_sequence_template_varSite
 	= seq_evo.front().motif.site_props.front()->indel.L_ins_->my_sequence_template_varSite_left
 	= seq_evo.front().motif.site_props.front()->indel.L_ins_->my_sequence_template_varSite_right
 	= one_site_varSite;
-	seq_evo.front().motif.site_props.back()->indel.del->my_motif_varSite 
+	seq_evo.front().motif.site_props.back()->indel.del->my_motif_varSite
 	= seq_evo.front().motif.site_props.back()->indel.L_ins_->my_motif_varSite_left
 	= seq_evo.front().motif.site_props.back()->indel.L_ins_->my_motif_varSite_right
 	= one_site_varSite;
@@ -2659,11 +2659,11 @@ TNode::constructUnconstrainedSequence(
 //	exit(0);
 }
 
-list<inMotif*> 
+list<inMotif*>
 TTree::DrawMotifs(
-								 string& root_sequence, 
+								 string& root_sequence,
 								 double proportion_motif
-								) 
+								)
 {
 	vector<inMotif*> prosite_library;
 	vector<string> prosite_motifs;
@@ -2676,7 +2676,7 @@ TTree::DrawMotifs(
 
 	// Extract the prosite motifs, place them into prosite_library. //
 	Populate_Prosite_Motifs(prosite_motifs);
-	for (vector<string>::iterator it = prosite_motifs.begin(); it != prosite_motifs.end(); ++it) {	
+	for (vector<string>::iterator it = prosite_motifs.begin(); it != prosite_motifs.end(); ++it) {
 		motif_data = split((*it), ";");
 		motif_data.pop_back(); 		// Remove a null element at end.
 		list<string>::iterator jt = motif_data.begin();
@@ -2703,13 +2703,13 @@ TTree::DrawMotifs(
 				if (((double)rndu() < test_value) ? 1 : 0 ) {
 					curr_regex.pop_back();
 					exclude_last_position = true;	// Need to remove library position, but only do if motif accepted
-				} 
+				}
 			}
-			
+
 			// Determine motif size. This includes randomly drawing the size of x(a,b) sites. //
 			motif_size = motif_max = 0;
 			for (list<siteRegEx*>::iterator jt = curr_regex.begin(); jt != curr_regex.end(); ++jt) {
-				motif_max += (*jt)->allowable_characters.size();			
+				motif_max += (*jt)->allowable_characters.size();
 				motif_size += (*jt)->sites_occupied;
 			}
 
@@ -2720,12 +2720,12 @@ TTree::DrawMotifs(
 				if (curr_regex.front()->N_term_motif) {
 					vector<bool>::iterator kt = occupied.begin()+1;
 					for (size_t i = 0; i < motif_size; i++) {
-						if ( (*(kt+i)) ) 
-							acceptable = false; 
+						if ( (*(kt+i)) )
+							acceptable = false;
 					}
 					if (acceptable) {
 						acceptable_positions.push_back(1);
-					}					
+					}
 				} else if (curr_regex.front()->C_term_motif) {
 					for (vector<bool>::iterator kt = occupied.end()-motif_size; kt != occupied.end(); ++kt) {
 						if (*kt) acceptable = false;
@@ -2738,8 +2738,8 @@ TTree::DrawMotifs(
 					for (vector<bool>::iterator kt = occupied.begin()+1; kt != occupied.end()-motif_size; ++kt, site_num++) {
 						acceptable = true;
 						for (size_t i = 0; i < motif_size; i++) {
-							if ( (*(kt+i)) ) 
-								acceptable = false; 
+							if ( (*(kt+i)) )
+								acceptable = false;
 						}
 						if (acceptable) acceptable_positions.push_back(site_num);
 					}
@@ -2765,8 +2765,8 @@ TTree::DrawMotifs(
 			for (size_t i = first; i < last; i++) occupied.at(i) = true;
 		}
 	}
-	
-	for (vector<inMotif*>::reverse_iterator rit = prosite_library.rbegin(); rit != prosite_library.rend(); ++rit) 
+
+	for (vector<inMotif*>::reverse_iterator rit = prosite_library.rbegin(); rit != prosite_library.rend(); ++rit)
 		delete *rit;
 
 	return motifs_to_place;
@@ -2779,15 +2779,15 @@ TTree::DrawMotifs(
 // - Places dashes in the root sequence for x(a,b) regexes, and pads those sites with '*' in previously placed motifs
 // - Changes the root sequence to match the motif placed.
 //////////
-void 
+void
 TTree::Place_Motif(
-					    list<siteRegEx*>& motif, 
-					    char mark, 
-					    list<inMotif*>& placed_motifs, 
-					    inMotif *thisMotif, 
-					    string& root_sequence, 
+					    list<siteRegEx*>& motif,
+					    char mark,
+					    list<inMotif*>& placed_motifs,
+					    inMotif *thisMotif,
+					    string& root_sequence,
 					    size_t start_site
-					   ) 
+					   )
 {
 	string sitemap (root_sequence.size(), '*');
 
@@ -2799,8 +2799,8 @@ TTree::Place_Motif(
 		// Going over all of the occupied sites.
 		size_t num_added = 0;
 		for (list<string>::iterator jt = (*it)->allowable_characters.begin();
-									jt != (*it)->allowable_characters.end() && num_added < (*it)->sites_occupied; 
-									++jt, sequence_site++, num_added++) 
+									jt != (*it)->allowable_characters.end() && num_added < (*it)->sites_occupied;
+									++jt, sequence_site++, num_added++)
 		{
 			root_sequence.at(sequence_site) = (*jt).at((double)rndu()*((*jt).size()-1));
 			sitemap.at(sequence_site) = mark;
@@ -2826,21 +2826,21 @@ TTree::Place_Motif(
 }
 
 TNode*
-TTree::AddNode() 
+TTree::AddNode()
 {
 	TNode *node = new TNode(this);
 	nodeList.push_back(node);
-	
+
 	return node;
 }
 
-void 
+void
 TNode::resetSequence( TNode *node )
 {
 	vector<Site>::iterator my, it;
 	my = seq_evo.begin();
 	it = node->seq_evo.begin();
-	
+
 	for (; my != seq_evo.end(); ++my, ++it) (*my).setState((*it).returnState());
 }
 
@@ -2873,7 +2873,7 @@ TTree::copyNode( TNode *copy_node )
 inClade*
 TTree::AddClade(
 						 string& label
-						) 
+						)
 {
 	inClade *clade = new inClade(label, this);
 	treeEnv.push_back(clade);
@@ -2883,18 +2883,18 @@ TTree::AddClade(
 
 TNode*
 TTree::ReadTip(
-					  string& tree_str, 
-					  int *pos, 
-					  char ch, 
-					  TTree *tree, 
+					  string& tree_str,
+					  int *pos,
+					  char ch,
+					  TTree *tree,
 					  bool first_partition
 					 )
 {
 	string name;
 	size_t found;
-	
+
 	TNode *node = AddNode();
-	
+
 	found = tree_str.find_first_of(":,)",*pos);
 	name = tree_str.substr(*pos, found - *pos);
 
@@ -2903,7 +2903,7 @@ TTree::ReadTip(
 		exit(EXIT_FAILURE);
 	}
 
-	*pos=found;	
+	*pos=found;
 
 	if (first_partition) {
 		node->tipNo=tree->numTips;
@@ -2936,10 +2936,10 @@ TTree::ReadTip(
 
 TNode*
 TTree::ReadNode(
-					   string& tree_str, 
-					   int *pos, 
-					   TTree *tree, 
-					   int detectPolytomies, 
+					   string& tree_str,
+					   int *pos,
+					   TTree *tree,
+					   int detectPolytomies,
 					   bool first_partition
 					  )
 {
@@ -2970,11 +2970,11 @@ TTree::ReadNode(
 	node->branch2=node2;
 	node2->branch0=node;
 	node->branch->length2=node2->branch->length0;
-	
+
 	found = tree_str.find_first_of(":,);", ++(*pos));
 	*pos=found;
 	ch = tree_str.at(found);
-	
+
 	if (detectPolytomies && ch==',') {
 		fprintf(stderr, "This tree contains nodes which aren't bifurcations. Resolve the node\n");
 		fprintf(stderr, "with zero branch lengths to obtain correct results. This can be done\n");
@@ -2987,15 +2987,15 @@ TTree::ReadNode(
 		return NULL;
 	}
 	(*pos)--;
-	
+
 	return node;
 }
 
 TNode*
 TTree::ReadBranch(
-						 string& tree_str, 
-						 int *pos, 
-						 TTree *tree, 
+						 string& tree_str,
+						 int *pos,
+						 TTree *tree,
 						 bool first_partition
 						)
 {
@@ -3016,7 +3016,7 @@ TTree::ReadBranch(
 	} else {		// is a tip
 		node=ReadTip(tree_str, pos, ch, tree, first_partition);
 	}
-	
+
 	ch=ReadToNextChar(tree_str, pos);
 
 	if (isalpha(ch)) {	// Specifying clade:
@@ -3033,12 +3033,12 @@ TTree::ReadBranch(
 			exit(EXIT_FAILURE);
 		}
 	}
-	
+
 	if (ch==':') {
 		if (tree->lengths==0) {
 			sprintf(treeErrorMsg, "Some branches don't have branch lengths");
 			return NULL;
-		} else 
+		} else
 			tree->lengths=1;
 
 		if (sscanf(&tree_str.at(++(*pos)), "%lf", &len)!=1) {
@@ -3062,24 +3062,24 @@ TTree::ReadBranch(
 		if (tree->lengths==1) {
 			sprintf(treeErrorMsg, "Some branches don't have branch lengths");
 			return NULL;
-		} else 
+		} else
 			tree->lengths=0;
-	
+
 		len=0.0;
 		(*pos)--;
 	}
 
 	node->branch->length0=len;
 	node->branch->param=param;
-	
-	return node;
-}	
 
-void 
+	return node;
+}
+
+void
 TTree::ReadTree(
-					 string& tree_str, 
-					 int *pos, 
-					 TTree *tree, 
+					 string& tree_str,
+					 int *pos,
+					 TTree *tree,
 					 bool first_partition
 					)
 {
@@ -3099,7 +3099,7 @@ TTree::ReadTree(
 
     found = tree_str.find(",);",++(*pos));
 
-    if (tree_str.at(*pos) == ',') {		
+    if (tree_str.at(*pos) == ',') {
 		//////////
 		/// iSG currently is not equipped to handle unrooted trees. This may change in the future.
 		//////////
@@ -3121,7 +3121,7 @@ TTree::ReadTree(
 	    	P=P->branch1;
 		}
     }
-    
+
     for (list<inClade*>::iterator sit = treeEnv.begin(); sit != treeEnv.end(); ++sit) {
     	for (int i = 0; i < names.size(); i++) {
     		if (((names.at(i)).compare((*sit)->clade_name) == 0)) {
@@ -3132,8 +3132,8 @@ TTree::ReadTree(
     }
 }
 
-void 
-TTree::report_clades() 
+void
+TTree::report_clades()
 {
 	cerr << "Clades: " << endl;
 	for (list<inClade*>::iterator it = treeEnv.begin(); it != treeEnv.end(); ++it) {
@@ -3144,13 +3144,13 @@ TTree::report_clades()
 	}
 }
 
-char 
+char
 ReadToNextChar(
-					string& tree_str, 
+					string& tree_str,
 					int *pos
 				   )
 {
-	int found;	
+	int found;
 
 	found = tree_str.find_first_not_of(" \t\n",++(*pos));
 	*pos = found;
@@ -3158,11 +3158,11 @@ ReadToNextChar(
 	return tree_str.at(*pos);
 }
 
-void 
+void
 ReadUntil(
-			   string& tree_str, 
-			   int *pos, 
-			   char stopChar, 
+			   string& tree_str,
+			   int *pos,
+			   char stopChar,
 			   const char *what
 			  )
 {
@@ -3179,7 +3179,7 @@ ReadUntil(
 	}
 }
 
-void 
+void
 TTree::report_branches()
 {
 	for (list<TNode*>::iterator it = nodeList.begin(); it != nodeList.end(); ++it) {
@@ -3195,19 +3195,19 @@ TTree::report_branches()
 
 		cerr << "branch1_max_path:             " << " " << (*it)->branch->branch1_max_path << endl;
 		cerr << "branch2_max_path:             " << " " << (*it)->branch->branch2_max_path << endl;
-		
+
 		cerr << "perturbation:                 " << " " << (*it)->branch->perturbation << endl;
 
 		cerr << endl;
 	}
 }
 
-void 
+void
 TTree::report_sequences( void )
 {
 	for (list<TNode*>::iterator it = nodeList.begin(); it != nodeList.end(); ++it) {
-		cerr << "tipNo: " << (*it)->tipNo 
-			 << " mytipNo: " << (*it)->mytipNo 
+		cerr << "tipNo: " << (*it)->tipNo
+			 << " mytipNo: " << (*it)->mytipNo
 			 << " anc mytipNo: " << (*it)->anc->mytipNo << endl;
 		for (vector<Site>::iterator jt = (*it)->seq_evo.begin(); jt != (*it)->seq_evo.end(); ++jt) {
 			if ((*jt).returnState() == -1) cerr << "X";
@@ -3218,9 +3218,9 @@ TTree::report_sequences( void )
 	}
 }
 
-void 
+void
 TTree::write_tree(
-				  ofstream& out, 
+				  ofstream& out,
 				  bool scale
 				 )
 {
@@ -3237,10 +3237,10 @@ TTree::write_tree(
 }
 
 void TTree::write_subtree(
-						  TNode *node, 
-						  ofstream& out, 
-						  bool writeAncestors, 
-						  int *nodeNo, 
+						  TNode *node,
+						  ofstream& out,
+						  bool writeAncestors,
+						  int *nodeNo,
 						  bool time_rel,
 						  bool scale
 						 )
@@ -3261,12 +3261,12 @@ void TTree::write_subtree(
 	}
 }
 
-void 
+void
 globalArray::Print()
 {
 	size_t site_number = 0;
 //	for (vector<insertSite>::iterator it = insert_sites.begin(); it != insert_sites.end(); ++it, site_number++) {
-//		for (list<siteModifier>::iterator jt = (*it).modifiers.begin(); jt != (*it).modifiers.end(); ++jt) 
+//		for (list<siteModifier>::iterator jt = (*it).modifiers.begin(); jt != (*it).modifiers.end(); ++jt)
 //			cout << "***** " << (*jt).action << ", " << (*jt).indelNo << ", " << (*jt).fromAnc << endl;
 //		cout << site_number << ": " << (*it).action << ", ";
 //		cout << (*it).indelNo << ", " << (*it).fromAnc << endl;
@@ -3313,12 +3313,12 @@ globalArray::Print()
 //		else cout << (*it).indelNo;
 //	}
 //	cout << endl;
-	
+
 }
 
-vector<insertSite>::iterator 
+vector<insertSite>::iterator
 globalArray::locateEvent(
-						 TNode *des, 
+						 TNode *des,
 						 size_t position
 						)
 {
@@ -3349,7 +3349,7 @@ globalArray::locateEvent(
 	}
 
 //cerr << "Event is at the end of the sequence." << endl;
-	
+
 	return insert_sites.end();
 }
 
@@ -3359,7 +3359,7 @@ globalArray::locateEvent(
 /// eventID of the current path, and deletes all other events in the globalArray that are of a smaller
 /// eventID.
 //////////
-void 
+void
 globalArray::cleanArray( list<eventTrack*>& events )
 {
 	// Save substitutions that exist in the current path.
@@ -3381,21 +3381,21 @@ globalArray::cleanArray( list<eventTrack*>& events )
 		for (list<siteModifier>::iterator jt = (*it).modifiers.begin(); /*mod < mod_size*/ jt != (*it).modifiers.end(); ++jt, ++mod ) {
 			if ( !(*jt).save ) {
 				(*it).modifiers.erase(jt);
-				// Major issues if I try to make compensatory changes to jt for erasure. 
+				// Major issues if I try to make compensatory changes to jt for erasure.
 				// Setting to begin should not make a big difference in run-time.
 				jt = (*it).modifiers.begin();
-			} 
+			}
 		}
-		
+
 		// Reset all save flags back to false before advancing to next site in globalArray.
-		for (list<siteModifier>::iterator jt = (*it).modifiers.begin(); jt != (*it).modifiers.end(); ++jt) 
+		for (list<siteModifier>::iterator jt = (*it).modifiers.begin(); jt != (*it).modifiers.end(); ++jt)
 			(*jt).save = false;
 	}
 }
 
-bool 
+bool
 globalArray::isDeleted(
-							TNode *des, 
+							TNode *des,
 							insertSite insert_site
 						   )
 {

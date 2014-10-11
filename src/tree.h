@@ -121,22 +121,22 @@ enum {
 /// From: http://www.drdobbs.com/184403484;jsessionid=GEBN5SESG1APTQE1GHPCKHWATMY32JVN?pgno=1
 //////////
 template<typename T>
-class Counter 
+class Counter
 {
 public:
 	Counter() { ++count; num_ctor++; }
 	Counter(const Counter&) { ++count; num_copy_ctor++; }
 	~Counter() { --count; num_dtor++; }
-	
+
 	static size_t howMany() { return count; }
-	
+
 private:
 	static size_t count;
 };
-template<typename T> 
+template<typename T>
 size_t Counter<T>::count = 0;	// Set all counters to 0.
 
-class TNode : private Counter<TNode> 
+class TNode : private Counter<TNode>
 {
 public:
 	using Counter<TNode>::howMany;
@@ -160,7 +160,7 @@ public:
 //	void (*ptr2update)(RateMatrix*, vector<Site>::iterator, double, double);
 
 	//////////
-	/// Should these belong to the TNode... Only time (and the amount of effort needed to move 
+	/// Should these belong to the TNode... Only time (and the amount of effort needed to move
 	/// them) will tell.
 	//////////
 	varSite *one_site_varSite;
@@ -265,16 +265,16 @@ public:
 	//////////
 	vector<double> nij;	/// For EPC again, transition probability vector approximations on a branch.
 	vector<double> nij_pseudocounts;
-	
-	Branch() : 
-		length0(0.0), 
-		length1(0.0), 
-		length2(0.0), 
+
+	Branch() :
+		length0(0.0),
+		length1(0.0),
+		length2(0.0),
 		param(0.0),
-		branch1_time_relative_length(0.0), 
-		branch2_time_relative_length(0.0), 
+		branch1_time_relative_length(0.0),
+		branch2_time_relative_length(0.0),
 		branch0_time_relative_length(0.0),
-		branch1_max_path(0.0), 
+		branch1_max_path(0.0),
 		branch2_max_path(0.0),
 		perturbation(1.0),
 		rates ( NULL ),
@@ -294,7 +294,7 @@ public:
 
 	// Variables
 	int rooted, lengths;
-	TNode *root; 
+	TNode *root;
 	inTree *my_iTree;
 	list<TNode*> nodeList;
 	int numTips, numNodes;
@@ -309,7 +309,7 @@ public:
 	list<Dependency*> dep;
 	list<Dependency*> neutral_dep;
 	int treeNum;		// The partition that this tree is assigned to.
-	
+
 	// Global arrays
 	globalArray				*global_alignment;
 
@@ -375,7 +375,7 @@ public:
 	char	action;
 	int		fromAnc;
 	int		indelNo;
-	
+
 	list<siteModifier> modifiers;
 
 	insertSite(char a, int fA, int iN)

@@ -38,12 +38,12 @@ vector<int>		acagatcgctgt (400, 0);
 extern int changed_site;
 extern int prev_state;
 
-// functions 
+// functions
 
 void Create_Global_Arrays(
-						  TTree *tree, 
+						  TTree *tree,
 						  int inNumSites
-						 ) 
+						 )
 {
 	//////////
 	/// Root sequence, coming from root node.
@@ -53,8 +53,8 @@ void Create_Global_Arrays(
 }
 
 void SetCategories(
-				   TNode *node, 
-				   int inNumSites, 
+				   TNode *node,
+				   int inNumSites,
 				   seqGenOptions *options
 				  )
 {
@@ -68,7 +68,7 @@ void SetCategories(
 				message << "  Cannot change " << node->anc->nodeEnv->report_rateHetero() << " to Gamma Rates.";
 				options->SpoolWarnings(message.str());
 				node->nodeEnv->rateHetero = node->anc->nodeEnv->rateHetero;
-				if (node->anc->nodeEnv->rateHetero == DiscreteGammaRates) 
+				if (node->anc->nodeEnv->rateHetero == DiscreteGammaRates)
 					node->nodeEnv->numCats = node->anc->nodeEnv->numCats;
 				// Changed the rateHetero of the current node, reprocess.
 				SetCategories(node, inNumSites, options);
@@ -144,13 +144,13 @@ void SetCategories(
 		case DiscreteGammaRates:
 			node->nodeEnv->gammaShape = node->anc->nodeEnv->gammaShape;
 			node->nodeEnv->numCats = node->anc->nodeEnv->numCats;
-			for (i=0; i < node->nodeEnv->numCats; i++) 
+			for (i=0; i < node->nodeEnv->numCats; i++)
 				node->nodeEnv->catRate[i] = node->anc->nodeEnv->catRate[i];
 			break;
 		case GammaRates:
 			node->nodeEnv->gammaShape = node->anc->nodeEnv->gammaShape;
 			break;
-		case CodonRates: 
+		case CodonRates:
 			node->nodeEnv->catRate[0] = node->anc->nodeEnv->catRate[0];
 			node->nodeEnv->catRate[1] = node->anc->nodeEnv->catRate[1];
 			node->nodeEnv->catRate[2] = node->anc->nodeEnv->catRate[2];
@@ -162,7 +162,7 @@ void SetCategories(
 }
 
 char SetState(
-			  double *P, 
+			  double *P,
 			  string& caller
 			 )
 {
@@ -171,7 +171,7 @@ char SetState(
 	bool done = false;
 	int num_rounds = 0;
 	double *original_P = P;
-	
+
 	do {
 		P = original_P;
 		num_rounds++;
@@ -202,8 +202,8 @@ short IsInvariable(
 }
 
 void RandomSequence(
-					char *seq, 
-					int inNumSites, 
+					char *seq,
+					int inNumSites,
 					seqGenOptions *options,
 					RateMatrix *rates
 				   )
@@ -253,7 +253,7 @@ string insertFillSequence(
 	int i = 1;
 	for (vector<double>::iterator it = rates->pi.begin()+1; it != rates->pi.end(); ++it, i++)
 		addFreq[i] = addFreq[i-1]+(*it);
-	
+
 	if (!isNucModel) {
 		calling_routine.assign("insertFillSequence, isNucModel");
 	    insert_sequence.at(0) = SetState(addFreq, calling_routine);
@@ -267,7 +267,7 @@ string insertFillSequence(
 			r=rndu();
 			r*=bayes_probabilities_for_next.at(numStates-1);
 			size_t j=0;
-			while(r>bayes_probabilities_for_next.at(j)) j++; 
+			while(r>bayes_probabilities_for_next.at(j)) j++;
 			if (j >= numStates) {
 				cerr << "Illegal character found in iFS: " << j << endl;
 				exit(EXIT_FAILURE);
@@ -290,22 +290,22 @@ string insertFillSequence(
 
 bool Stop_Codon(
 				int *codon
-			   ) 
+			   )
 {
-        size_t T = stateCharacters.find("T"), 
-        	   A = stateCharacters.find("A"), 
+        size_t T = stateCharacters.find("T"),
+        	   A = stateCharacters.find("A"),
         	   G = stateCharacters.find("G");
-                                
+
         if (codon[0] == T && codon[1] == A && codon[2] == G) return true;
         if (codon[0] == T && codon[1] == G && codon[2] == A) return true;
         if (codon[0] == T && codon[1] == A && codon[2] == A) return true;
-                                
+
         return false;
 }
 
 int calcTrials(
-			   TNode *des, 
-			   int *E_in_, 
+			   TNode *des,
+			   int *E_in_,
 			   int *E_del_
 			  )
 {
@@ -318,7 +318,7 @@ int calcTrials(
 			// Insertion calculations:
 			if ( (*it).motif.active_properties.indel->L_ins_->insertionAllowed() ) (*E_in_)++;
 			//
-			// Deletion  calculations:		
+			// Deletion  calculations:
 			if ( (*it).motif.active_properties.indel->del->deletionAllowed() ) (*E_del_)++;
 			//
 			// Last site right needs to be checked.
@@ -333,19 +333,19 @@ int calcTrials(
 	}
 
 	// C&B are half n half.
-	if (des->nodeEnv->P_ins_ == 0 && des->nodeEnv->P_del_ == 0) 
+	if (des->nodeEnv->P_ins_ == 0 && des->nodeEnv->P_del_ == 0)
 		*E_in_ = *E_del_ = (*E_in_+*E_del_) / 2;
 
 	return *E_in_ + *E_del_;
 }
 
 int  Find_Action(
-				 double len, 
-				 double P_insert_, 
-				 double P_delete_, 
-				 int CnB_divisor, 
+				 double len,
+				 double P_insert_,
+				 double P_delete_,
+				 int CnB_divisor,
 				 int action_test
-				) 
+				)
 {
     if( !P_insert_ && !P_delete_) {
 		//////////
@@ -369,17 +369,17 @@ int  Find_Action(
 				return DELETE;
 			}
 		}
-    } 
+    }
     return NO_ACTION;
-} 
+}
 
 void Find_Motif_Positions(
-						  TTree *tree, 
-						  TNode *des, 
-						  motifSite *this_site, 
-						  int indel_size, 
-						  bool back, 
-						  varSite **in_template_varSite, 
+						  TTree *tree,
+						  TNode *des,
+						  motifSite *this_site,
+						  int indel_size,
+						  bool back,
+						  varSite **in_template_varSite,
 						  varSite **in_motif_varSite
 						 )
 {
@@ -415,7 +415,7 @@ void Find_Motif_Positions(
 			size_t rand = (size_t)(random2 * 6.0);
 
 			if(num_rounds++ > 250) {
-				des->Print_Active_Properties(); 
+				des->Print_Active_Properties();
 				cerr << "=====case left undealt with in Insert routine:" << endl;
 				cerr << "st_L " << st_L << " st_R " << st_R << " m_L " << m_L << " m_R " << m_R << " os_st " << os_st << " os_m " << os_m << endl;
 				exit(EXIT_FAILURE);
@@ -429,20 +429,20 @@ void Find_Motif_Positions(
 				case 0:
 //					cerr << "case 0" << endl;
 					if (st_L) {
-						*in_template_varSite 
+						*in_template_varSite
 						= this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_left;
 						if (m_L && os_m)
-							if (random < 0.5) 
-								*in_motif_varSite 
+							if (random < 0.5)
+								*in_motif_varSite
 								= this_site->active_properties.indel->R_ins_->my_motif_varSite_left;
-							else 
-								*in_motif_varSite 
+							else
+								*in_motif_varSite
 								= this_site->active_properties.indel->R_ins_->on_site_motif_varSite;
-						else if (os_m) 
-							*in_motif_varSite 
+						else if (os_m)
+							*in_motif_varSite
 							= this_site->active_properties.indel->R_ins_->on_site_motif_varSite;
-						else if (m_L) 
-							*in_motif_varSite 
+						else if (m_L)
+							*in_motif_varSite
 							= this_site->active_properties.indel->R_ins_->my_motif_varSite_left;
 						else found_site = false;
 					} else found_site = false;
@@ -452,20 +452,20 @@ void Find_Motif_Positions(
 				case 1:
 //					cerr << "case 1" << endl;
 					if (st_R) {
-						*in_template_varSite 		
+						*in_template_varSite
 						= this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_right;
 						if (m_R && os_m)
-							if (random < 0.5) 
-								*in_motif_varSite 
+							if (random < 0.5)
+								*in_motif_varSite
 								= this_site->active_properties.indel->R_ins_->my_motif_varSite_right;
-							else 
-								*in_motif_varSite 
+							else
+								*in_motif_varSite
 								= this_site->active_properties.indel->R_ins_->on_site_motif_varSite;
-						else if (os_m) 
-							*in_motif_varSite 
+						else if (os_m)
+							*in_motif_varSite
 							= this_site->active_properties.indel->R_ins_->on_site_motif_varSite;
-						else if (m_R) 
-							*in_motif_varSite 
+						else if (m_R)
+							*in_motif_varSite
 							= this_site->active_properties.indel->R_ins_->my_motif_varSite_right;
 						else found_site = false;
 					} else found_site = false;
@@ -475,21 +475,21 @@ void Find_Motif_Positions(
 				case 2:
 //					cerr << "case 2" << endl;
 					if (m_R) {
-						*in_motif_varSite 		
+						*in_motif_varSite
 						= this_site->active_properties.indel->R_ins_->my_motif_varSite_right;
 						if (st_R && os_st) {
 							if (random < 0.5) {
-								*in_template_varSite 
+								*in_template_varSite
 								= this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_right;
 							} else {
-								*in_template_varSite 
+								*in_template_varSite
 								= this_site->active_properties.indel->R_ins_->on_site_sequence_template_varSite;
 							}
-						} else if (st_R) {	
-							*in_template_varSite 
+						} else if (st_R) {
+							*in_template_varSite
 							= this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_right;
 						} else if (os_st) {
-							*in_template_varSite 
+							*in_template_varSite
 							= this_site->active_properties.indel->R_ins_->on_site_sequence_template_varSite;
 						} else {
 							found_site = false;
@@ -503,20 +503,20 @@ void Find_Motif_Positions(
 				case 3:
 //					cerr << "case 3" << endl;
 					if (m_L) {
-						*in_motif_varSite 
+						*in_motif_varSite
 						= this_site->active_properties.indel->R_ins_->my_motif_varSite_left;
 						if (st_L && os_st)
-							if (random < 0.5) 
-								*in_template_varSite 
+							if (random < 0.5)
+								*in_template_varSite
 								= this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_left;
-							else 
-								*in_template_varSite 
+							else
+								*in_template_varSite
 								= this_site->active_properties.indel->R_ins_->on_site_sequence_template_varSite;
-						else if (st_L) 
-							*in_template_varSite 
+						else if (st_L)
+							*in_template_varSite
 							= this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_left;
-						else if (os_st) 
-							*in_template_varSite 
+						else if (os_st)
+							*in_template_varSite
 							= this_site->active_properties.indel->R_ins_->on_site_sequence_template_varSite;
 						else found_site = false;
 					} else found_site = false;
@@ -526,47 +526,47 @@ void Find_Motif_Positions(
 				case 4:
 //					cerr << "case 4" << endl;
 					if (os_st) {
-						*in_template_varSite 
+						*in_template_varSite
 						= this_site->active_properties.indel->R_ins_->on_site_sequence_template_varSite;
-						if (m_L && m_R && os_m) 
-							if (random < 0.333) 
-								*in_motif_varSite 
+						if (m_L && m_R && os_m)
+							if (random < 0.333)
+								*in_motif_varSite
 								= this_site->active_properties.indel->R_ins_->my_motif_varSite_left;
-							else if (random < 0.666) 
-								*in_motif_varSite 
+							else if (random < 0.666)
+								*in_motif_varSite
 								= this_site->active_properties.indel->R_ins_->my_motif_varSite_right;
-							else 
-								*in_motif_varSite 
+							else
+								*in_motif_varSite
 								= this_site->active_properties.indel->R_ins_->on_site_motif_varSite;
-						else if (m_L && m_R) 
-							if (random < 0.5) 
-								*in_motif_varSite 
+						else if (m_L && m_R)
+							if (random < 0.5)
+								*in_motif_varSite
 								= this_site->active_properties.indel->R_ins_->my_motif_varSite_left;
-							else 
-								*in_motif_varSite 
+							else
+								*in_motif_varSite
 								= this_site->active_properties.indel->R_ins_->my_motif_varSite_right;
-						else if (m_L && os_m) 
-							if (random < 0.5) 
-								*in_motif_varSite 
+						else if (m_L && os_m)
+							if (random < 0.5)
+								*in_motif_varSite
 								= this_site->active_properties.indel->R_ins_->my_motif_varSite_left;
-							else 
-								*in_motif_varSite 
+							else
+								*in_motif_varSite
 								= this_site->active_properties.indel->R_ins_->on_site_motif_varSite;
-						else if (m_R && os_m) 
-							if (random < 0.5) 
-								*in_motif_varSite 
+						else if (m_R && os_m)
+							if (random < 0.5)
+								*in_motif_varSite
 								= this_site->active_properties.indel->R_ins_->my_motif_varSite_right;
-							else 
-								*in_motif_varSite 
+							else
+								*in_motif_varSite
 								= this_site->active_properties.indel->R_ins_->on_site_motif_varSite;
-						else if (m_L) 
-							*in_motif_varSite 
+						else if (m_L)
+							*in_motif_varSite
 							= this_site->active_properties.indel->R_ins_->my_motif_varSite_left;
-						else if (m_R) 
-							*in_motif_varSite 
+						else if (m_R)
+							*in_motif_varSite
 							= this_site->active_properties.indel->R_ins_->my_motif_varSite_right;
-						else if (os_m) 
-							*in_motif_varSite 
+						else if (os_m)
+							*in_motif_varSite
 							= this_site->active_properties.indel->R_ins_->on_site_motif_varSite;
 						else found_site = false;
 					} else found_site = false;
@@ -576,51 +576,51 @@ void Find_Motif_Positions(
 				case 5:
 //					cerr << "case 5" << endl;
 					if (os_m) {
-						*in_motif_varSite 
+						*in_motif_varSite
 						= this_site->active_properties.indel->R_ins_->on_site_motif_varSite;
 						if (st_L && st_R && os_st) {
 							if (random < 0.333) {
-								*in_template_varSite 
+								*in_template_varSite
 								= this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_left;
 							} else if (random < 0.666) {
-								*in_template_varSite 
+								*in_template_varSite
 								= this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_right;
 							} else {
-								*in_template_varSite 
+								*in_template_varSite
 								= this_site->active_properties.indel->R_ins_->on_site_sequence_template_varSite;
 							}
-						} else if (st_L && st_R) {	
+						} else if (st_L && st_R) {
 							if (random < 0.5) {
-								*in_template_varSite 
+								*in_template_varSite
 								= this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_left;
 							} else {
-								*in_template_varSite 
+								*in_template_varSite
 								= this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_right;
 							}
 						} else if (st_L && os_st) {
 							if (random < 0.5) {
-								*in_template_varSite 
+								*in_template_varSite
 								= this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_left;
 							} else {
-								*in_template_varSite 
+								*in_template_varSite
 								= this_site->active_properties.indel->R_ins_->on_site_sequence_template_varSite;
 							}
 						} else if (st_R && os_st) {
 							if (random < 0.5) {
-								*in_template_varSite 
+								*in_template_varSite
 								= this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_right;
 							} else {
-								*in_template_varSite 
+								*in_template_varSite
 								= this_site->active_properties.indel->R_ins_->on_site_sequence_template_varSite;
 							}
 						} else if (st_L) {
-							*in_template_varSite 
+							*in_template_varSite
 							= this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_left;
-						} else if (st_R) {		
-							*in_template_varSite 
+						} else if (st_R) {
+							*in_template_varSite
 							= this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_right;
 						} else if (os_st) {
-							*in_template_varSite 
+							*in_template_varSite
 							= this_site->active_properties.indel->R_ins_->on_site_sequence_template_varSite;
 						} else {
 							found_site = false;
@@ -632,36 +632,36 @@ void Find_Motif_Positions(
 				default:
 					// should be impossible.
 					des->evolvingSequence->print_sequence();
-					cerr << this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_left->insertion(indel_size) 
-						 << " (" 
-						 << this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_left->min 
-						 << "," 
-						 << this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_left->max 
-						 << ") " 
-						 << this_site->active_properties.indel->R_ins_->my_motif_varSite_left->insertion(indel_size) 
-						 << "  (" 
-						 << this_site->active_properties.indel->R_ins_->my_motif_varSite_left->min 
-						 << "," 
-						 << this_site->active_properties.indel->R_ins_->my_motif_varSite_left->max 
-						 << ")  " 
-						 << this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_right->insertion(indel_size) 
-						 << " (" 
-						 << this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_right->min 
-						 << "," 
-						 << this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_right->max 
-						 << ") " 
-						 << this_site->active_properties.indel->R_ins_->my_motif_varSite_right->insertion(indel_size) 
-						 << " (" 
-						 << this_site->active_properties.indel->R_ins_->my_motif_varSite_right->min 
-						 << "," 
-						 << this_site->active_properties.indel->R_ins_->my_motif_varSite_right->max 
-						 << ")" 
-						 << endl 
-						 << "members.size() = " 
-						 << this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_left->member_set.size() 
-						 << " " 
-						 << this_site->active_properties.indel->R_ins_->my_motif_varSite_left->member_set.size() 
-						 << " Wrong insertion site????" 
+					cerr << this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_left->insertion(indel_size)
+						 << " ("
+						 << this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_left->min
+						 << ","
+						 << this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_left->max
+						 << ") "
+						 << this_site->active_properties.indel->R_ins_->my_motif_varSite_left->insertion(indel_size)
+						 << "  ("
+						 << this_site->active_properties.indel->R_ins_->my_motif_varSite_left->min
+						 << ","
+						 << this_site->active_properties.indel->R_ins_->my_motif_varSite_left->max
+						 << ")  "
+						 << this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_right->insertion(indel_size)
+						 << " ("
+						 << this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_right->min
+						 << ","
+						 << this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_right->max
+						 << ") "
+						 << this_site->active_properties.indel->R_ins_->my_motif_varSite_right->insertion(indel_size)
+						 << " ("
+						 << this_site->active_properties.indel->R_ins_->my_motif_varSite_right->min
+						 << ","
+						 << this_site->active_properties.indel->R_ins_->my_motif_varSite_right->max
+						 << ")"
+						 << endl
+						 << "members.size() = "
+						 << this_site->active_properties.indel->R_ins_->my_sequence_template_varSite_left->member_set.size()
+						 << " "
+						 << this_site->active_properties.indel->R_ins_->my_motif_varSite_left->member_set.size()
+						 << " Wrong insertion site????"
 						 << endl;
 
 					exit(EXIT_FAILURE);
@@ -673,10 +673,10 @@ void Find_Motif_Positions(
 }
 
 int Insert(
-		   TTree *tree, 
-		   TNode *des, 
+		   TTree *tree,
+		   TNode *des,
 		   int indel_size
-		  ) 
+		  )
 {
     int start_aa, final_aa;
     int indel_aa_in_globals = 0;
@@ -694,7 +694,7 @@ int Insert(
 	if (start_aa == FSL_FAIL) return 0;
 
 	// For insertion, working on half sites, which in turn means we have to go to the next site
-	// to represent an insertion correctly. 
+	// to represent an insertion correctly.
 	start_aa++;
 
 	tree->global_alignment->insert_sites.insert(
@@ -715,38 +715,38 @@ int Insert(
 	vector<Site>::iterator site_it = des->seq_evo.begin();
 	bool Site_back = ( ( des->seq_evo.size() == start_aa ) ? true : false );
 	Find_Motif_Positions(
-						 tree, 
-						 des, 
-						 (&(*(site_it+start_aa-1)).motif), 
-						 indel_size, 
-						 Site_back, 
-						 &in_template_varSite, 
+						 tree,
+						 des,
+						 (&(*(site_it+start_aa-1)).motif),
+						 indel_size,
+						 Site_back,
+						 &in_template_varSite,
 						 &in_motif_varSite
 						);
 
 	if (profile) {
-		cerr << "MOTIF (" << in_motif_varSite 
-		     << ") TEMPLATE(" << in_template_varSite << ")" 
+		cerr << "MOTIF (" << in_motif_varSite
+		     << ") TEMPLATE(" << in_template_varSite << ")"
 		     << " NODE(" << des << ")"
 		     << endl;
 		cerr << "Ancestral and Descendant varSites: " << endl;
 
 		cerr << "Sequence::setActiveProps: Adding new site to site with membership: ";
 		cerr << "st("
- 			 << in_template_varSite->min 
+ 			 << in_template_varSite->min
 			 << ","
 			 << in_template_varSite->max
 			 << ")["
 			 << in_template_varSite->member_set.size()
 			 << "] ";
 
-	    //list<varSite*>::iterator des_it =  des->variable_region_list.begin(); 
+	    //list<varSite*>::iterator des_it =  des->variable_region_list.begin();
 		//cerr << "PRE-INSERT:" << endl;
 		//cerr << "anc length: " << des->anc->seq_evo.size() << "  des length: " << des->seq_evo.size() << endl;
 		//for (list<varSite*>::iterator anc_it =  des->anc->variable_region_list.begin();
-		//							  anc_it != des->anc->variable_region_list.end(); 
+		//							  anc_it != des->anc->variable_region_list.end();
 		//						  	  ++anc_it,
-		//						  	  ++des_it) 
+		//						  	  ++des_it)
 		//{
 		//	cerr << (*anc_it) << "->" << (*anc_it)->descendant_equiv << " " << (*anc_it)->min << "," << (*anc_it)->max << " [" << (*anc_it)->member_set.size() << "]" << "\t\t"
 		//		 << (*des_it) << " " << (*des_it)->min << "," << (*des_it)->max << " [" << (*des_it)->member_set.size() << "]" <<endl;
@@ -761,7 +761,7 @@ int Insert(
 			exit(EXIT_FAILURE);
 		}
 	}
-	if (!des->isVarSite(in_motif_varSite)) { 
+	if (!des->isVarSite(in_motif_varSite)) {
 		if (des->isVarSite(in_motif_varSite->descendant_equiv)) {
 			in_motif_varSite = in_motif_varSite->descendant_equiv;
 		} else {
@@ -777,21 +777,21 @@ int Insert(
 	//
 	// Create insert Sequence
 	//  * Passing the clade environment, so no need to worry about rates later in the function.
-	//  * Passing the motif environment, so no need to worry about integrating sites (except for 
+	//  * Passing the motif environment, so no need to worry about integrating sites (except for
 	//    L_ins_ in first position and R_ins_ in last position, which need to be connected to
 	//    R_ins_ and L_ins_ of the site before and site after, respectively).
 	if (profile) cerr << "INSERT! size " << indel_size << "(" << des->seq_evo.size() << ")" << endl;
 	auto_ptr<Sequence> insert_sites ( new Sequence(des, indel_size)	);
 	insert_sites->init(
 					   des,
-			  		   insertFillSequence(indel_size, des->branch->rates), 
+			  		   insertFillSequence(indel_size, des->branch->rates),
 			  		   des->nodeEnv,
 					   (
 					     (Site_back)
 					     ? &(*(site_it+start_aa-1)).motif
-					     : &(*(site_it+start_aa)).motif	
-					   ),	
-			  		   in_template_varSite, 
+					     : &(*(site_it+start_aa)).motif
+					   ),
+			  		   in_template_varSite,
 			  		   in_motif_varSite
 			 		  );
 	//
@@ -812,16 +812,16 @@ int Insert(
 	else insert_location = des->seq_evo.begin()+start_aa;
 	//
 	// Connect front
-	//	
+	//
 	// Now a vector, so cannot simply use sequence member functions
 	//   * The sequence position (initialized to inserted sequence)
 	//   * The invariable position, initialized to 0 (which is what we want, so above invar can be removed.)
 	//
 	// Fig:
     //       <--INSERT HERE
-    //    1     2              i1    i2 
+    //    1     2              i1    i2
 	//    S     S              S     S
-	//   / \   / \            / \   / \  
+	//   / \   / \            / \   / \
 	//  /   \ /   \          /   \ /   \
 	// I  D  I  D  I        I  D  I  D  I
 	//
@@ -847,7 +847,7 @@ int Insert(
 		// Add sites to the end of the sequence.
 		for (vector<Site>::iterator site_it =  insert_sites->evolutionaryAttributes.begin();
 									site_it != insert_sites->evolutionaryAttributes.end();
-									++site_it) 
+									++site_it)
 		{
 			des->evolvingSequence->evolutionaryAttributes.push_back(*site_it);
 		}
@@ -867,7 +867,7 @@ int Insert(
 		//
 		// Insert sites into the correct position.
 		des->evolvingSequence->evolutionaryAttributes.insert(
-															 insert_location, 
+															 insert_location,
 															 insert_sites->evolutionaryAttributes.begin(),
 															 insert_sites->evolutionaryAttributes.end()
 															);
@@ -902,16 +902,16 @@ int Insert(
 
 int Delete(
 		   TTree *tree,
-		   TNode *des, 
+		   TNode *des,
 		   int *indel_size
-		  ) 
+		  )
 {
     int start_aa, final_aa;
-    int indel_aa_in_globals = 0; 
-    int position_in_globals; 
-    int num_indels_in_globals; 
-    int temp_in_globals; 
-    int num_rounds = 0; 
+    int indel_aa_in_globals = 0;
+    int position_in_globals;
+    int num_indels_in_globals;
+    int temp_in_globals;
+    int num_rounds = 0;
 
 
     final_aa=des->seq_evo.size();
@@ -923,12 +923,12 @@ int Delete(
 	cerr << "Evolve::Delete: *********************DELETE size " << *indel_size << " at " << start_aa << endl;
 
 	//////////
-	/// For multi-residue deletions, note that we will always track to start_aa when we delete 
-	/// the residue at start_aa, it will no longer be part of the current sequence, and thus will 
+	/// For multi-residue deletions, note that we will always track to start_aa when we delete
+	/// the residue at start_aa, it will no longer be part of the current sequence, and thus will
 	/// not be counted during our routine. Therefore, we start at the furthest residue, and delete
 	/// backwards.
 	//////////
-	for (int x = *indel_size-1; x >= 0; x--) 
+	for (int x = *indel_size-1; x >= 0; x--)
 		(*(tree->global_alignment->locateEvent(
 											   des,
 											   start_aa+x
@@ -948,18 +948,18 @@ int Delete(
 	//cerr << "Evolve::Delete: END DELETE" << endl;
 
 	return 1;
-} 
+}
 
 int Find_Start_Location(
-					    TNode *des, 
-					    int *indel_size, 
-					    int final_aa, 
+					    TNode *des,
+					    int *indel_size,
+					    int final_aa,
 					    int action
-					   ) 
+					   )
 {
     int position;
-    int i,j; 
-    int ok; 
+    int i,j;
+    int ok;
     int numAcceptablePositions = 0;
     vector<bool> acceptable_positions (final_aa+2, false);
 	vector<bool>::iterator bit = acceptable_positions.begin();
@@ -976,7 +976,7 @@ int Find_Start_Location(
 				numAcceptablePositions++;
 			}
 		}
- 	} else { 
+ 	} else {
 		// Two arrays, if a deletion of indel_size is acceptable for each structure, then this pos
 		// is an acceptable pos. If not, no dice.
  		vector<bool> st_accept (final_aa+2, false);
@@ -985,7 +985,7 @@ int Find_Start_Location(
 		size_t members, min, current_indel_size, num_dels_in_current_varSite, max;
 		size_t number_of_unconstrained;
 
-		// For Gillespie: Deletions can take portions of the sequence before and after the 
+		// For Gillespie: Deletions can take portions of the sequence before and after the
 		// sequence being simulated. This finds the first and last positions in the sequence
 		// that are constrained (i.e., cannot be deleted), and then calculates the number of
 		// sub-sequence positions that can be taken by a deletion that overlaps the borders of
@@ -1010,7 +1010,7 @@ int Find_Start_Location(
 			success = true;
 			for (vector<Site>::iterator site_it2 = site_it; site_it2 != des->seq_evo.end() && current_indel_size != *indel_size; ++site_it2, current_indel_size++) {
 				// If we are in a new varSite, need to reflect that in all data members.
-				if ( (*site_it2).motif.active_properties.indel->del->my_sequence_template_varSite != current_varSite) {	
+				if ( (*site_it2).motif.active_properties.indel->del->my_sequence_template_varSite != current_varSite) {
 					current_varSite = (*site_it2).motif.active_properties.indel->del->my_sequence_template_varSite;
 					members = current_varSite->member_set.size();
 					min = current_varSite->min;
@@ -1036,7 +1036,7 @@ int Find_Start_Location(
 			success = true;
 			for (vector<Site>::iterator site_it2 = site_it; site_it2 != des->seq_evo.end() && current_indel_size != *indel_size; ++site_it2, current_indel_size++) {
 				// If we are in a new varSite, need to reflect that in all data members.
-				if ( (*site_it2).motif.active_properties.indel->del->my_motif_varSite != current_varSite) {	
+				if ( (*site_it2).motif.active_properties.indel->del->my_motif_varSite != current_varSite) {
 					current_varSite = (*site_it2).motif.active_properties.indel->del->my_motif_varSite;
 					members = current_varSite->member_set.size();
 					min = current_varSite->min;
@@ -1059,7 +1059,7 @@ int Find_Start_Location(
 			(*bit) = (*it) && (*it2);
 			if (*bit) numAcceptablePositions++;
 		}
-    } 
+    }
 
     if(numAcceptablePositions < 0) {
 		fprintf(stderr,"evolve.c, Find_Start_Locations:\nNegative number of acceptable positions.\n");
@@ -1067,12 +1067,12 @@ int Find_Start_Location(
 		exit(EXIT_FAILURE);
     }
 
-    ok=0; 
-    i=0; 
-    while(!ok && i<final_aa) { 
-        if(acceptable_positions.at(i)) { ok=1; } 
-        i++; 
-    } 
+    ok=0;
+    i=0;
+    while(!ok && i<final_aa) {
+        if(acceptable_positions.at(i)) { ok=1; }
+        i++;
+    }
 
     if(i >= final_aa) {
 		return FSL_FAIL;
@@ -1084,7 +1084,7 @@ int Find_Start_Location(
 	    while(position < i && j < final_aa) {
 	        if(acceptable_positions.at(j)) position++;
 	        if(position < i) j++;
-	    } 
+	    }
 		if (action == DELETE) {
 			if (i > position) {	// Deletion occurred in either before main seq or after main seq. //
 				if (position + first_constrained >= i) { // Occurring at the beginning of seq.
@@ -1110,52 +1110,52 @@ int Find_Start_Location(
 	cerr << endl;
 	cerr << "Evolve::Find_Start_Location: chose site " << j << endl;
 
-    return j; 
+    return j;
 }
-                     
+
 int Find_Indel_Size(
-					vector<double>& dist, 
+					vector<double>& dist,
 					int max_indel
-				   ) 
+				   )
 {
-    int size=0;   
-    int i=1;  
+    int size=0;
+    int i=1;
     double sum=0;
-    double rand; 
-     
-    rand=rndu(); 
-    if(rand==0) rand=rand+0.00001; 
-     
-    while(i <= max_indel && size == 0) { 
+    double rand;
+
+    rand=rndu();
+    if(rand==0) rand=rand+0.00001;
+
+    while(i <= max_indel && size == 0) {
         sum+=dist.at(i);
-        if(sum > rand) size=i; 
-        i++; 
-    } 
+        if(sum > rand) size=i;
+        i++;
+    }
     return size;
-}        
-     
+}
+
 int  isAnc(
-		   TNode *thisNode, 
+		   TNode *thisNode,
 		   int anc
-		  ) 
+		  )
 {
 //cerr << "Evolve::isAnc: mytipNo = " << thisNode->mytipNo << endl;
     if(thisNode -> mytipNo == anc) {
-        return 1; 
+        return 1;
     } else if(thisNode -> mytipNo == -1) {
-        return 0; 
-    } else { 
+        return 0;
+    } else {
         return isAnc(thisNode->anc, anc);
-    } 
-} 
+    }
+}
 
 //////////
 /// This changes all environment parameters for Nodes (no motif changes).
 //////////
 void initializeCladeParameters(
-							   TTree *tree, 
+							   TTree *tree,
 							   TNode *node
-							  ) 
+							  )
 {
 	inClade *env;
 	if (node->anc == NULL) env = tree->treeEnv.front();
@@ -1176,7 +1176,7 @@ void initializeCladeParameters(
 			if (!(node->nodeEnv->set_in_clade[__insert_lengthDistribution__]))
 				node->nodeEnv->insert_lengthDistribution = env->insert_lengthDistribution;
 
-			if (!(node->nodeEnv->set_in_clade[__delete_lengthDistribution__])) 
+			if (!(node->nodeEnv->set_in_clade[__delete_lengthDistribution__]))
 					node->nodeEnv->delete_lengthDistribution = env->delete_lengthDistribution;
 		}
 	}
@@ -1196,7 +1196,7 @@ void initializeCladeParameters(
 		else node->nodeEnv->values2Export2Freq = env->values2Export2Freq;
 	}
 
-	if (!(node->nodeEnv->set_in_clade[__model__])) 
+	if (!(node->nodeEnv->set_in_clade[__model__]))
 		node->nodeEnv->model = env->model;
 
 	if (!(node->nodeEnv->set_in_clade[__invariableSites__]))
@@ -1209,27 +1209,27 @@ void initializeCladeParameters(
 		node->nodeEnv->rateHetero=env->rateHetero;
 		node->nodeEnv->gammaShape = env->gammaShape;
 		node->nodeEnv->numCats = env->numCats;
-		for (int i = 0; i < MAX_RATE_CATS; i++) 
+		for (int i = 0; i < MAX_RATE_CATS; i++)
 			node->nodeEnv->catRate[i]=env->catRate[i];
 	}
-	
-	if (!(node->nodeEnv->set_in_clade[__constraintChange__])) 
+
+	if (!(node->nodeEnv->set_in_clade[__constraintChange__]))
 		node->nodeEnv->constraintChange = env->constraintChange;
 }
 
 //////////
-/// Primarily deals with invariable sites and site rates. 
+/// Primarily deals with invariable sites and site rates.
 //////////
 // Other "jobs":
 //  * PSEUDOGENE's lineages
 //  * Sets site categories for clade changes.
 //////////
 void initializeBranchRun(
-						 inTree *iTree, 
-						 TNode *node, 
-						 int inNumSites, 
+						 inTree *iTree,
+						 TNode *node,
+						 int inNumSites,
 						 seqGenOptions *options
-						) 
+						)
 {
 //	SetModel(node->nodeEnv->model, node->nodeEnv, options);
 	node->branch->rates->SetModel(node->nodeEnv);
@@ -1279,7 +1279,7 @@ void initializeBranchRun(
 						if (r < ratio) node->seq_evo.at(i).setInvariableState(INVARIABLE);
 						else node->seq_evo.at(i).setInvariableState(NO_CONSTRAINT);
 					} else {
-						if (node->anc->seq_evo.at(i).returnInvariableState() == NO_INDEL 
+						if (node->anc->seq_evo.at(i).returnInvariableState() == NO_INDEL
 							|| node->anc->seq_evo.at(i).returnInvariableState() == INVAR_AND_NOINDEL)
 							node->seq_evo.at(i).setInvariableState(node->anc->seq_evo.at(i).returnInvariableState());
 						else node->seq_evo.at(i).setInvariableState(NO_CONSTRAINT);
@@ -1305,14 +1305,14 @@ void initializeBranchRun(
 				node->seq_evo.at(i).setInvariableState(node->anc->seq_evo.at(i).returnInvariableState());
 			}
         }
-    } 
+    }
 
 	if (node->nodeEnv->constraintChange != PSEUDOGENE)
 		SetCategories(node, inNumSites, options);
 }
 
 int testRelation(
-				 vector<bool>& clade, 
+				 vector<bool>& clade,
 				 vector<bool>& node
 				)
 {
@@ -1343,7 +1343,7 @@ int testRelation(
 
 void initializeMotifPositions(
 							  TNode *des
-							 ) 
+							 )
 {
 	//////////
 	/// Inherit the varSites from the ancestor. Does not deal with motifs.
@@ -1365,11 +1365,11 @@ void initializeMotifPositions(
 }
 
 bool substitute (
-				 TTree *tree, 
-				 TNode *des, 
+				 TTree *tree,
+				 TNode *des,
 				 int *event_site,
-				 int simulation_step_type, 
-				 string& event, 
+				 int simulation_step_type,
+				 string& event,
 				 bool track,
 				 double rateAwayFromSequence
 				)
@@ -1440,7 +1440,7 @@ bool substitute (
 			return true;
 		} else return false;
 	}
-	
+
 	// Commented out tracking because it stops changes from being made during the evolution to equilibrium.
 	if (des->seq_evo.at(mid).doSubstitution(key, simulation_step_type, des, NULL, event)) {
 		cat_chosen.at(des->seq_evo.at(mid).returnCategory())++;

@@ -1,8 +1,8 @@
-/*  
+/*
    Sequence Generator - seq-gen, version 1.3.2
    Copyright (c)1996-2004, Andrew Rambaut & Nick Grassly
-   Department of Zoology, University of Oxford			
-   All rights reserved.                          
+   Department of Zoology, University of Oxford
+   All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
    modification, are permitted provided that the following conditions
@@ -15,8 +15,8 @@
         notice, this list of conditions and the following disclaimer in the
         documentation and/or other materials provided with the distribution.
 
-     3. The names of its contributors may not be used to endorse or promote 
-        products derived from this software without specific prior written 
+     3. The names of its contributors may not be used to endorse or promote
+        products derived from this software without specific prior written
         permission.
 
    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -80,23 +80,23 @@ void CheckNucFrequencies();
 
 /*************************************/
 void SetNucModel(int theNucModel)
-{	
+{
 	double xi, xv, F84temp1, F84temp2;
 	double freqAG=0, freqCT=0, freqA2, freqC2, freqG2, freqT2;
-	
+
 	nucModel = theNucModel;
-	
+
 	freqA=nucFreq[A];
 	freqC=nucFreq[C];
 	freqG=nucFreq[G];
 	freqT=nucFreq[T];
-	
+
 	if (nucModel==NUC_F84 || nucModel==NUC_HKY) {
 		freqR=freqA+freqG;
 		freqY=freqC+freqT;
 		freqAG=freqA*freqG;
 		freqCT=freqC*freqT;
-		
+
 		tab1A=freqA*((1/freqR)-1);
 		tab2A=(freqR-freqA)/freqR;
 		tab3A=freqA/freqR;
@@ -110,7 +110,7 @@ void SetNucModel(int theNucModel)
 		tab2T=(freqY-freqT)/freqY;
 		tab3T=freqT/freqY;
 	}
-		
+
 	switch (nucModel) {
 		case NUC_HKY:
 			if (!equalTstv) {
@@ -120,7 +120,7 @@ void SetNucModel(int theNucModel)
 				tstv=(kappa*(freqA*freqG + freqC*freqT))/(freqR*freqY);
 			}
 			beta=-1.0/(2*(freqR*freqY + kappa*(freqAG+freqCT)));
-			
+
 			beta_A_R=beta*(1.0+freqR*(kappa-1));
 			beta_A_Y=beta*(1.0+freqY*(kappa-1));
 		break;
@@ -133,13 +133,13 @@ void SetNucModel(int theNucModel)
 			F84temp2=((freqA2/freqR)+(freqC2/freqY)+(freqG2/freqR)+(freqT2/freqY));
 
 			if (!equalTstv) {
-				xi=freqR*freqY*(freqR*freqY*tstv-freqAG-freqCT);	
+				xi=freqR*freqY*(freqR*freqY*tstv-freqAG-freqCT);
 				xv=(freqCT*freqR)+(freqAG*freqY);
 				kappa=xi/xv;
 			} else {
 				kappa = 0.0;
 				tstv=(freqY*(freqAG*freqR+freqCT*freqR))/(freqR*freqR*freqY*freqY);
-			}	
+			}
 			mu=-1.0/((1-F84temp1)+(kappa*(1-F84temp2)));
 			mu_kappa_1=mu*(kappa+1);
 		break;
@@ -149,7 +149,7 @@ void SetNucModel(int theNucModel)
 	}
 }
 
-void SetNucFreqs(int theModel, inClade *branch) 
+void SetNucFreqs(int theModel, inClade *branch)
 {
 
 }
@@ -185,18 +185,18 @@ void SetNucVector(double *vector, short state, double len)
 }
 
 void SetHKYMatrix(double *matrix, double len)
-{	
+{
 	double aa, bbR, bbY;
-	
+
 	aa=exp(beta*len);
 	bbR=exp(beta_A_R*len);
 	bbY=exp(beta_A_Y*len);
-	
+
 	CommonMatrix(aa, bbR, bbY, matrix);
 }
 
 void SetHKYVector(double *vector, short state, double len)
-{	
+{
 	double aa, bbR, bbY;
 
 	aa=exp(beta*len);
@@ -207,9 +207,9 @@ void SetHKYVector(double *vector, short state, double len)
 }
 
 void SetF84Matrix(double *matrix, double len)
-{	
+{
 	double aa, bbR, bbY;
-	
+
 	aa=exp(mu*len);
 	bbR=bbY=exp(mu_kappa_1*len);
 
@@ -217,26 +217,26 @@ void SetF84Matrix(double *matrix, double len)
 }
 
 void SetF84Vector(double *vector, short state, double len)
-{	
+{
 	double aa, bbR, bbY;
 
 	aa=exp(mu*len);
 	bbR=bbY=exp(mu_kappa_1*len);
-	
+
 	CommonVector(aa, bbR, bbY, vector, state);
 }
 
 void SetGTRMatrix(double *matrix, double len)
-{	
+{
 	int i,j,k;
 	double expt[4];
 	double *P;
-	
+
 /* P(t)ij = SUM Cijk * exp{Root*t}
 */
 	P=matrix;
 
-	if (len<1e-6) { 
+	if (len<1e-6) {
 		for (i=0; i<4; i++) {
 			for (j=0; j<4; j++) {
 				if (i==j) *P=1.0;
@@ -244,9 +244,9 @@ void SetGTRMatrix(double *matrix, double len)
 				P++;
 			}
 		}
-		return; 
+		return;
 	}
-	
+
 	for (k=1; k<4; k++) {
 		expt[k]=exp(len*Root[k]);
 	}
@@ -265,26 +265,26 @@ void SetGTRMatrix(double *matrix, double len)
 }
 
 void SetGTRVector(double *vec, short state, double len)
-{	
+{
 	int i,j,k;
 	double expt[4];
 	double *P;
 
 	P=vec;
 
-	if (len<1e-6) { 
+	if (len<1e-6) {
 		for (i=0; i<4; i++) {
 			if (i==state) *P=1.0;
 			else *P=0.0;
 			P++;
 		}
-		return; 
+		return;
 	}
 
 	for (k=1; k<4; k++) {
 		expt[k]=exp(len*Root[k]);
 	}
-	
+
 	for (j=0; j<4; j++) {
 		(*P)=Cijk[state*4*4+j*4+0];
 		for (k=1; k<4; k++) {
@@ -298,7 +298,7 @@ void SetGTRVector(double *vec, short state, double len)
 	vec[3]+=vec[2];
 }
 
-		
+
 #define PIJ_SAME_A freqA+(tab1A*aa)+(tab2A*bbR)
 #define PIJ_TS_A freqA+(tab1A*aa)-(tab3A*bbR)
 #define PIJ_TV_A freqA*(1-aa)
@@ -306,16 +306,16 @@ void SetGTRVector(double *vec, short state, double len)
 #define PIJ_SAME_C freqC+(tab1C*aa)+(tab2C*bbY)
 #define PIJ_TS_C freqC+(tab1C*aa)-(tab3C*bbY)
 #define PIJ_TV_C freqC*(1-aa)
-	
+
 #define PIJ_SAME_G freqG+(tab1G*aa)+(tab2G*bbR)
 #define PIJ_TS_G freqG+(tab1G*aa)-(tab3G*bbR)
 #define PIJ_TV_G freqG*(1-aa)
-	
+
 #define PIJ_SAME_T freqT+(tab1T*aa)+(tab2T*bbY)
 #define PIJ_TS_T freqT+(tab1T*aa)-(tab3T*bbY)
-#define PIJ_TV_T freqT*(1-aa)	
-	
-void CommonMatrix(double aa, double bbR, double bbY, double *matrix) 
+#define PIJ_TV_T freqT*(1-aa)
+
+void CommonMatrix(double aa, double bbR, double bbY, double *matrix)
 {
 	matrix[0]=PIJ_SAME_A;
 	matrix[1]=PIJ_TV_C;
@@ -326,12 +326,12 @@ void CommonMatrix(double aa, double bbR, double bbY, double *matrix)
 	matrix[5]=PIJ_SAME_C;
 	matrix[6]=PIJ_TV_G;
 	matrix[7]=PIJ_TS_T;
-	
+
 	matrix[8]=PIJ_TS_A;
 	matrix[9]=matrix[1];  /* PIJ_TV_C */
 	matrix[10]=PIJ_SAME_G;
 	matrix[11]=matrix[3]; /* PIJ_TV_T */
-	
+
 	matrix[12]=matrix[4]; /* PIJ_TV_A */
 	matrix[13]=PIJ_TS_C;
 	matrix[14]=matrix[6]; /* PIJ_TV_G */
@@ -340,7 +340,7 @@ void CommonMatrix(double aa, double bbR, double bbY, double *matrix)
 	CumulativeRows(matrix);
 }
 
-void CumulativeRows(double *matrix) 
+void CumulativeRows(double *matrix)
 {
 /* the rows are cumulative to help with picking one using
    a random number */
@@ -351,18 +351,18 @@ void CumulativeRows(double *matrix)
 	matrix[5]+=matrix[4];
 	matrix[6]+=matrix[5];
 	matrix[7]+=matrix[6]; /* ...but it is easier to spot bugs... */
-	
+
 	matrix[9]+=matrix[8];
 	matrix[10]+=matrix[9];
 	matrix[11]+=matrix[10]; /* ...though less efficient... */
-	
+
 	matrix[13]+=matrix[12];
 	matrix[14]+=matrix[13];
 	matrix[15]+=matrix[14]; /* ...but probably not much. */
 }
 
 void CommonVector(double aa, double bbR, double bbY, double *vector, short state)
-{	
+{
 	switch (state) {
 		case 0:
 			vector[0]=PIJ_SAME_A;
@@ -399,31 +399,31 @@ void SetupGTR()
 	double U[SQNUM_NUC], V[SQNUM_NUC], T1[SQNUM_NUC], T2[SQNUM_NUC];
 
 	CheckNucFrequencies();
-	
+
 	k=0;
 	for (i=0; i<NUM_NUC-1; i++) {
 		for (j=i+1; j<NUM_NUC; j++) {
 			Qij[i*NUM_NUC+j] = Qij[j*NUM_NUC+i] = nucRelativeRates[k++];
 		}
 	}
-	
+
 	for (i=0; i<NUM_NUC; i++) {
-		for (j=0; j<NUM_NUC; j++) { 
+		for (j=0; j<NUM_NUC; j++) {
 			Qij[i*NUM_NUC+j] *= nucFreq[j];
 		}
 	}
-		
-	mr=0;		
+
+	mr=0;
 	for (i=0; i<NUM_NUC; i++) {
 		sum = 0;
-		Qij[i*NUM_NUC+i]=0; 
-		for (j=0; j<NUM_NUC; j++) { 
+		Qij[i*NUM_NUC+i]=0;
+		for (j=0; j<NUM_NUC; j++) {
 			sum += Qij[i*NUM_NUC+j];
 		}
-		Qij[i*NUM_NUC+i] = -sum; 
+		Qij[i*NUM_NUC+i] = -sum;
 		mr += nucFreq[i] * sum;
 	}
-	
+
 	abyx(1.0/mr, Qij, SQNUM_NUC);
 
 	if ((k=eigen(1, Qij, NUM_NUC, Root, T1, U, V, T2))!=0) {
@@ -451,7 +451,7 @@ void CheckNucFrequencies()
 {
 	int i, j;
 	double diff;
-	
+
 	// required frequency difference
 	double MINFDIFF = 1.0E-10;
 
@@ -469,7 +469,7 @@ void CheckNucFrequencies()
 		}
 		sum += nucFreq[i];
 	}
-	
+
 	diff = 1.0 - sum;
 	nucFreq[maxi] += diff;
 

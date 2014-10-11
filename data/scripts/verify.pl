@@ -59,7 +59,7 @@ my $TEST = $num_reps;
 ### Root sequence length.
 my $test_rootseq_length = $root_length;
 
-### What we want to do. ENDPOINT_COND specifies if we want do to endpoint conditioned runs. 
+### What we want to do. ENDPOINT_COND specifies if we want do to endpoint conditioned runs.
 ### FORWARD_SIM does nothing.
 my $FORDWARD_SIM = 1;
 my $ENDPOINT_COND = 1;
@@ -85,9 +85,9 @@ my @matrix = (
 			  "JC69",
 			  "JC69",
 			  "HKY",
-			  "F81",		### Successful: rev. 1816, 4-23-11. 10000 reps, 
+			  "F81",		### Successful: rev. 1816, 4-23-11. 10000 reps,
 						    ###   * NoCpG: 2999.0430
-						    ###   * CpG:   
+						    ###   * CpG:
 			  "F81",		###
 						    ###   * NoCpG: 2999.4942
 						    ###   * CpG:   2943.xxxx
@@ -117,7 +117,7 @@ my @iSG_freqs =
 		 "0.1,0.2,0.3,0.4",
 		 "0.25,0.25,0.25,0.25",
 		);
-my @iSG_rel_rates = 
+my @iSG_rel_rates =
 		(
 		 "",
 		 "",
@@ -128,7 +128,7 @@ my @iSG_rel_rates =
 		 "-r 2,3,2,2,3,1",
 		 "-r 2,3,2,2,3,1",
 		);
-my @path_rel_rates = 
+my @path_rel_rates =
 		(
 		 "",
 		 "",
@@ -164,7 +164,7 @@ my @path_gamma_cats =
 		 "",
 		);
 
-my @junkfile_sim = 
+my @junkfile_sim =
 		(
 		 "test_0s",
 		 "test_01s",
@@ -176,7 +176,7 @@ my @junkfile_sim =
 		 "xxxs",
 		 "test_4s",
 		);
-my @junkfile_pro = 
+my @junkfile_pro =
 		(
 		 "test_0p",
 		 "test_01p",
@@ -192,7 +192,7 @@ my $treefile;
 
 ############################################################################
 ### These arrays are set separately than the above ones. Self-explanatory names?
-my @branch_length = 
+my @branch_length =
 		(
 
 		 "0.1",
@@ -208,7 +208,7 @@ my ($root_seq, $target_seq);
 my $pathfile;
 my (@simulated_subst, @proposed_subst);
 my $num_replicates;
-if ($TEST) { $num_replicates = $TEST; $rootseq_length = $test_rootseq_length; } 
+if ($TEST) { $num_replicates = $TEST; $rootseq_length = $test_rootseq_length; }
 else { $num_replicates = 100; $rootseq_length = 1000; }
 my @simulated_A;
 my @simulated_C;
@@ -216,7 +216,7 @@ my @simulated_G;
 my @simulated_T;
 my @proposed_A;my @proposed_C;my @proposed_G;my @proposed_T;
 my @proposed_AA;my @proposed_AC;my @proposed_AG;my @proposed_AT;my @proposed_CA;my @proposed_CC;my @proposed_CG;my @proposed_CT;my @proposed_GA;my @proposed_GC;my @proposed_GG;my @proposed_GT;my @proposed_TA;my @proposed_TC;my @proposed_TG;my @proposed_TT;my @simulated_AA;my @simulated_AC;my @simulated_AG;my @simulated_AT;my @simulated_CA;my @simulated_CC;my @simulated_CG;my @simulated_CT;my @simulated_GA;my @simulated_GC;my @simulated_GG;my @simulated_GT;my @simulated_TA;my @simulated_TC;my @simulated_TG;my @simulated_TT;
-my $running_total_simsubs = 0, 
+my $running_total_simsubs = 0,
 my $running_total_prosubs=0;
 
 my (@simulated_subst_per_model_condition);
@@ -240,9 +240,9 @@ for my $k (0 .. $num_replicates-1) {
 }
 
 my @filetmp = split /\s+/, $path_gamma_cats[$sim_conditions];
-my $file_root = "$matrix[$sim_conditions]" 
-				. "_$bl_multiplier" 
-				. "_$CpG_multiplier" 
+my $file_root = "$matrix[$sim_conditions]"
+				. "_$bl_multiplier"
+				. "_$CpG_multiplier"
 				. "_$filetmp[0]-$filetmp[1]";
 $treefile  = $file_root . ".tree";
 $pathfile  = $file_root . ".path";
@@ -257,7 +257,7 @@ for my $k (0 .. $num_replicates-1) {
 	$command_line_options .= "$iSG_gamma_cats[$sim_conditions] ";
 	$command_line_options .= "$iSG_rel_rates[$sim_conditions] ";
 	$command_line_options .= "-f $iSG_freqs[$sim_conditions] ";
-	$command_line_options .= "-C $CpG_multiplier "; 
+	$command_line_options .= "-C $CpG_multiplier ";
 	$command_line_options .= "-w a ";
 	$command_line_options .= "-d 001010 ";
 	$command_line_options .= "-e $file_root ";
@@ -276,7 +276,7 @@ for my $k (0 .. $num_replicates-1) {
 		open IN, "$file_root.sim.ma";
 		$slurp = <IN>;
 		close IN;
-		@tmp = split(">", $slurp);	
+		@tmp = split(">", $slurp);
 		for my $g (1 .. @tmp-1) {
 			@tmp1 = split /\n/, $tmp[$g];
 			$seqs[$g-1] = ">$tmp1[0]\n$tmp1[1]";
@@ -301,8 +301,8 @@ for my $k (0 .. $num_replicates-1) {
 			}
 		}
 	}
-	$simulated_subst[$k]  
-	= $simulated_subst_per_model_condition[$sim_conditions] 
+	$simulated_subst[$k]
+	= $simulated_subst_per_model_condition[$sim_conditions]
 	= &getSubstitutions("$file_root.trace", "FORWARD");
 	$running_total_simsubs += $simulated_subst[$k];
 	print STDERR "Gathered simsubs: $simulated_subst[$k]\n";
@@ -310,7 +310,7 @@ for my $k (0 .. $num_replicates-1) {
 	open IN, "$junkfile_sim[$sim_conditions]";
 	$slurp = <IN>;
 	close IN;
-	
+
 	my @tmp20 = split /\n/, $slurp;
 	$sim_cat_mult[$k] = $tmp20[0];
 	$sim_CpG_per_run[$k] = $tmp20[1];
@@ -323,7 +323,7 @@ for my $k (0 .. $num_replicates-1) {
 		$command_line_options .= "$iSG_rel_rates[$sim_conditions] ";
 		$command_line_options .= "-f $iSG_freqs[$sim_conditions] ";
 		$command_line_options .= "-d 001010 ";
-		$command_line_options .= "-C $CpG_multiplier "; 
+		$command_line_options .= "-C $CpG_multiplier ";
 		$command_line_options .= "-e path_proposal ";
 		$command_line_options .= "-E $file_root.path ";
 		$command_line_options .= "< $treefile > $junkfile_pro[$sim_conditions]";
@@ -380,9 +380,9 @@ print "  T: " . ($nucl_freq[3] / $num_reps) . "\n";
 sub mu_rho
 {
 	my ($ref) = @_;
-	
+
 	my ($average, $stdev);
-	
+
 	for my $i (0 .. @{ $ref }-1) {
 		$average += $ref->[$i];
 #		print "$i " . ($ref->[$i]) . "\n";
@@ -397,7 +397,7 @@ sub mu_rho
 	for my $i (0 .. @{ $ref }-1) {
 		$stdev += ($average - $ref->[$i]) * ($average - $ref->[$i]);
 	}
-	
+
 #	print "STDEV:\n";
 #	print "Before dividing by replicates: ";
 #	print "$stdev " . (scalar(@{ $ref })) . "\n";
@@ -412,7 +412,7 @@ sub mu_rho
 sub outputPathFile
 {
 	my ($pathfile, $seqs_ref) = @_;
-	
+
 	open OUT, ">$pathfile" or die "WTF2??\n";
 	for my $i (0 .. @{ $seqs_ref }) {
 		print OUT ($seqs_ref->[$i]) . "\n";
@@ -500,16 +500,16 @@ sub getSubstitutions
 	return $num_subst;
 }
 
-sub getPruningSequences 
+sub getPruningSequences
 {
 	my ($infile, $return_seqs) = @_;
-	
+
 	my ($rs_index);
-	
+
 	open IN, "$infile" or die "No idea what file \"$infile\" is. $!\n";
 	my $slurp = <IN>;
 	close IN;
-	
+
 	open OUT, ">$infile";
 	my @tmp = split(">", $slurp);
 	$rs_index = 0;
@@ -545,7 +545,7 @@ sub getPruningSequences
 
 
 
-sub plot_other 
+sub plot_other
 {
 #	my ($input_file, $label, $file_root, $mat, $bl, $cat, $CpG_x, $num_reps) = @_;
 
@@ -564,7 +564,7 @@ sub plot_other
 #	system("open $file_root.eps");
 }
 
-sub plot 
+sub plot
 {
 #	my ($y_axis_ref, $gnu_opt, $file_root, $mat, $bl, $cat, $CpG_x, $num_reps) = @_;
 
@@ -578,7 +578,7 @@ sub plot
 #	print OUT "set xlabel \"$statistics[$x_axis_stat-1]\"\n";
 #	print OUT "set output \"$file_root.eps\"\n";
 #	print OUT "plot ";
-	
+
 #	print " " . (scalar @{ $y_axis_ref }) . "\n";
 #	for my $i (0 .. @{ $y_axis_ref }-1) {
 #		print OUT " \"mu.dat\" usi $x_axis_stat:$y_axis_ref->[$i] ti \"$statistics[$y_axis_ref->[$i]-1]\"";
@@ -622,7 +622,7 @@ sub outGnuplotFile
 #			$outpro[$prosub_ptr->[$i]]++;
 #		}
 #	}
-	
+
 #	open OUT, ">$file_root.simgnu" or die "WTFGNU?\n";
 #	for my $i ($min_x_val .. $max_x_val) {
 #		if ($outsim[$i] ne "") {

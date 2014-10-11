@@ -34,14 +34,14 @@ Both training and test sequence files must be in FASTA format
 (see http://tigrblast.tigr.org/web-hmm/fasta.html )
 Of course the sequences themselves can be over any alphabet you define!
 
-In "train", the second algorithmic variant is currently hard wired for 
+In "train", the second algorithmic variant is currently hard wired for
 proteins, as it contains amino acid prior values derived from BLOSUM.
 However, these can be easily replaced with a different set of priors
 over the desired alphabet.
 
 In "2pfa", the stationary distribution of the resulting PFA is obtained
 by LU decomposition of the PFA transition matrix.
-See Chapter 2 of W.H. Press et al (1993) Numerical recipes in C: the art 
+See Chapter 2 of W.H. Press et al (1993) Numerical recipes in C: the art
 of scientific computing. 2nd edition, Cambridge.
 
 Example

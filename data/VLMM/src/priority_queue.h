@@ -11,7 +11,7 @@ typedef struct pQ_struct {
 
 typedef pQ_node *pQ_type;
 
-/* p_S is the insertion key. the biggest p_S is the 
+/* p_S is the insertion key. the biggest p_S is the
    first element of the queue, the first to be dequeued */
 
 

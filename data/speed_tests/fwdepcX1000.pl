@@ -38,7 +38,7 @@ my @branch_length = (
 #		1.5,
 #		1.75,
 #		2.0,
-#		5.0, 
+#		5.0,
 		10.0,
 #		20.0,
 #		50.0,
@@ -88,9 +88,9 @@ my (@test_binning, @test_binningsq) ;
 my (
 	@forward_event_times,
 	@forward_event_times_bin_array,
-	@epc_event_times, 
+	@epc_event_times,
 	@epc_event_times_bin_array,
-	@forward_num_events, 
+	@forward_num_events,
 	@epc_num_events,
 	@forward_Qidot,
 	@epc_Qidot,
@@ -200,7 +200,7 @@ for my $BL (0 .. @branch_length-1) {
 		}
 
 		##########
-		### Increment the bins for 
+		### Increment the bins for
 		##########
 		my $bin;
 		for my $a (0 .. @forward_event_times-1) {
@@ -257,14 +257,14 @@ for my $BL (0 .. @branch_length-1) {
 				#### First bin is empty. Need to fill it with the value of the immediately next bin.
 				if ($bin_first_events_AoA[$a-1][$i] == 0) {
 					my $x = $a;
-					while ($bin_first_events_AoA[$x][$i] == 0) { 
-						$x++; 
+					while ($bin_first_events_AoA[$x][$i] == 0) {
+						$x++;
 						if ($x > $num_bins) { print STDERR "Something wonky happening...\n"; exit(0);  }
 					}
 					$bin_first_events_AoA[$a-1][$i] = $bin_first_events_AoA[$x][$i];
 					$bin_first_events_AoA[$a][$i] = $bin_first_events_AoA[$x][$i];
 				} else {
-					$bin_first_events_AoA[$a][$i] = $bin_first_events_AoA[$a-1][$i]; 
+					$bin_first_events_AoA[$a][$i] = $bin_first_events_AoA[$a-1][$i];
 				}
 			}
 		}
@@ -363,7 +363,7 @@ close OUT;
 #	my ($bin_size);
 #
 	##########
-	### Two arrays are global in scope: $bin_first_events_AoA[val][rep] and $bin_offset[], 
+	### Two arrays are global in scope: $bin_first_events_AoA[val][rep] and $bin_offset[],
 	### that specifies where in the bin we are collecting the first event.
 	##########
 
@@ -412,7 +412,7 @@ sub record_data_2D
 
 	for my $i (0 .. @ret_split-1) {
 		my @line_split = split /\n/, $ret_split[$i];
-		
+
 		for my $j (0 .. @line_split-1) {
 			my @colon_split = split(":", $line_split[$j]);
 			if ($colon_split[0] eq "DT") {
@@ -446,7 +446,7 @@ sub record_data
 
 	for my $i (0 .. @ret_split-1) {
 		my @line_split = split /\n/, $ret_split[$i];
-		
+
 		for my $j (0 .. @line_split-1) {
 			my @colon_split = split(":", $line_split[$j]);
 			if ($colon_split[0] eq "DT") {
@@ -475,7 +475,7 @@ sub mu_rho
 {
 	my ($ref) = @_;
 	my ($average, $stdev);
-	if (scalar (@{ $ref }) != 0) { 
+	if (scalar (@{ $ref }) != 0) {
 		for my $i (0 .. @{ $ref }-1) {
 			$average += $ref->[$i];
 		}

@@ -38,7 +38,7 @@ pQ_node *make_pqueue_node (const char *fromS, const double p_S,
 
 void free_pqueue_node (pQ_node *pQ_np)
 
-{     
+{
   if (pQ_np->S != NULL)
     free(pQ_np->S);
   free(pQ_np);
@@ -93,7 +93,7 @@ void enqueue_pqueue (pQ_type *pQp, const char *fromS, const double p_S,
 
   pQnp = make_pqueue_node (fromS, p_S, chi_Sx, chi_xS, chi_sufSx);
 
-  if ((*pQp == NULL) || (p_S > (*pQp)->p_S)) 
+  if ((*pQp == NULL) || (p_S > (*pQp)->p_S))
     { /* the queue is empty or we insert as first */
       pQnp->nextp = (*pQp);
       (*pQp) = pQnp;
@@ -105,7 +105,7 @@ void enqueue_pqueue (pQ_type *pQp, const char *fromS, const double p_S,
        prevp = prevp->nextp);
 
   /* we insert as last or in the middle */
-  pQnp->nextp = prevp->nextp; 
+  pQnp->nextp = prevp->nextp;
   prevp->nextp = pQnp;
 
   return;

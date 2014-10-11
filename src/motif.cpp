@@ -16,18 +16,18 @@ vector<int> value_check (528,0);
 //////////
 void Sequence::init(
 					TNode *node,
-				    string initial_state, 
-				    inClade *env, 
-				    motifSite *site_type, 
-				    varSite *template_varSite, 
+				    string initial_state,
+				    inClade *env,
+				    motifSite *site_type,
+				    varSite *template_varSite,
 				    varSite *motif_varSite
 				   )
 {
 	string::size_type i = 0;
 	my_node = node;
-	for (vector<Site>::iterator it = evolutionaryAttributes.begin(); 
-								it != evolutionaryAttributes.end(); 
-								++it) 
+	for (vector<Site>::iterator it = evolutionaryAttributes.begin();
+								it != evolutionaryAttributes.end();
+								++it)
 	{
 		//////////
 		/// Initialize items that cannot be done in the initialization list.
@@ -62,8 +62,8 @@ void Sequence::init(
 	}
 }
 
-void 
-Sequence::ConvertRootSequence() 
+void
+Sequence::ConvertRootSequence()
 {
 	int i = 0;
 	char this_state;
@@ -87,7 +87,7 @@ Sequence::ConvertRootSequence()
 	}
 }
 
-int 
+int
 Sequence::compare_sequence (
 								Sequence *seq
 							   )
@@ -96,13 +96,13 @@ Sequence::compare_sequence (
 
 	vector<Site>::iterator jt = seq->evolutionaryAttributes.begin();
 	for (vector<Site>::iterator it = evolutionaryAttributes.begin(); it != evolutionaryAttributes.end(); ++it, ++jt)
-		if ( (*it).returnState() != (*jt).returnState() ) 
+		if ( (*it).returnState() != (*jt).returnState() )
 			num_diff++;
 
 	return num_diff;
 }
 
-void 
+void
 Sequence::print_sequence( )
 {
 	for (vector<Site>::iterator it = evolutionaryAttributes.begin(); it != evolutionaryAttributes.end(); ++it) {
@@ -133,7 +133,7 @@ void Sequence::printSequenceRateAway()
 /// whether the change will result in a stop codon being formed. This function checks such changes, and whenever
 /// one possible stop codon can be formed, zeroes out the offending substitution.
 /// - This function assumes that we are working with coding-data (block size 3), and that there is no sequence that
-///   is not an order of 3 large. 
+///   is not an order of 3 large.
 //////////
 double
 Sequence::zeroStopCodons (
@@ -147,8 +147,8 @@ Sequence::zeroStopCodons (
 	double probability_adjustment = 0;
 	vector<Site>::iterator end;
 
-	if (end_site > evolutionaryAttributes.size()) end = evolutionaryAttributes.end(); 
-	else end = evolutionaryAttributes.begin()+end_site; 
+	if (end_site > evolutionaryAttributes.size()) end = evolutionaryAttributes.end();
+	else end = evolutionaryAttributes.begin()+end_site;
 
 	event_site = 0;
 	end = evolutionaryAttributes.end();
@@ -160,7 +160,7 @@ Sequence::zeroStopCodons (
 		codon[2] = (*(it+2)).returnState();
 
 		//cerr << "site " << i << ": " << stateCharacters.at(codon[0]) << stateCharacters.at(codon[1]) << stateCharacters.at(codon[2]) << "  ";
-		
+
 		// All stop codons start with T, this checks for that.
 		if (codon[0] == 3) {		// T
 			// This checks to see if any of the other positions match a stop codon. If so, then this
@@ -175,7 +175,7 @@ Sequence::zeroStopCodons (
 				(*(it+2)).site_rate_away.at(2) = 0;
 				//cerr << "A2->0 ";
 			} else if (codon[2] == 0) { // TXA -> can change to TAA or TGA
-				probability_adjustment 
+				probability_adjustment
 				+= (*(it+1)).site_rate_away.at(0)
 				 + (*(it+1)).site_rate_away.at(2);
 				(*(it+1)).site_rate_away.at(0) = (*(it+1)).site_rate_away.at(2) = 0;
@@ -205,7 +205,7 @@ Sequence::zeroStopCodons (
 	return probability_adjustment;
 }
 
-void 
+void
 Sequence::setActiveProps(
 						 bool insertion
 						)
@@ -225,8 +225,8 @@ Sequence::setActiveProps(
 		evolutionaryAttributes.front().motif.active_properties.setFirstMotifPos(my_node);
 		assert(my_node->anc != NULL);
 		vector<Site>::iterator anc_it = my_node->anc->seq_evo.begin()+1;
-		for (vector<Site>::iterator it = evolutionaryAttributes.begin()+1; 
-									it != evolutionaryAttributes.end(); 
+		for (vector<Site>::iterator it = evolutionaryAttributes.begin()+1;
+									it != evolutionaryAttributes.end();
 									++it, current_site++, ++anc_it) {
 			//////////
 			/// Set the active_properties for this site:
@@ -247,7 +247,7 @@ Sequence::setActiveProps(
 			//
 			// Set R_ins_, subst, del
 			(*it).motif.active_properties.set_properties(
-														 (*it).motif.site_props, 
+														 (*it).motif.site_props,
 														 (*anc_it).motif.site_props,
 														 my_node,
 														 &(*(it-1)).motif.active_properties,
@@ -264,16 +264,16 @@ Sequence::setActiveProps(
 		//////////
 		/// Finishing: Add all deletion sites to the correct variable_region_list member site.
 		//////////
-		for (list<varSite*>::iterator it2 = my_node->variable_region_list.begin(); 
-									  it2 != my_node->variable_region_list.end(); 
-									  ++it2) 
+		for (list<varSite*>::iterator it2 = my_node->variable_region_list.begin();
+									  it2 != my_node->variable_region_list.end();
+									  ++it2)
 		{
-			for (vector<Site>::iterator site_it = evolutionaryAttributes.begin(); 
-									  	site_it != evolutionaryAttributes.end(); 
-									  	++site_it) 
+			for (vector<Site>::iterator site_it = evolutionaryAttributes.begin();
+									  	site_it != evolutionaryAttributes.end();
+									  	++site_it)
 			{
 				// Each site should belong to 2 varSites: one for template, one for motif.
-				if ( (*site_it).motif.active_properties.indel->del->my_sequence_template_varSite == (*it2)) 
+				if ( (*site_it).motif.active_properties.indel->del->my_sequence_template_varSite == (*it2))
 					(*it2)->add2Member((*site_it).motif.active_properties.indel->del);
 				if ( (*site_it).motif.active_properties.indel->del->my_motif_varSite == (*it2))
 					(*it2)->add2Member((*site_it).motif.active_properties.indel->del);
@@ -286,9 +286,9 @@ Sequence::setActiveProps(
 		//////////
 		/// Even though some of these will be reset later on, set all varSite pointers.
 		//////////
-		for (vector<Site>::iterator it = evolutionaryAttributes.begin(); 
-									it != evolutionaryAttributes.end(); 
-									++it) 
+		for (vector<Site>::iterator it = evolutionaryAttributes.begin();
+									it != evolutionaryAttributes.end();
+									++it)
 		{
 			(*it).motif.active_properties.subst = new Substitution();
 			(*it).motif.active_properties.indel = new Indel();
@@ -303,7 +303,7 @@ Sequence::setActiveProps(
 			varSite *mstv = NULL, *mmv = NULL;
 			for (list<siteProperties*>::iterator jt  = (*it).motif.site_props.begin();
 												 jt != (*it).motif.site_props.end();
-												 ++jt) 
+												 ++jt)
 			{
 				if ((*jt)->indel.del->my_sequence_template_varSite) {
 					mstv = (*jt)->indel.del->my_sequence_template_varSite;
@@ -313,31 +313,31 @@ Sequence::setActiveProps(
 				}
 			}
 
-			(*it).motif.active_properties.indel->del->my_motif_varSite 
-			= (*it).motif.active_properties.indel->R_ins_->my_motif_varSite_left 
-			= (*it).motif.active_properties.indel->R_ins_->my_motif_varSite_right 
+			(*it).motif.active_properties.indel->del->my_motif_varSite
+			= (*it).motif.active_properties.indel->R_ins_->my_motif_varSite_left
+			= (*it).motif.active_properties.indel->R_ins_->my_motif_varSite_right
 			= mmv;
-			(*it).motif.active_properties.indel->del->my_sequence_template_varSite 
-			= (*it).motif.active_properties.indel->R_ins_->my_sequence_template_varSite_left 
-			= (*it).motif.active_properties.indel->R_ins_->my_sequence_template_varSite_right 
+			(*it).motif.active_properties.indel->del->my_sequence_template_varSite
+			= (*it).motif.active_properties.indel->R_ins_->my_sequence_template_varSite_left
+			= (*it).motif.active_properties.indel->R_ins_->my_sequence_template_varSite_right
 			= mstv;
 
 			//////////
 			/// Take care of on_site pointers.
 			//////////
-			if (mmv->min == 0) 
+			if (mmv->min == 0)
 				(*it).motif.active_properties.indel->del->my_motif_varSite = mmv;
-			if (mstv->min == 0) 
+			if (mstv->min == 0)
 				(*it).motif.active_properties.indel->del->my_sequence_template_varSite = mstv;
 
-			for (list<varSite*>::iterator it2 =  my_node->variable_region_list.begin(); 
-										  it2 != my_node->variable_region_list.end(); 
-									  	  ++it2) 
+			for (list<varSite*>::iterator it2 =  my_node->variable_region_list.begin();
+										  it2 != my_node->variable_region_list.end();
+									  	  ++it2)
 			{
 				if ( (*it).motif.active_properties.indel->del->my_sequence_template_varSite == (*it2)) {
 					cerr << "Sequence::setActiveProps: Adding new site to site with membership: ";
 				 	cerr << "st("
-			 		 << (*it).motif.active_properties.indel->del->my_sequence_template_varSite->min 
+			 		 << (*it).motif.active_properties.indel->del->my_sequence_template_varSite->min
 			 		 << ","
 			 		 << (*it).motif.active_properties.indel->del->my_sequence_template_varSite->max
 			 		 << ")["
@@ -350,7 +350,7 @@ Sequence::setActiveProps(
 					}
 					cerr << "NOW: ";
 				 	cerr << "st("
-			 		 << (*it).motif.active_properties.indel->del->my_sequence_template_varSite->min 
+			 		 << (*it).motif.active_properties.indel->del->my_sequence_template_varSite->min
 			 		 << ","
 			 		 << (*it).motif.active_properties.indel->del->my_sequence_template_varSite->max
 			 		 << ")["
@@ -373,10 +373,10 @@ Sequence::forward_rate_away_from_sequence (
 {
 	double forward_sum_away = 0;
 
-	for (vector<Site>::iterator it = evolutionaryAttributes.begin()+event_site; 
-		 it != evolutionaryAttributes.begin()+end_site && it != evolutionaryAttributes.end(); 
+	for (vector<Site>::iterator it = evolutionaryAttributes.begin()+event_site;
+		 it != evolutionaryAttributes.begin()+end_site && it != evolutionaryAttributes.end();
 		 ++it
-		) 
+		)
 	{
 		forward_sum_away += (*it).forward_rate_away_from_site(branch);
 	}
@@ -402,15 +402,15 @@ void Likelihood::calculateStateLikelihood (
 	vector<double> Li_branch2 (numStates,0);
 	vector<double>::iterator it, jt, my;
 	TNode *which_bifurcation;
-	
+
 	//////////
 	/// BRANCH 1
 	//////////
 	which_bifurcation = node->branch1;
 
 //	node->branch->rates->setPij(
-//								node->seq_evo.at(position), 
-//								node->branch->length1 * branch_length_scalar, 
+//								node->seq_evo.at(position),
+//								node->branch->length1 * branch_length_scalar,
 //								node->nodeEnv->rateHetero
 //							   );
 	//
@@ -421,8 +421,8 @@ void Likelihood::calculateStateLikelihood (
 		// Then over all values of next sequence
 		for (jt = which_bifurcation->seq_evo.at(position).L_i.Li_xi_.begin(); jt != which_bifurcation->seq_evo.at(position).L_i.Li_xi_.end(); ++jt, xj++) {
 			Li_branch1.at(xi)
-//			+= node->branch->rates->Pij.at(category).at(from(xi)+to(xj)) 
-			+= which_bifurcation->branch->rates->Pij.at(category).at(from(xi)+to(xj)) 
+//			+= node->branch->rates->Pij.at(category).at(from(xi)+to(xj))
+			+= which_bifurcation->branch->rates->Pij.at(category).at(from(xi)+to(xj))
 			   * (*jt);
 		}
 
@@ -435,8 +435,8 @@ void Likelihood::calculateStateLikelihood (
 	//////////
 	which_bifurcation = node->branch2;
 //	node->branch->rates->setPij(
-//								node->seq_evo.at(position), 
-//								node->branch->length2 * branch_length_scalar, 
+//								node->seq_evo.at(position),
+//								node->branch->length2 * branch_length_scalar,
 //								node->nodeEnv->rateHetero
 //							   );
 	//
@@ -447,8 +447,8 @@ void Likelihood::calculateStateLikelihood (
 		// Then over all values of next sequence
 		for (jt = which_bifurcation->seq_evo.at(position).L_i.Li_xi_.begin(); jt != which_bifurcation->seq_evo.at(position).L_i.Li_xi_.end(); ++jt, xj++) {
 			Li_branch2.at(xi)
-//			+= node->branch->rates->Pij.at(category).at(from(xi)+to(xj)) 
-			+= which_bifurcation->branch->rates->Pij.at(category).at(from(xi)+to(xj)) 
+//			+= node->branch->rates->Pij.at(category).at(from(xi)+to(xj))
+			+= which_bifurcation->branch->rates->Pij.at(category).at(from(xi)+to(xj))
 			   * (*jt);
 		}
 
@@ -486,8 +486,8 @@ vector<double> Likelihood::calculateCatLikelihood (
 //node->branch1->branch->rates->printPij();
 //	node->branch->rates->setPij(
 //	node->branch1->branch->rates->setPij(
-//								node->seq_evo.at(position), 
-//								node->branch->length1 * 1, 
+//								node->seq_evo.at(position),
+//								node->branch->length1 * 1,
 //								node->nodeEnv->rateHetero
 //							   );
 //cerr << "After (branch1): " << endl;
@@ -498,8 +498,8 @@ vector<double> Likelihood::calculateCatLikelihood (
 		// Then over all values of next sequence
 		for (jt = b1_Li.begin(); jt != b1_Li.end(); ++jt, xj++) {
 			Li_branch1.at(xi)
-//			+= node->branch->rates->Pij.at(category).at(from(xi)+to(xj)) 
-			+= node->branch1->branch->rates->Pij.at(category).at(from(xi)+to(xj)) 
+//			+= node->branch->rates->Pij.at(category).at(from(xi)+to(xj))
+			+= node->branch1->branch->rates->Pij.at(category).at(from(xi)+to(xj))
 			   * (*jt);
 		}
 
@@ -513,8 +513,8 @@ vector<double> Likelihood::calculateCatLikelihood (
 //node->branch2->branch->rates->printPij();
 //	node->branch->rates->setPij(
 //	node->branch2->branch->rates->setPij(
-//								node->seq_evo.at(position), 
-//								node->branch->length2 * 1, 
+//								node->seq_evo.at(position),
+//								node->branch->length2 * 1,
 //								node->nodeEnv->rateHetero
 //							   );
 //cerr << "After (branch2): " << endl;
@@ -527,8 +527,8 @@ vector<double> Likelihood::calculateCatLikelihood (
 		// Then over all values of next sequence
 		for (jt = b2_Li.begin(); jt != b2_Li.end(); ++jt, xj++) {
 			Li_branch2.at(xi)
-//			+= node->branch->rates->Pij.at(category).at(from(xi)+to(xj)) 
-			+= node->branch2->branch->rates->Pij.at(category).at(from(xi)+to(xj)) 
+//			+= node->branch->rates->Pij.at(category).at(from(xi)+to(xj))
+			+= node->branch2->branch->rates->Pij.at(category).at(from(xi)+to(xj))
 			   * (*jt);
 		}
 
@@ -546,7 +546,7 @@ vector<double> Likelihood::calculateCatLikelihood (
 	//	cerr << "  " << (*jt);
 	//cerr << endl << "my:  ";
 	//for (my = my_Li.begin(); my != my_Li.end(); my++) {
-	//	cerr << (*my) << " "; 
+	//	cerr << (*my) << " ";
 	//}
 	//cerr << endl;
 
@@ -558,10 +558,10 @@ vector<double> Likelihood::calculateCatLikelihood (
 ////// SITE
 ////////////////////
 void Site::InitializeMotif(
-						   motifSite *site_type, 
-						   varSite *template_varSite, 
+						   motifSite *site_type,
+						   varSite *template_varSite,
 						   varSite *motif_varSite
-						  ) 
+						  )
 {
 	if (template_varSite == NULL && motif_varSite == NULL) {
 		motif = motifSite();
@@ -574,7 +574,7 @@ void Site::InitializeMotif(
 		motif.site_props.back()->indel.createObjects();
 		if (template_varSite != NULL)
 			motif.site_props.push_back(new siteProperties(site_type, template_varSite, NULL));
-		if (motif_varSite != NULL) 
+		if (motif_varSite != NULL)
 			motif.site_props.push_back(new siteProperties(site_type, NULL            , motif_varSite));
 
 		motif.active_properties.fromMotif = site_type->active_properties.fromMotif;
@@ -621,7 +621,7 @@ void Site::setSiteRateAway (
 double Site::setSiteRateAway(
 							 vector<double>& Qij,
 							 RateMatrix *rates
-						    ) 
+						    )
 {
 	short base = 0;
 	double Pij, prev_Pij = 0;
@@ -655,10 +655,10 @@ double Site::setSiteRateAway(
 }
 
 bool Site::doSubstitution (
-						   double value, 
-						   int step_type, 
-						   TNode *node, 
-						   int *codon_position, 
+						   double value,
+						   int step_type,
+						   TNode *node,
+						   int *codon_position,
 						   string& event
 						  )
 {
@@ -679,7 +679,7 @@ bool Site::doSubstitution (
 		cerr << "  key: " << value << endl << "  rate away from site: " << site_rate_away.back() << endl;	//XOUT
 		exit(EXIT_FAILURE);																					//XOUT
 	}																										//XOUT
-	
+
 	//////////
 	/// Make sure that site can accept state.
 	//////////
@@ -688,11 +688,11 @@ bool Site::doSubstitution (
 	else if (motif.active_properties.subst->substitution_bitstring.test(newState) )
 		set_state = true;
 	else return false;
-	
+
 	if (set_state) {
 		if (step_type == UNIFORMIZATION) {
-			if (newState == state) { 
-				virtual_events++; 
+			if (newState == state) {
+				virtual_events++;
 				acagatcgctgt.at(state*4+state)++;
 				virtualACGT.at(state)++;
 				return false;
@@ -727,7 +727,7 @@ bool Site::doSubstitution (
 				state = newState;
 			}
 			to = stateCharacters.at(newState);
-			event.push_back(from); 
+			event.push_back(from);
 			event.push_back(to);
 			numSubstAway++;
 		}
@@ -796,7 +796,7 @@ Site::forward_rate_away_from_site(
 	forward_rate_away.assign(numStates, 0);
 	for (int j = 0; j < numStates; j++) {
 		Qij = 0;
-		if (order_3_markov || Human_Data_simulation) Qij = site_rate_away.at(j); 
+		if (order_3_markov || Human_Data_simulation) Qij = site_rate_away.at(j);
 		else Qij = branch->rates->Qij.at(from(i)+to(j));
 		Qij *= branch->rates->catRate.at(returnCategory());
 		if ( j != i ) {
@@ -806,7 +806,7 @@ Site::forward_rate_away_from_site(
 	}
 
 	if (order_3_markov || Human_Data_simulation) {
-		for (vector<double>::iterator jt = site_rate_away.begin()+1; jt != site_rate_away.end(); ++jt) 
+		for (vector<double>::iterator jt = site_rate_away.begin()+1; jt != site_rate_away.end(); ++jt)
 			(*jt) += (*(jt-1));
 	} else {
 		vector<double>::iterator jt, it = forward_rate_away.begin();
@@ -817,7 +817,7 @@ Site::forward_rate_away_from_site(
 		++jt; ++it;
 		for (; jt != site_rate_away.end(); ++jt, ++it) (*jt) = (*(jt-1))+(*it);
 	}
-	
+
 	return forward_sum_away;
 }
 
@@ -831,11 +831,11 @@ bool inMotif::isTemplate()
 	else return false;
 }
 
-void inMotif::report() 
+void inMotif::report()
 {
 	cerr << "  name =        " << name << endl;
 	cerr << "  marker =      " << marker << endl;
-	cerr << "  bipartition = "; 
+	cerr << "  bipartition = ";
 	for(vector<bool>::iterator it = bipartition.begin(); it != bipartition.end(); ++it)
 		cerr << (*it);
 	cerr << endl;
@@ -916,7 +916,7 @@ vector<siteProperties*> inMotif::enumerateRegEx(
 				cerr << "Unrecognized character in motif regular expression: " << (*it) << endl;
 				exit(EXIT_FAILURE);
 			}
-			
+
 			for (string::iterator it2 = my_stateCharacters.begin(); it2 != my_stateCharacters.end(); ++it2) {
 				found = reverse_sites.find((*it2));
 				if (found == string::npos) site += (*it2);
@@ -997,9 +997,9 @@ vector<siteProperties*> inMotif::enumerateRegEx(
 
 	// Set bit string.
 	vector<siteProperties*>::iterator it = new_site_props.begin();
-	for (list<string>::iterator it3 = return_sites.begin(); 
-								it3 != return_sites.end(); 
-								++it3, ++it) 
+	for (list<string>::iterator it3 = return_sites.begin();
+								it3 != return_sites.end();
+								++it3, ++it)
 	{
 		bitset<20> regex_site;
 		regex_site.set();
@@ -1014,7 +1014,7 @@ vector<siteProperties*> inMotif::enumerateRegEx(
 	return new_site_props;
 }
 
-void inMotif::removeLastPosition() 
+void inMotif::removeLastPosition()
 {
 	// If last position is optional (e.g., [G>] in motif), and it is excluded from the motif,
 	// this routine removes it from the inMotif prosite_library so that the regex size will
@@ -1048,18 +1048,18 @@ list<siteRegEx*> inMotif::parseRegEx()
 	bool N_term = false, C_term = false, last_site_optional = false;
 
 	found = regex.find("<", 0);
-	if (found != string::npos) { 
-		N_term = true; 
-		regex.erase(found, 1); 
+	if (found != string::npos) {
+		N_term = true;
+		regex.erase(found, 1);
 	}
 	found = regex.find(">", 0);
 	if (found != string::npos) {
 		C_term = true;
 		if (found != regex.size()-1) // ">" comes inside of [], e.g. [G>], meaning G is optional. //
 			last_site_optional = true;
-		regex.erase(found, 1);		
+		regex.erase(found, 1);
 	}
-	
+
 	regex_sites = split(regex, "-");
 	my_stateCharacters.clear();
 	for (int i = 0; i < numStates; i++) my_stateCharacters += stateCharacters.at(i);
@@ -1112,7 +1112,7 @@ list<siteRegEx*> inMotif::parseRegEx()
 				cerr << "Unrecognized character in motif regular expression: " << (*it) << endl;
 				exit(EXIT_FAILURE);
 			}
-			
+
 			for (string::iterator it2 = my_stateCharacters.begin(); it2 != my_stateCharacters.end(); ++it2) {
 				found = reverse_sites.find((*it2));
 				if (found == string::npos) site += (*it2);
@@ -1172,7 +1172,7 @@ list<siteRegEx*> inMotif::parseRegEx()
 			}
 			return_list.push_back(newSite);
 			break;
-		
+
 		}
 	}
 
@@ -1313,7 +1313,7 @@ bitset<20> inMotif::getRegExValues(
 			break;
 		}
 	}
-	
+
 	return return_values;
 }
 
@@ -1328,7 +1328,7 @@ motifSite::motifSite()
 
 void motifSite::copy(
 					 motifSite* site2copy
-					) 
+					)
 {
 	site_props.clear();
 	for (list<siteProperties*>::iterator it = site2copy->site_props.begin(); it != site2copy->site_props.end(); ++it) {
@@ -1346,8 +1346,8 @@ void motifSite::setNode(
 }
 
 void motifSite::Site_deleteMerge(
-								 motifSite *prev, 
-								 motifSite *next, 
+								 motifSite *prev,
+								 motifSite *next,
 								 bool deletion
 								)
 {
@@ -1361,11 +1361,11 @@ void motifSite::Site_deleteMerge(
 	///////////
 
 	if (next != NULL && prev != NULL) {
-		next->active_properties.indel->L_ins_ 
+		next->active_properties.indel->L_ins_
 		= prev->active_properties.indel->R_ins_;
-		next->active_properties.indel->L_ins_->my_sequence_template_varSite_right 
+		next->active_properties.indel->L_ins_->my_sequence_template_varSite_right
 		= next->active_properties.indel->del->my_sequence_template_varSite;
-		next->active_properties.indel->L_ins_->my_motif_varSite_right 
+		next->active_properties.indel->L_ins_->my_motif_varSite_right
 		= next->active_properties.indel->del->my_motif_varSite;
 	} else {
 		if (next == NULL) {
@@ -1424,10 +1424,10 @@ void activeProperties::setFirstMotifPos(
 
 	//////////
 	/// Need to manually set the first position insertion sites, since the connecting routine
-	/// checks only those sites that 
+	/// checks only those sites that
 	//////////
-	indel->del->my_sequence_template_varSite 
-	= indel->del->my_motif_varSite 
+	indel->del->my_sequence_template_varSite
+	= indel->del->my_motif_varSite
 	= indel->L_ins_->my_sequence_template_varSite_left
 	= indel->L_ins_->my_motif_varSite_left
 	= indel->L_ins_->my_sequence_template_varSite_right
@@ -1444,7 +1444,7 @@ void activeProperties::setLastMotifPos()
 	indel->R_ins_->my_motif_varSite_right
 	= indel->R_ins_->my_motif_varSite_left
 	= indel->del->my_motif_varSite;
-	
+
 	indel->R_ins_->on_site_sequence_template_varSite
 	= ( (indel->del->my_sequence_template_varSite->min == 0)
 		? indel->del->my_sequence_template_varSite
@@ -1459,17 +1459,17 @@ void activeProperties::setLastMotifPos()
 }
 
 void activeProperties::set_properties(
-									  list<siteProperties*>& site_props, 
+									  list<siteProperties*>& site_props,
 									  list<siteProperties*>& anc_site_props,
-									  TNode *node, 
-									  activeProperties *prev_site, 
+									  TNode *node,
+									  activeProperties *prev_site,
 									  size_t site_number
 									 )
 {
 	int relationship;
 	bool constrainTemplate=false, constrainMotif=false;
 	short template_type = NO_RELATION, motif_type = NO_RELATION;
-	siteProperties *template_props = NULL; 
+	siteProperties *template_props = NULL;
 	siteProperties *anc_template_props = NULL;
 	siteProperties *motif_props = NULL;
 	siteProperties *anc_motif_props = NULL;
@@ -1480,7 +1480,7 @@ void activeProperties::set_properties(
 	//////////
 	list<siteProperties*>::iterator anc_it = anc_site_props.begin();
 	for (list<siteProperties*>::iterator it = site_props.begin(); it != site_props.end(); ++it, ++anc_it) {
-		if ( (*it)->fromTemplate != NULL) {	
+		if ( (*it)->fromTemplate != NULL) {
 			relationship = testRelation ((*it)->fromTemplate->bipartition, node->bipartition);
 			if (relationship == EXACT) {
 				if (constrainTemplate) {
@@ -1511,7 +1511,7 @@ void activeProperties::set_properties(
 
 	if (constrainTemplate) {
 		setProps(
-		  	     TEMPLATE, 
+		  	     TEMPLATE,
 				 template_props,
 				 prev_site,
 				 template_type,
@@ -1543,7 +1543,7 @@ void activeProperties::set_properties(
 				if (constrainMotif) {
 					cerr << "Can only set one motif per position per subtree." << endl;
 					exit(EXIT_FAILURE);
-				}	
+				}
 				constrainMotif = true;
 				motif_type = EXACT;
 				motif_props = (*it);
@@ -1555,7 +1555,7 @@ void activeProperties::set_properties(
 				}
 cerr << "NODE_IS_ANC" << endl;
 			} else if (relationship == NODE_IS_DES) {
-				if (motif_type != EXACT) { 
+				if (motif_type != EXACT) {
 					constrainMotif = true;
 					motif_type = NODE_IS_DES;
 					motif_props = (*it);
@@ -1602,10 +1602,10 @@ cerr << "NO_RELATION" << endl;
 // * on_site_sequence_template_varSitexxxx
 //////////
 void activeProperties::setProps(
-								short type, 
-								siteProperties *props, 
-								activeProperties *prev_site, 
-								short relation, 
+								short type,
+								siteProperties *props,
+								activeProperties *prev_site,
+								short relation,
 								Indel *anc_indel
 							   )
 {
@@ -1655,7 +1655,7 @@ void activeProperties::setProps(
 			cerr << "Illegal relationship: " << relation << endl;
 			exit(EXIT_FAILURE);
 			break;
-		}	
+		}
 	} else {	//// Motif.
 		switch (relation) {
 		case EXACT:
@@ -1707,60 +1707,60 @@ void activeProperties::setProps(
 			cerr << "Illegal relationship: " << relation << endl;
 			exit(EXIT_FAILURE);
 			break;
-		}	
+		}
 	}
-	
+
 }
 
-void activeProperties::report() 
+void activeProperties::report()
 {
 	cout << this << ": " << endl;
-	
+
 	cout << "  L_ins_ " << indel->L_ins_ << " mstv[LEFT]: ";
 	if (indel->L_ins_->my_sequence_template_varSite_left == NULL) cout << "NULL";
-	else cout << indel->L_ins_->my_sequence_template_varSite_left->min 
+	else cout << indel->L_ins_->my_sequence_template_varSite_left->min
 			  << " " << indel->L_ins_->my_sequence_template_varSite_left->max << "  ";
 	cout << " mstv[RIGHT]: ";
 	if (indel->L_ins_->my_sequence_template_varSite_right == NULL) cout << "NULL";
-	else cout << indel->L_ins_->my_sequence_template_varSite_right->min << " " 
+	else cout << indel->L_ins_->my_sequence_template_varSite_right->min << " "
 			  << indel->L_ins_->my_sequence_template_varSite_right->max << "  ";
 	cout << " mmv[LEFT]: ";
 	if (indel->L_ins_->my_motif_varSite_left == NULL) cout << "NULL";
-	else cout << indel->L_ins_->my_motif_varSite_left->min << " " 
+	else cout << indel->L_ins_->my_motif_varSite_left->min << " "
 			  << indel->L_ins_->my_motif_varSite_left->max << "  ";
 	cout << " mmv[RIGHT]: ";
 	if (indel->L_ins_->my_motif_varSite_right == NULL) cout << "NULL";
-	else cout << indel->L_ins_->my_motif_varSite_right->min << " " 
+	else cout << indel->L_ins_->my_motif_varSite_right->min << " "
 			  << indel->L_ins_->my_motif_varSite_right->max << "  ";
-	cout << endl; 
+	cout << endl;
 
 	cout << "  R_ins_ " << indel->R_ins_ << " mstv[LEFT]: ";
 	if (indel->R_ins_->my_sequence_template_varSite_left == NULL) cout << "NULL";
-	else cout << indel->R_ins_->my_sequence_template_varSite_left->min << " " 
+	else cout << indel->R_ins_->my_sequence_template_varSite_left->min << " "
 			  << indel->R_ins_->my_sequence_template_varSite_left->max << "  ";
 	cout << " mstv[RIGHT]: ";
 	if (indel->R_ins_->my_sequence_template_varSite_right == NULL) cout << "NULL";
-	else cout << indel->R_ins_->my_sequence_template_varSite_right->min << " " 
+	else cout << indel->R_ins_->my_sequence_template_varSite_right->min << " "
 			  << indel->R_ins_->my_sequence_template_varSite_right->max << "  ";
 	cout << " mmv[LEFT]: ";
 	if (indel->R_ins_->my_motif_varSite_left == NULL) cout << "NULL";
-	else cout << indel->R_ins_->my_motif_varSite_left->min << " " 
+	else cout << indel->R_ins_->my_motif_varSite_left->min << " "
 			  << indel->R_ins_->my_motif_varSite_left->max << "  ";
 	cout << " mmv[RIGHT]: ";
 	if (indel->R_ins_->my_motif_varSite_right == NULL) cout << "NULL";
-	else cout << indel->R_ins_->my_motif_varSite_right->min << " " 
+	else cout << indel->R_ins_->my_motif_varSite_right->min << " "
 			  << indel->R_ins_->my_motif_varSite_right->max << "  ";
 
 	cout << endl << "  del " << indel->del << " ";
 	if (indel->del->my_sequence_template_varSite == NULL) cout << "NULL";
-	else 
-		cout << indel->del->my_sequence_template_varSite->min << " " 
+	else
+		cout << indel->del->my_sequence_template_varSite->min << " "
 			 << indel->del->my_sequence_template_varSite->max << " mmv: ";
 	if (indel->del->my_motif_varSite == NULL) cout << "NULL";
-	else 
-		cout << indel->del->my_motif_varSite->min << " " 
+	else
+		cout << indel->del->my_motif_varSite->min << " "
 			 << indel->del->my_motif_varSite->max << " mmv: ";
-	
+
 	cout << endl << "  ";
 	subst->report_bitset();
 
@@ -1772,11 +1772,11 @@ void activeProperties::report()
 ////// SITE PROPERTIES
 ////////////////////
 siteProperties::siteProperties(
-							   vector<siteProperties*> prev_site, 
-							   varSite *memberOfSite, 
-							   inMotif *infromMotif, 
+							   vector<siteProperties*> prev_site,
+							   varSite *memberOfSite,
+							   inMotif *infromMotif,
 							   bool isTemplate
-							  ) 
+							  )
 			   : subst (Substitution()),
 			     indel(Indel(prev_site)),
 				 fromMotif
@@ -1809,11 +1809,11 @@ siteProperties::siteProperties(
 }
 
 void siteProperties::copy(
-						  siteProperties *stuff, 
-						  short which, 
-						  short type, 
-						  motifSite *prev, 
-						  siteProperties *anc, 
+						  siteProperties *stuff,
+						  short which,
+						  short type,
+						  motifSite *prev,
+						  siteProperties *anc,
 						  bool last_site
 						 )
 {
@@ -1868,7 +1868,7 @@ void siteProperties::copy(
 ////////////////////
 Indel::Indel(
 			 vector<siteProperties*> prev_site
-			) 
+			)
 	:  L_ins_
 		(
 		  (
@@ -1883,7 +1883,7 @@ Indel::Indel(
 
 // Should not auto-create insertion and deletions?
 Indel::Indel(
-			 varSite *in_template_varSite, 
+			 varSite *in_template_varSite,
 			 varSite *in_motif_varSite
 			)
 	:  L_ins_ (new Insertion(in_template_varSite, in_motif_varSite)),
@@ -1893,8 +1893,8 @@ Indel::Indel(
 
 // same?
 Indel::Indel(
-			 Indel *site2copy, 
-			 motifSite *anc, 
+			 Indel *site2copy,
+			 motifSite *anc,
 			 bool isTemplate
 			)
 	:  L_ins_ (new Insertion(site2copy->L_ins_, anc, isTemplate, NULL)),
@@ -1902,7 +1902,7 @@ Indel::Indel(
 	   del    (new Deletion(site2copy->del, anc, isTemplate))
 { }
 
-Indel::Indel() 
+Indel::Indel()
 	:  L_ins_ (NULL),
 	   R_ins_ (NULL),
 	   del (NULL)
@@ -1916,17 +1916,17 @@ void Indel::createObjects()
 }
 
 void Indel::copy(
-				 Indel *site2copy, 
-				 motifSite *prev_site, 
-				 bool isTemplate, 
-				 bool last_site, 
-				 bool isDescendant, 
+				 Indel *site2copy,
+				 motifSite *prev_site,
+				 bool isTemplate,
+				 bool last_site,
+				 bool isDescendant,
 				 Indel *anc_indel
 				)
 {
 	Insertion *anc_L_ins_ = NULL, *anc_R_ins_ = NULL;
 	Deletion  *anc_del    = NULL;
-	
+
 	if (anc_indel != NULL) {
 		if (anc_indel->L_ins_ != NULL) anc_L_ins_ = anc_indel->L_ins_;
 		if (anc_indel->R_ins_ != NULL) anc_R_ins_ = anc_indel->R_ins_;
@@ -1937,9 +1937,9 @@ void Indel::copy(
 	if (last_site) {
 		R_ins_ = new Insertion();
 		R_ins_->copy(site2copy->R_ins_,isTemplate, isDescendant, anc_R_ins_); // B/c otherwise NULL. maybe not smart to do.
-		R_ins_->my_sequence_template_varSite_right 
+		R_ins_->my_sequence_template_varSite_right
 		= R_ins_->my_sequence_template_varSite_left;
-		R_ins_->my_motif_varSite_right 
+		R_ins_->my_motif_varSite_right
 		= R_ins_->my_motif_varSite_left;
 	}
 	del->copy(site2copy->del, isTemplate, isDescendant, anc_del);
@@ -1949,63 +1949,63 @@ void Indel::report()
 {
 	cout << "indel (des): " << setw(10) << this << endl;
 	if (L_ins_ != NULL) {
-		cout << "st L_ins_=" << setw(10) << L_ins_; 
+		cout << "st L_ins_=" << setw(10) << L_ins_;
 		if (L_ins_->my_sequence_template_varSite_left != NULL) {
 			cout << setw(10) << L_ins_->my_sequence_template_varSite_left;
-			cout << "(" << setw(2) << L_ins_->my_sequence_template_varSite_left->min; 
-			cout << setw(6) << L_ins_->my_sequence_template_varSite_left->max << ")"; 
+			cout << "(" << setw(2) << L_ins_->my_sequence_template_varSite_left->min;
+			cout << setw(6) << L_ins_->my_sequence_template_varSite_left->max << ")";
 		} else cerr << "NULL";
 		if (L_ins_->my_sequence_template_varSite_right != NULL) {
 			cout << setw(10) << L_ins_->my_sequence_template_varSite_right;
-			cout << "(" << setw(2) << L_ins_->my_sequence_template_varSite_right->min; 
-			cout << setw(6) << L_ins_->my_sequence_template_varSite_right->max << ")"; 
+			cout << "(" << setw(2) << L_ins_->my_sequence_template_varSite_right->min;
+			cout << setw(6) << L_ins_->my_sequence_template_varSite_right->max << ")";
 		} else cerr << "NULL";
 
 		if (L_ins_->my_motif_varSite_left != NULL) {
-			cout << "m L_ins_=" << setw(10) << L_ins_; 
+			cout << "m L_ins_=" << setw(10) << L_ins_;
 			cout << setw(10) << L_ins_->my_motif_varSite_left;
-			cout << "(" << setw(2) << L_ins_->my_motif_varSite_left->min; 
-			cout << setw(6) << L_ins_->my_motif_varSite_left->max << ")"; 
+			cout << "(" << setw(2) << L_ins_->my_motif_varSite_left->min;
+			cout << setw(6) << L_ins_->my_motif_varSite_left->max << ")";
 		} else cerr << "NULL";
 		if (L_ins_->my_motif_varSite_right != NULL) {
 			cout << setw(10) << L_ins_->my_motif_varSite_right;
-			cout << "(" << setw(2) << L_ins_->my_motif_varSite_right->min; 
-			cout << setw(6) << L_ins_->my_motif_varSite_right->max << ")"; 
+			cout << "(" << setw(2) << L_ins_->my_motif_varSite_right->min;
+			cout << setw(6) << L_ins_->my_motif_varSite_right->max << ")";
 		} else cerr << "NULL";
 	}
 
 	if (R_ins_ != NULL) {
-		cout << "st R_ins_=" << setw(10) << L_ins_; 
+		cout << "st R_ins_=" << setw(10) << L_ins_;
 		if (R_ins_->my_sequence_template_varSite_left != NULL) {
-			cout << setw(10) << R_ins_; 
+			cout << setw(10) << R_ins_;
 			cout << setw(10) << R_ins_->my_sequence_template_varSite_left;
-			cout << "(" << setw(2) << R_ins_->my_sequence_template_varSite_left->min; 
-			cout << setw(6) << R_ins_->my_sequence_template_varSite_left->max << ")"; 
+			cout << "(" << setw(2) << R_ins_->my_sequence_template_varSite_left->min;
+			cout << setw(6) << R_ins_->my_sequence_template_varSite_left->max << ")";
 		} else cerr << "NULL";
 		if (R_ins_->my_sequence_template_varSite_right != NULL) {
 			cout << setw(10) << R_ins_->my_sequence_template_varSite_right;
-			cout << "(" << setw(2) << R_ins_->my_sequence_template_varSite_right->min; 
-			cout << setw(6) << R_ins_->my_sequence_template_varSite_right->max << ")"; 
+			cout << "(" << setw(2) << R_ins_->my_sequence_template_varSite_right->min;
+			cout << setw(6) << R_ins_->my_sequence_template_varSite_right->max << ")";
 			cout << endl;
 		} else cerr << "NULL";
 
 		if (R_ins_->my_motif_varSite_left != NULL) {
-			cout << "m R_ins_=" << setw(10) << L_ins_; 
-			cout << setw(10) << R_ins_; 
+			cout << "m R_ins_=" << setw(10) << L_ins_;
+			cout << setw(10) << R_ins_;
 			cout << setw(10) << R_ins_->my_motif_varSite_left;
-			cout << "(" << setw(2) << R_ins_->my_motif_varSite_left->min; 
-			cout << setw(6) << R_ins_->my_motif_varSite_left->max << ")"; 
+			cout << "(" << setw(2) << R_ins_->my_motif_varSite_left->min;
+			cout << setw(6) << R_ins_->my_motif_varSite_left->max << ")";
 		} else cerr << "NULL";
 		if (L_ins_->my_motif_varSite_right != NULL) {
 			cout << setw(10) << R_ins_->my_motif_varSite_right;
-			cout << "(" << setw(2) << R_ins_->my_motif_varSite_right->min; 
-			cout << setw(6) << R_ins_->my_motif_varSite_right->max << ")"; 
+			cout << "(" << setw(2) << R_ins_->my_motif_varSite_right->min;
+			cout << setw(6) << R_ins_->my_motif_varSite_right->max << ")";
 			cout << endl;
 		} else cerr << "NULL";
 	}
 
 	if (del != NULL) {
-		cout << "st:m del=" << setw(10) << del; 
+		cout << "st:m del=" << setw(10) << del;
 		if (del->my_sequence_template_varSite != NULL) {
 			cout << setw(10) << del->my_sequence_template_varSite;
 			cout << "(" << setw(2) << del->my_sequence_template_varSite->min;
@@ -2021,18 +2021,18 @@ void Indel::report()
 }
 
 void Indel::set(
-				Indel *site2copy, 
-				Indel *prev_site, 
-				short type, 
-				bool isDescendant, 
+				Indel *site2copy,
+				Indel *prev_site,
+				short type,
+				bool isDescendant,
 				Indel *anc_indel
 			   )
 {
 	Deletion  *anc_del = NULL;
-	if (anc_indel != NULL) 
-		if (anc_indel->del != NULL) 
+	if (anc_indel != NULL)
+		if (anc_indel->del != NULL)
 			anc_del = anc_indel->del;
-	
+
 	//////////
 	/// Del must be before the insertion info, b/c L_ins_ will ALWAYS use the del mstv and mmv
 	/// structures. More reliable, less bookwork.
@@ -2046,9 +2046,9 @@ void Indel::set(
 ////// Insertion
 ////////////////////
 Insertion::Insertion(
-					 Insertion *site2copy, 
-					 motifSite *anc, 
-					 bool isTemplate, 
+					 Insertion *site2copy,
+					 motifSite *anc,
+					 bool isTemplate,
 					 Insertion *anc_copy
 					)
 {
@@ -2060,116 +2060,116 @@ Insertion::Insertion(
 		on_site_sequence_template_varSite = site2copy->on_site_sequence_template_varSite;
 
 		if (anc_copy != NULL) {
-			my_sequence_template_varSite_left 
+			my_sequence_template_varSite_left
 			= anc_copy->my_sequence_template_varSite_left->descendant_equiv;
 			if (anc_copy->on_site_sequence_template_varSite != NULL)
-				on_site_sequence_template_varSite 
-				= anc_copy->on_site_sequence_template_varSite->descendant_equiv;			
+				on_site_sequence_template_varSite
+				= anc_copy->on_site_sequence_template_varSite->descendant_equiv;
 			else on_site_sequence_template_varSite = NULL;
-			if (site2copy->my_sequence_template_varSite_right == NULL) { 
-				cerr << "null." << endl; 
-				return; 
+			if (site2copy->my_sequence_template_varSite_right == NULL) {
+				cerr << "null." << endl;
+				return;
 			}
-			my_sequence_template_varSite_right 
+			my_sequence_template_varSite_right
 			= anc_copy->my_sequence_template_varSite_right->descendant_equiv;
 
 		}
 	} else {
 		if (site2copy->my_motif_varSite_left == NULL) return;
-		my_motif_varSite_left 
+		my_motif_varSite_left
 		= site2copy->my_motif_varSite_left;
-		my_motif_varSite_right 
+		my_motif_varSite_right
 		= site2copy->my_motif_varSite_right;
 		on_site_motif_varSite = site2copy->on_site_motif_varSite;
 
 		if (anc_copy != NULL) {
-			my_motif_varSite_left 
+			my_motif_varSite_left
 			= anc_copy->my_motif_varSite_left;
 			if (anc_copy->on_site_motif_varSite != NULL)
-				on_site_motif_varSite 
+				on_site_motif_varSite
 				= anc_copy->on_site_motif_varSite->descendant_equiv;
 			else on_site_motif_varSite = NULL;
-			if (site2copy->my_motif_varSite_right == NULL) { 
-				cerr << "null." << endl; 
-				return; 
+			if (site2copy->my_motif_varSite_right == NULL) {
+				cerr << "null." << endl;
+				return;
 			}
-			my_motif_varSite_right 
+			my_motif_varSite_right
 			= anc_copy->my_motif_varSite_right;
 		}
 	}
 }
 
 void Insertion::copy(
-					 Insertion *site2copy, 
-					 bool isTemplate, 
-					 bool isDescendant, 
+					 Insertion *site2copy,
+					 bool isTemplate,
+					 bool isDescendant,
 					 Insertion *anc_copy
 					)
 {
 	if (isTemplate) {
 		if (site2copy->my_sequence_template_varSite_left == NULL) return;
 		if (isDescendant) {
-			my_sequence_template_varSite_left 
+			my_sequence_template_varSite_left
 			= anc_copy->my_sequence_template_varSite_left->descendant_equiv;
 			if (anc_copy->on_site_sequence_template_varSite != NULL)
-				on_site_sequence_template_varSite 
+				on_site_sequence_template_varSite
 				= anc_copy->on_site_sequence_template_varSite->descendant_equiv;
 			else on_site_sequence_template_varSite = NULL;
 			if (anc_copy->my_sequence_template_varSite_right != NULL)
-				my_sequence_template_varSite_right 
+				my_sequence_template_varSite_right
 				= anc_copy->my_sequence_template_varSite_right->descendant_equiv;
 		} else {
-			my_sequence_template_varSite_left 
+			my_sequence_template_varSite_left
 			= site2copy->my_sequence_template_varSite_left;
-			my_sequence_template_varSite_right 
+			my_sequence_template_varSite_right
 			= site2copy->my_sequence_template_varSite_right;
 			on_site_sequence_template_varSite = site2copy->on_site_sequence_template_varSite;
 		}
 	} else {
 		if (site2copy->my_motif_varSite_left == NULL) return;
 		if (isDescendant) {
-			my_motif_varSite_left 
+			my_motif_varSite_left
 			= anc_copy->my_motif_varSite_left->descendant_equiv;
 			if (anc_copy->on_site_motif_varSite != NULL) {
-				on_site_motif_varSite 
+				on_site_motif_varSite
 				= anc_copy->on_site_motif_varSite->descendant_equiv;
 			} else on_site_motif_varSite = NULL;
 			if (anc_copy->my_motif_varSite_right != NULL)
-				my_motif_varSite_right 
+				my_motif_varSite_right
 				= anc_copy->my_motif_varSite_right->descendant_equiv;
 		} else {
-			my_motif_varSite_left 
+			my_motif_varSite_left
 			= site2copy->my_motif_varSite_left;
-			my_motif_varSite_right 
-			= site2copy->my_motif_varSite_right;		
+			my_motif_varSite_right
+			= site2copy->my_motif_varSite_right;
 			on_site_motif_varSite = site2copy->on_site_motif_varSite;
 		}
 	}
 }
 
 //////////
-/// This version of copy is utilized when an insertion is made (i.e., during the evolution run, 
+/// This version of copy is utilized when an insertion is made (i.e., during the evolution run,
 /// rather than the evolutionary setup).
 //////////
 void Insertion::copy(
 					 Insertion *site2copy
 					)
 {
-	my_sequence_template_varSite_left 
+	my_sequence_template_varSite_left
 	= site2copy->my_sequence_template_varSite_left;
-	my_sequence_template_varSite_right 
+	my_sequence_template_varSite_right
 	= site2copy->my_sequence_template_varSite_right;
 	on_site_sequence_template_varSite = site2copy->on_site_sequence_template_varSite;
-	my_motif_varSite_left 
+	my_motif_varSite_left
 	= site2copy->my_motif_varSite_left;
-	my_motif_varSite_right 
+	my_motif_varSite_right
 	= site2copy->my_motif_varSite_right;
 	on_site_motif_varSite = site2copy->on_site_motif_varSite;
 }
 
 void Insertion::setMembership(
-							  varSite *memberOfSite, 
-							  bool isTemplate, 
+							  varSite *memberOfSite,
+							  bool isTemplate,
 							  size_t side
 							 )
 {
@@ -2207,14 +2207,14 @@ bool Insertion::insertionAllowed(
 	//////////
 	// If there is both a template and motif covering this site with a zero minimum
 	if (
-		 on_site_sequence_template_varSite != NULL && 
+		 on_site_sequence_template_varSite != NULL &&
 		 on_site_motif_varSite != NULL
-	   ) 
+	   )
 	{
 		if (
-			 on_site_sequence_template_varSite->insertion(size) && 
+			 on_site_sequence_template_varSite->insertion(size) &&
 			 on_site_motif_varSite->insertion(size)
-		   ) 
+		   )
 		{
 			if (profile) cerr << "1true" << endl;
 			return true;
@@ -2223,7 +2223,7 @@ bool Insertion::insertionAllowed(
 	//
 	// Just a motif
 	if (
-		on_site_sequence_template_varSite == NULL && 
+		on_site_sequence_template_varSite == NULL &&
 		on_site_motif_varSite != NULL
 	   ) {
 		// Motif will accept, but need to check if template left or right will accept an insertion.
@@ -2233,26 +2233,26 @@ bool Insertion::insertionAllowed(
 		       my_sequence_template_varSite_left->insertion(size) || // WIll either st accept?
 		       my_sequence_template_varSite_right->insertion(size)
 		     )
-		   ) 
+		   )
 		{
 			if (profile) cerr << "2true" << endl;
 			return true;
 		}
-	} 
+	}
 	//
 	// Just a template
 	if (
-		 on_site_sequence_template_varSite != NULL && 
+		 on_site_sequence_template_varSite != NULL &&
 		 on_site_motif_varSite == NULL
-	   ) 
+	   )
 	{
 		if (
-			 on_site_sequence_template_varSite->insertion(size) && 
+			 on_site_sequence_template_varSite->insertion(size) &&
 			 (
-			   my_motif_varSite_left->insertion(size) || 
+			   my_motif_varSite_left->insertion(size) ||
 			   my_motif_varSite_right->insertion(size)
 			 )
-		   ) 
+		   )
 		{
 			if (profile) cerr << "3true" << endl;
 			return true;
@@ -2269,7 +2269,7 @@ bool Insertion::insertionAllowed(
 	}
 	//
 	// Right:
-	if ( my_sequence_template_varSite_right->insertion(size) 
+	if ( my_sequence_template_varSite_right->insertion(size)
 		 && my_motif_varSite_right->insertion(size) ) {
 		 if (profile) cerr << "5true" << endl;
 		 return true;
@@ -2283,8 +2283,8 @@ bool Insertion::insertionAllowed(
 }
 
 void Insertion::L_ins_copy(
-						   Deletion *site2copy, 
-						   Deletion *prev_site, 
+						   Deletion *site2copy,
+						   Deletion *prev_site,
 						   short type
 						  )
 {
@@ -2299,16 +2299,16 @@ void Insertion::L_ins_copy(
 		/// Set the Insertion pointers to the Deletion of the actual site.
 		//////////
 		// * pointer to the left -> prev_site.
-		my_sequence_template_varSite_left 
+		my_sequence_template_varSite_left
 		= prev_site->my_sequence_template_varSite;
 		//
 		// * pointer to the right -> this site.
-		my_sequence_template_varSite_right 
+		my_sequence_template_varSite_right
 		= site2copy->my_sequence_template_varSite;
 		//
 		// * on site -> (if either site == 0) ? set : NULL
 		//   where set is min(a,b) if both are to set.
-		on_site_sequence_template_varSite 
+		on_site_sequence_template_varSite
 		= site2copy->my_sequence_template_varSite->set_on_site_ptr(prev_site->my_sequence_template_varSite);
 		//
 		//////////
@@ -2318,16 +2318,16 @@ void Insertion::L_ins_copy(
 		/// Set the (L_ins_) Insertion pointers to the Deletion of the actual site.
 		//////////
 		// * pointer to the left -> prev_site.
-		my_motif_varSite_left 
+		my_motif_varSite_left
 		= prev_site->my_motif_varSite;
 		//
 		// * pointer to the right -> this site.
-		my_motif_varSite_right 
+		my_motif_varSite_right
 		= site2copy->my_motif_varSite;
 		//
 		// * on site -> (if either site == 0) ? set : NULL
 		//   where set is min(a,b) if both are to set.
-		on_site_motif_varSite 
+		on_site_motif_varSite
 		= site2copy->my_motif_varSite->set_on_site_ptr(prev_site->my_motif_varSite);
 		//
 		//////////
@@ -2339,27 +2339,27 @@ void Insertion::L_ins_copy(
 ////// DELETION
 ////////////////////
 void Deletion::copy(
-					Deletion *site2copy, 
-					bool isTemplate, 
-					bool isDescendant, 
+					Deletion *site2copy,
+					bool isTemplate,
+					bool isDescendant,
 					Deletion *anc_copy
 				   )
 {
-	if (isTemplate) { 
+	if (isTemplate) {
 		if (isDescendant) my_sequence_template_varSite = anc_copy->my_sequence_template_varSite->descendant_equiv;
 		else my_sequence_template_varSite = site2copy->my_sequence_template_varSite;
-	} else { 
-		if (isDescendant) 
-			my_motif_varSite 
+	} else {
+		if (isDescendant)
+			my_motif_varSite
 			= anc_copy->my_motif_varSite->descendant_equiv;
-		else 
-			my_motif_varSite 
+		else
+			my_motif_varSite
 			= site2copy->my_motif_varSite;
 	}
 }
 
 void Deletion::setMembership(
-							 varSite *memberOfSite, 
+							 varSite *memberOfSite,
 							 bool isTemplate
 							)
 {
@@ -2386,25 +2386,25 @@ bool Deletion::deletionAllowed(
 }
 
 void Deletion::copy(
-					Deletion *site2copy, 
-					short type, 
-					bool isDescendant, 
+					Deletion *site2copy,
+					short type,
+					bool isDescendant,
 					Deletion *anc_copy
 				   )
 {
-	if (type == TEMPLATE) { 
+	if (type == TEMPLATE) {
 		if (isDescendant) {
-			my_sequence_template_varSite 
+			my_sequence_template_varSite
 			= anc_copy->my_sequence_template_varSite->descendant_equiv;
-		} else 
-			my_sequence_template_varSite 
+		} else
+			my_sequence_template_varSite
 			= site2copy->my_sequence_template_varSite;
-	} else { 
+	} else {
 		if (isDescendant) {
-			my_motif_varSite 
+			my_motif_varSite
 			= anc_copy->my_motif_varSite->descendant_equiv;
-		} else 
-			my_motif_varSite 
+		} else
+			my_motif_varSite
 			= site2copy->my_motif_varSite;
 	}
 }
@@ -2475,7 +2475,7 @@ bool varSite::insertion(
 					    int size
 					   )
 {
-	if (member_set.size() + size > max) return false; 
+	if (member_set.size() + size > max) return false;
 	if (max < member_set.size() + size) return false;
 	return true;
 }
@@ -2490,7 +2490,7 @@ bool varSite::deletion(
 	return true;
 }
 
-bool varSite::isUnconstrained() 
+bool varSite::isUnconstrained()
 {
 	if (min == 0 && max == ISG_INT_MAX) return true;
 	return false;
@@ -2514,7 +2514,7 @@ varSite *varSite::set_on_site_ptr(
 	/// * on site -> (if either site == 0) ? set : NULL
 	///   where set is min(a,b) if both are to set.
 	//////////
-	if (prev_site->min == 0) 
+	if (prev_site->min == 0)
 		if(min == 0)
 			return (
 			    	 (prev_site->max < max)

@@ -82,7 +82,7 @@ void contextDependence::set_neutral_lookup_vector(
 {
 	LookUp *lookup;
 	double RN, RN_inv;
-	
+
 	/// inClade, though passed, means nothing at the moment. Hard-coding JC. ///
 
 	// Beginning of sequence. Set all to 1, hardcoding JC makes all cancel out.
@@ -100,7 +100,7 @@ void contextDependence::set_neutral_lookup_vector(
 	}
 }
 
-void 
+void
 contextDependence::set_lookup_table()
 {
 	LookUp *lookup;
@@ -129,7 +129,7 @@ contextDependence::set_lookup_table()
 				lookup->value = RN;
 				RN_inv = 1.0 / RN;
 				lookup->inverse = RN_inv;
-				sequence += "*";	// Marker is still at the end. // 
+				sequence += "*";	// Marker is still at the end. //
 				lookup_table2.insert( pair<string, LookUp*>(sequence, lookup) );
 
 				//lookup_context.at(lookup_context_index(int2iSG_seq(i, order+j), true)) = lookup;
@@ -138,10 +138,10 @@ contextDependence::set_lookup_table()
 				lookup_table.at(order+j).at(i) = lookup;
 
 				//cerr << "lookup_table[" << sequence << "] = v(" << lookup_table2[sequence]->value << ") i(" << lookup_table2[sequence]->inverse << ")";
-				//cerr << "lookup_context[" << lookup_context_index(int2iSG_seq(i, order+j), true); 
-				//cerr << "] = v(" << lookup_context.at(lookup_context_index(int2iSG_seq(i, order+j), true))->value << ") i("; 
+				//cerr << "lookup_context[" << lookup_context_index(int2iSG_seq(i, order+j), true);
+				//cerr << "] = v(" << lookup_context.at(lookup_context_index(int2iSG_seq(i, order+j), true))->value << ") i(";
 				//cerr << lookup_context.at(lookup_context_index(int2iSG_seq(i, order+j), true))->inverse << ")" << endl;
-	
+
 				//cerr << "   " << order+j << ", " << i << "/" << lookup_table.at(order+j).size() << "       ";
 				//cerr << lookup_table.at(order+j).at(i)->value << ", " << lookup_table.at(order+j).at(i)->inverse << endl;
 			}
@@ -177,7 +177,7 @@ contextDependence::set_lookup_table()
 
 		//////////
 		/// Calculate the changes for the very first sequence position. This will be used for future sequences.
-		/// * This position will use the transition frequencies for the last site. 
+		/// * This position will use the transition frequencies for the last site.
 		//////////
 		string tuplet;
 		string sequence_5prime;
@@ -212,7 +212,7 @@ contextDependence::set_lookup_table()
 				RN = tuplet_pi.at(lookup_ktuplet_index(tuplet));
 				sequence_5prime = "*" + sequence;
 				//cerr << " sequence: " << sequence_5prime << endl;
-				
+
 				/// Pre-calculated value for ktuplet for current sequence size - 1
 				substr_key = "*";
 				substr_key += sequence.substr(0, sequence.size()-1);
@@ -230,7 +230,7 @@ contextDependence::set_lookup_table()
 				lookup->inverse = RN_inv;
 				lookup_table2.insert( pair<string, LookUp*>(sequence_5prime, lookup) );
 				//lookup_context.at(lookup_context_index(int2iSG_seq(i, order+j))) = lookup;
-			
+
 				lookup_table.at(j-1).at(i) = lookup;
 				//cerr << "lookup_table[" << sequence_5prime << "] = v(" << lookup_table2[sequence_5prime]->value << ") i(" << lookup_table2[sequence_5prime]->inverse << ")" << endl;
 				//cerr << "lookup_table[" << lookup_context_index(int2iSG_seq(i, order+j)) << "] = v(" << lookup_context.at(lookup_context_index(int2iSG_seq(i, order+j)))->value << ") i(" << lookup_context.at(lookup_context_index(int2iSG_seq(i, order+j)))->inverse << ")" << endl;
@@ -260,9 +260,9 @@ contextDependence::set_lookup_table()
 		vector<double>::iterator tup_it = tuplet_pi.begin();
 		for (int i = 0; i < 64; i++, ++tup_it) {
 			for (int j = 0; j < 64; j++) {
-				lookup = new LookUp((*tup_it) * lookup_table.at(2).at(i*64+j)->value); 
+				lookup = new LookUp((*tup_it) * lookup_table.at(2).at(i*64+j)->value);
 				// Assume P(ATG) = 1, therefore, there is 0 chance that it will change.
-				// With these values, tau_ij = P(j)/P(i) * P_0(i)/P_0(j) = 1, so Rij = u\pi log(tau_ij)/1-1/tau_ij = 0; 
+				// With these values, tau_ij = P(j)/P(i) * P_0(i)/P_0(j) = 1, so Rij = u\pi log(tau_ij)/1-1/tau_ij = 0;
 				lookup->value = numeric_limits<double>::min();
 				lookup->inverse = numeric_limits<double>::max();
 				lookup_table.at(0).at(i*64+j) = lookup;
@@ -279,7 +279,7 @@ contextDependence::set_lookup_table()
 	}
 }
 
-void 
+void
 contextDependence::get_first_order_indices (int tuplet, int *index1, int *index2)
 {
 	vector<int> decompose_9tuplet (9, 0);
@@ -345,7 +345,7 @@ void contextDependence::readDependencies(string& file)
 //			cerr << "i: " << i ;
 			val = atof((*it).c_str());
 			// If the read-in value is zero, it causes havoc with nan's in the tau_ij routine. Set to minimum double
-			// value, instead. Need to make sure that this number can be squared!! This is because if we are going to 
+			// value, instead. Need to make sure that this number can be squared!! This is because if we are going to
 			// multiply two "0"s, and these were both at numeric_limits<double>::min(), we would get underflow, and
 			// the problem with zeroes would persist. So, set val to the square root of the minimum double value.
 			if (val == 0) val = sqrt(numeric_limits<double>::min());
@@ -429,7 +429,7 @@ void contextDependence::allocate_lookup_context_vector()
 	} else if (Human_Data_simulation) {
 		// This is hard coded to make human example work. To generalize, need to include that expected order of the
 		// data, and proceed similarly as above. This is for codons (triplets), where only 1 site will vary.
-		
+
 		cerr << "Point-> allocate_lookup_context_vector()" << endl;
 
 		//////////
@@ -437,14 +437,14 @@ void contextDependence::allocate_lookup_context_vector()
 		index_position_multiplier.assign(order*6+3, 1);
 		for (it = index_position_multiplier.begin()+1; it != index_position_multiplier.end(); ++it)
 			(*it) = (*(it-1))*numStates;
-		
+
 		// Beginning of sequence change probability:
 		// i_h^1 i_h^2 i_h^3   i_{4}^1 i_{5}^2 i_{6}^3
 		// We will assume that this is always ATG
 		lookup_table.at(0).assign(pow((double)numStates, 6.), dummy);
 		lookup_table.at(1).assign(pow((double)numStates, 9.), dummy);
 		lookup_table.at(2).assign(pow((double)numStates, 6.), dummy);
-		
+
 		cerr << "Sizes of each lookup table element:" << endl;
 		cerr << "  0: " << lookup_table.at(0).size() << endl;
 		cerr << "  1: " << lookup_table.at(1).size() << endl;
@@ -467,9 +467,9 @@ contextDependence::~contextDependence()
 	}
 }
 
-void 
+void
 contextDependence::reset_sequence_indices(
-										  TNode *node, 
+										  TNode *node,
 										  // Block size (for codons)
 										  int event_site,
 										  string event
@@ -500,7 +500,7 @@ contextDependence::reset_sequence_indices(
 		// sequence indices for EPC (?).
 		if (end - start == order*2*block_size) {
 			if (start < order) {
-				
+
 			} else {
 				// At the end of the sequence.
 				for (int i = 0; i < block_size; ++i) codon1[i] = node->seq_evo.at(start+i).returnState();
@@ -544,10 +544,10 @@ contextDependence::reset_sequence_indices(
 				//for (nt = new_indices.begin(); nt != new_indices.end(); ++nt) cerr << (*nt) << endl;
 
 				nt = new_indices.begin();
-				for (vector<Site>::iterator it = node->seq_evo.begin()+start; it != node->seq_evo.begin()+end; ++it, ++nt) 
+				for (vector<Site>::iterator it = node->seq_evo.begin()+start; it != node->seq_evo.begin()+end; ++it, ++nt)
 					(*it).set_lookup_table_sequence_index(*nt);
 
-				//for (vector<Site>::iterator it = node->seq_evo.begin(); it != node->seq_evo.end(); ++it) 
+				//for (vector<Site>::iterator it = node->seq_evo.begin(); it != node->seq_evo.end(); ++it)
 				//	cerr << (*it).return_lookup_table_sequence_index() << " ";
 				//cerr << endl;
 			}
@@ -571,7 +571,7 @@ contextDependence::reset_sequence_indices(
 			//cerr << " --> ";
 			//for (int i = 0; i < block_size; ++i) cerr << stateCharacters.at(codon2[i]);
 			//cerr << endl << "codon 3: ";
-			//for (int i = 0; i < block_size; ++i) cerr << stateCharacters.at(codon3[i]); 
+			//for (int i = 0; i < block_size; ++i) cerr << stateCharacters.at(codon3[i]);
 			//cerr << endl;
 
 			// Populate vector with older indices.
@@ -600,24 +600,24 @@ contextDependence::reset_sequence_indices(
 			//for (nt = new_indices.begin(); nt != new_indices.end(); ++nt) cerr << (*nt) << endl;
 
 			nt = new_indices.begin();
-			for (vector<Site>::iterator it = node->seq_evo.begin()+start; it != node->seq_evo.begin()+end; ++it, ++nt) 
+			for (vector<Site>::iterator it = node->seq_evo.begin()+start; it != node->seq_evo.begin()+end; ++it, ++nt)
 				(*it).set_lookup_table_sequence_index(*nt);
 
-			//for (vector<Site>::iterator it = node->seq_evo.begin(); it != node->seq_evo.end(); ++it) 
+			//for (vector<Site>::iterator it = node->seq_evo.begin(); it != node->seq_evo.end(); ++it)
 			//	cerr << (*it).return_lookup_table_sequence_index() << " ";
 			//cerr << endl;
 		}
 	} else {
-		// MIDDLE: If in the middle of the sequence, the index position will change by the nature of the event 
+		// MIDDLE: If in the middle of the sequence, the index position will change by the nature of the event
 		// (e.g., T->A is a 3 to a 0 in the stateCharacters array), multiplied by the index_position_multiplier,
 		// i.e., if we are changing the index at the beginning of the string in order-3, the index will be
 		// old_index+4^6*(-3)
 		// END:    If at the end of the sequence, still start at ipm beginning, but the nature of the change
 		// to the sequence indices is different in that after entering the last order+1 sites, the value removed
-		// from the previous indices will remain constant. The Nth site will always have the multiplier 4^0, 
+		// from the previous indices will remain constant. The Nth site will always have the multiplier 4^0,
 		// the (N-1)st site will always have the multiplier 4^1, and so on.
 		// BEGINNING: If in the beginning of the sequence, the ipm index will have to start a little ways into the
-		// ipm array, since a change to first site will have a specific multiplier > 1 (actually, it will be 
+		// ipm array, since a change to first site will have a specific multiplier > 1 (actually, it will be
 		// 4^order), and so on...
 		bt = index_position_multiplier.begin();
 		if (node->seq_evo.at(event_site).return_lookup_table_environment_index() < order) {
@@ -663,9 +663,9 @@ void contextDependence::set_sequence_indices(
 			(*it).set_lookup_table_environment_index(i);
 			// This is a shortcut that works well for order 1, but not so well for higher orders...
 			// Can make a function to handle this.
-			(*it).set_lookup_table_sequence_index( 
-												  (*(it-1)).return_lookup_table_sequence_index()*numStates 
-												  + (*(it+order)).returnState() 
+			(*it).set_lookup_table_sequence_index(
+												  (*(it-1)).return_lookup_table_sequence_index()*numStates
+												  + (*(it+order)).returnState()
 												 );
 		}
 
@@ -688,7 +688,7 @@ void contextDependence::set_sequence_indices(
 		// types of changes will affect the first position as well as the downstream dependencies.
 		// We represent the first position as order+block_size, and the downstream dependencies as
 		// + block_size. The first block_size positions will be assigned an index into the lookup_table.
-		for (i = 0; i < order*block_size+block_size; ++i) 
+		for (i = 0; i < order*block_size+block_size; ++i)
 			seq.push_back((*(it+i)).returnState());
 
 		//for (vector<short>::iterator q = seq.begin(); q != seq.end(); ++q)
@@ -701,7 +701,7 @@ void contextDependence::set_sequence_indices(
 			(*it).set_lookup_table_sequence_index(sequence_specific_index_offset(seq));
 			//cerr << "Site " << site << ":" << "  env->" << (*it).return_lookup_table_environment_index() << "  idx->" << (*it).return_lookup_table_sequence_index() << endl;
 		}
-		
+
 
 		// Middle of sequence
 		for (it = node->seq_evo.begin()+order*block_size; it != node->seq_evo.end()-block_size; it += block_size) {
@@ -718,7 +718,7 @@ void contextDependence::set_sequence_indices(
 				for (int x = 0; x < block_size; x++) seq.pop_back();
 			}
 			// Replace the back elements with the next 3 positions of the sequence
-			for (i = block_size; i < 2*block_size; i++) 
+			for (i = block_size; i < 2*block_size; i++)
 				seq.push_back((*(it+i)).returnState());
 
 			//for (vector<short>::iterator q = seq.begin(); q != seq.end(); ++q)
@@ -745,7 +745,7 @@ void contextDependence::set_sequence_indices(
 			}
 		}
 	}
-	
+
 	// Report
 	//i = 0;
 	//cerr << node->printSequence() << endl;
@@ -762,9 +762,9 @@ contextDependence::setOffset()
 	vector<vector<int> >::iterator at;
 
 	if (order_3_markov) {
-		// Need to keep track of the offsets of neighboring patterns. 
+		// Need to keep track of the offsets of neighboring patterns.
 		// ASSUMING WE ARE MID-SEQUENCE, given an order 3 markov dependence,
-		// if the current nucleotide is an A, XXXAXXX with index indexA, then the neighboring sequences 
+		// if the current nucleotide is an A, XXXAXXX with index indexA, then the neighboring sequences
 		// XXXCXXX, XXXGXXX, and XXXTXXX will be indexA+4^3, indexA+2*4^3, and indexA+3*4^3
 		// For XXXCXXX, indices will be indexC-4^3, indexC+4^3, and indexC+2*4^3  for A,G,T
 		// For XXXGXXX, indices will be indexG-2*4^3, indexG-4^3, and indexG+4^3  for A,C,T
@@ -779,40 +779,40 @@ contextDependence::setOffset()
 		// seq position N: 4^0
 		// Level 0: (Very beginning of sequence? AXXX)
 		//  Offset to: A    C    G    T
-		// 	Curr: A	   0    64   128  192 
-		// 		  C	   -64  0    64   128 
-		// 		  G	   -128 -64  0    64 
-		// 		  T	   -192 -128 -64  0 
-		// Level 1: 
-		// 0 64 128 192 
-		// -64 0 64 128 
-		// -128 -64 0 64 
-		// -192 -128 -64 0 
-		// Level 2: 
-		// 0 64 128 192 
-		// -64 0 64 128 
-		// -128 -64 0 64 
-		// -192 -128 -64 0 
-		// Level 3: 
-		// 0 64 128 192 
-		// -64 0 64 128 
-		// -128 -64 0 64 
-		// -192 -128 -64 0 
-		// Level 4: 
-		// 0 1 2 3 
-		// -1 0 1 2 
-		// -2 -1 0 1 
-		// -3 -2 -1 0 
-		// Level 5: 
-		// 0 4 8 12 
-		// -4 0 4 8 
-		// -8 -4 0 4 
-		// -12 -8 -4 0 
-		// Level 6: 
-		// 0 16 32 48 
-		// -16 0 16 32 
-		// -32 -16 0 16 
-		// -48 -32 -16 0 
+		// 	Curr: A	   0    64   128  192
+		// 		  C	   -64  0    64   128
+		// 		  G	   -128 -64  0    64
+		// 		  T	   -192 -128 -64  0
+		// Level 1:
+		// 0 64 128 192
+		// -64 0 64 128
+		// -128 -64 0 64
+		// -192 -128 -64 0
+		// Level 2:
+		// 0 64 128 192
+		// -64 0 64 128
+		// -128 -64 0 64
+		// -192 -128 -64 0
+		// Level 3:
+		// 0 64 128 192
+		// -64 0 64 128
+		// -128 -64 0 64
+		// -192 -128 -64 0
+		// Level 4:
+		// 0 1 2 3
+		// -1 0 1 2
+		// -2 -1 0 1
+		// -3 -2 -1 0
+		// Level 5:
+		// 0 4 8 12
+		// -4 0 4 8
+		// -8 -4 0 4
+		// -12 -8 -4 0
+		// Level 6:
+		// 0 16 32 48
+		// -16 0 16 32
+		// -32 -16 0 16
+		// -48 -32 -16 0
 		int multiple_of_numStates = index_position_multiplier.at(order);
 		// Makes array for the multiplier above. This array essentially removes the zero multiplier,
 		// in this case, it will be -3 -2 -1  1  2  3
@@ -897,7 +897,7 @@ contextDependence::setOffset()
 										    bs * numStates * numStates	// Each codon position has 16 flattened matrix positions, so this moves to the correct codon position.
 										  + seqi*numStates
 										  + seqj
-										 ) 
+										 )
 										 =  (seqj-seqi)	// Nature of change
 										  * pow((double)numStates,(double)(block_size-(bs+1)))	// codon position (0, 1, or 2) needs to be (1, 2, 3)... Conceptually, which is why bs+1
 										  * pow((double)numStates,(double)(block_size))		// size of codons before current.;
@@ -909,7 +909,7 @@ contextDependence::setOffset()
 										    bs * numStates * numStates	// Each codon position has 16 flattened matrix positions, so this moves to the correct codon position.
 										  + seqi*numStates
 										  + seqj
-										 ) 
+										 )
 										 =  (seqj-seqi)	// Nature of change
 										  * pow((double)numStates,(double)(block_size-(bs+1)))	// codon position (0, 1, or 2) needs to be (1, 2, 3)... Conceptually, which is why bs+1
 										  * pow((double)numStates,(double)block_size)		// size of codons before current.;
@@ -920,7 +920,7 @@ contextDependence::setOffset()
 										    bs * numStates * numStates	// Each codon position has 16 flattened matrix positions, so this moves to the correct codon position.
 										  + seqi*numStates
 										  + seqj
-										 ) 
+										 )
 										 =  (seqj-seqi)	// Nature of change
 										  * pow((double)numStates,(double)(block_size-(bs+1)))	// codon position (0, 1, or 2) needs to be (1, 2, 3)... Conceptually, which is why bs+1
 										 ;
@@ -950,7 +950,7 @@ contextDependence::setOffset()
 int contextDependence::getOffset(
 								 int environment,
 								 int codon_position,
-								 short i, 
+								 short i,
 								 short j
 								)
 {
@@ -970,7 +970,7 @@ void contextDependence::generateDependencies(double dependence_strength_superscr
 	string sequence;
 	vector<double> tmp_val (numStates, 0);
 	vector<string> sequences (numStates, "");
-	double RN, RN_inv; 
+	double RN, RN_inv;
 	vector<double>::iterator tt;
 	vector<string>::iterator st;
 	int i, j;
@@ -1012,7 +1012,7 @@ void contextDependence::generateDependencies(double dependence_strength_superscr
 //		sequence = lookup_table_sequence(i, order+1);
 //		sequence += "*";
 //		cerr << "lookup_table[" << sequence << "] = v(" << lookup_table2[sequence]->value << ") i(" << lookup_table2[sequence]->inverse << ")";
-//		cerr << "vs lookup_context[" << context_specific_index_offset.at(generator_index) << "+" << sequence_specific_index_offset(int2iSG_seq(i, generator_index)) << " = ";		cerr << lookup_context_index(int2iSG_seq(i, generator_index), true) << "] = v(" 
+//		cerr << "vs lookup_context[" << context_specific_index_offset.at(generator_index) << "+" << sequence_specific_index_offset(int2iSG_seq(i, generator_index)) << " = ";		cerr << lookup_context_index(int2iSG_seq(i, generator_index), true) << "] = v("
 //			 << lookup_context.at(lookup_context_index(int2iSG_seq(i, generator_index), true))->value << ") i("
 //	 		 << lookup_context.at(lookup_context_index(int2iSG_seq(i, generator_index), true))->inverse << ")" << endl;
 //
@@ -1050,7 +1050,7 @@ int contextDependence::sequence_specific_index_offset(vector<short> sequence)
 	return index;
 }
 
-vector<short> 
+vector<short>
 contextDependence::int2iSG_seq(int idx, int sequence_length)
 {
 	vector<short> sequence (sequence_length, 0);
@@ -1077,7 +1077,7 @@ string contextDependence::lookup_table_sequence(int idx, int sequence_length)
 		idx -= residue * (*mt);
 		--mt;
 	}
-	
+
 	return sequence;
 }
 

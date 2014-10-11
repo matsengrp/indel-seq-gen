@@ -16,19 +16,19 @@ int ABindex (const char *AB, char c)
 
 /* public */
 
-void count_xSx (const char *S, const int m, char **ds_ptr, 
+void count_xSx (const char *S, const int m, char **ds_ptr,
 		int *chi_Sp, int *chi_xSp, int *chi_Sxp)
 
 {
   int lenS;
   int i;
   char *p;
-  
+
   *chi_Sp = 0;
   *chi_xSp = 0;
   *chi_Sxp = 0;
   lenS = strlen(S);
-  
+
   if (lenS == 0)
     for(i=1; i<=m; i++)
       {
@@ -73,7 +73,7 @@ int count_Sx (const char *S, const int m, char **ds_ptr)
   return(chi_Sx);
 }
 
-double *proball_Sc (const char *AB, int absize, 
+double *proball_Sc (const char *AB, int absize,
                   const int m, char **ds_ptr, char *S)
 /* if S==NUL we use S[-1] */
 
@@ -105,7 +105,7 @@ double *proball_Sc (const char *AB, int absize,
 	      p++; /* so we don't find the same substring again */
 	    }
 	}
-    }  
+    }
   else
     {
       for (i=0; i<absize; i++)
@@ -130,7 +130,7 @@ int count_diff_S (const char *S, const int m, char **ds_ptr)
 
 {
   int i,c;
-  
+
   if (strlen(S) == 0)
     return(0);
 
@@ -142,7 +142,7 @@ int count_diff_S (const char *S, const int m, char **ds_ptr)
 }
 
 
-void allchi_Sc (const char *AB, int absize, const int m, char **ds_ptr, 
+void allchi_Sc (const char *AB, int absize, const int m, char **ds_ptr,
 		char *S, int chi_Sc[])
 /* if S==NUL we use S[-1] */
 
@@ -166,7 +166,7 @@ void allchi_Sc (const char *AB, int absize, const int m, char **ds_ptr,
 	      p++; /* so we don't find the same substring again */
 	    }
 	}
-    }  
+    }
   else
     {
       for (i=0; i<absize; i++)

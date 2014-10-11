@@ -72,10 +72,10 @@ public:
 			    eventType(action), size(event), event_occurrence_branch_length(BL)
 	{ }
 	// Below: Reading in substitution history. BL will be filled in during emulation.
-	eventTrack(int eventNo, char action, double atEpochTime, vector<bool> bipartition, string event, 
+	eventTrack(int eventNo, char action, double atEpochTime, vector<bool> bipartition, string event,
 			   int pos, double Qidot, double Qij, double Qidot_k__T__, double Qij_k__T__, double i2k, double Pjk, double Pik)
 			  : ID(eventNo), bipartitionInduced(bipartition), eventTime(atEpochTime), size(event), event_occurrence_branch_length(-1)
-	{ 
+	{
 		eventType = ( (action == 'S') ? SUBSTITUTION : ( (action == 'I') ? INSERT : ( (action == 'D') ? DELETE : ( (action == 'F') ? FOSSIL : 42) ) ) );
 		if (action == 'S') {
 			action = SUBSTITUTION;

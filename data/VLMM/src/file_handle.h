@@ -40,7 +40,7 @@ void predict_fasta_set (const char *long_out, const char *short_out, \
 /* reads fasta format files of [comment_line,lines] */
 /* if indexed all indices=0 are read, rest ('test') are ignored */
 /* otherwise all strings are read */
-/* the file is loaded to memory single string at a time */ 
+/* the file is loaded to memory single string at a time */
 /* a string is loaded, predicted, overwritten */
 
 void save_pst (char *outfile, char *AB, int absize, int L_max, pst_type T);
@@ -61,16 +61,16 @@ void fileproc_test_set (char *filename, char *resfile, char *AB, pst_type T);
 void pred_onall_save (char *filename, char *resfile, char *AB, pst_type T, char detail);
 /* silent read of all strings. no index. writes results to file. */
 
-void prediction_stat (char *AB, pst_type T, const int n, const char *sfile, 
+void prediction_stat (char *AB, pst_type T, const int n, const char *sfile,
        const char *ifile, const char *s0file, const char *i0file, const int s1,
-       const int s2, int s3, double *non1p, double *non2p, double *non12p, 
+       const int s2, int s3, double *non1p, double *non2p, double *non12p,
        double *iso1p, double *iso2p, double *iso12p);
 /* silent read strings by indices. returns stats */
 
 
-void pred_stat_save (char *AB, pst_type T, const int n, const char *sfile, 
+void pred_stat_save (char *AB, pst_type T, const int n, const char *sfile,
        const char *ifile, const char *s0file, const char *i0file, int s1,
-       int s2, int s3, double *non1p, double *non2p, double *non12p, 
+       int s2, int s3, double *non1p, double *non2p, double *non12p,
        double *iso1p, double *iso2p, double *iso12p, const char *wfile,
        const char *w0file, const int tsize);
 /* silent read strings by indices. saves results for matlab/draw.c

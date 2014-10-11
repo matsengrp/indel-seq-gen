@@ -52,7 +52,7 @@ void paleobiology::DepositFossils(TNode *des, list<eventTrack*> *events)
 		} // else no fossil deposited in this step.
 	}
 
-    if (des->tipNo==-1) { 
+    if (des->tipNo==-1) {
         DepositFossils(des->branch1, events);
     	DepositFossils(des->branch2, events);
     }

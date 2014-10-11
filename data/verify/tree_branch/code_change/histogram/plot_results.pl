@@ -50,8 +50,8 @@ for my $i ($burn_in..@tmp-1) {
 	$subst = $tmp2[8];
 	$fwd = $tmp2[9];
 	$bin_array[$diff*$num_bins]++;
-	if (&accept_path($tmp2[7])) { 
-		$accepted_array[$diff*$num_bins]++; 
+	if (&accept_path($tmp2[7])) {
+		$accepted_array[$diff*$num_bins]++;
 		push (@change_in_probability, $fwd - $tmpprev[9]);
 		push (@accepted_path_length, $diff);
 	}
@@ -112,13 +112,13 @@ sub gnuplot {
 	print OUT "set output \"$outfile.eps\"\n";
 	print OUT "plot \"$outfile.dat\" w points ti \"$infile\"\n";
 	close OUT;
-	
+
 	system("gnuplot $outfile.gnu");
 }
 
 sub accept_path {
 	my ($char) = @_;
-	
+
 	if ($char eq "R") { return 0; }
 	else { return 1; }
 }

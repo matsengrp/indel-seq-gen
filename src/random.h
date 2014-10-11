@@ -96,7 +96,7 @@ inline double rand_exp(double L) { return L*rand_exp(); }
 
 inline double rand_gamma_small(double a)
 {
-	// Ahrens & Dieter (1974) Computer methods for sampling from gamma, 
+	// Ahrens & Dieter (1974) Computer methods for sampling from gamma,
 	// beta, Poisson and binomial distributions. Computing 12: 223-246.
     double b = 1.0 + a*0.36788794412;
 	double p,g,r;
@@ -121,7 +121,7 @@ inline double rand_gamma_small(double a)
 inline double rand_gamma_big(double a)
 {
 	// Cheng (1977) The generation of gamma variables with non-integral
-	// shape parameter. Appl. Stat. 26(1): 71-75.     
+	// shape parameter. Appl. Stat. 26(1): 71-75.
 	double aa = sqrt(a+a+1.0);
 	double b = a - 1.38629436111989061883;
 	double c = a + aa;

@@ -12,15 +12,15 @@ pfa_type make_empty_pfa(int absize, int nodes)
 {
   pfa_type M;
   int i;
-  
+
   M.nodes = nodes;
-  
+
   if ((M.node = (pfa_node *) malloc (nodes*sizeof(pfa_node))) == NULL)
     {
       fprintf (stderr,"failed to allocate pfa array\n");
       exit(1);
     }
-  
+
   for (i=0; i<nodes; i++)
     {
       M.node[i].label = NULL; /* marks a vacant slot */
@@ -52,7 +52,7 @@ void save_pfa (char *outfile, char *AB, int absize, int L_max, pfa_type M)
     {
       fprintf(fp,"\n[%d] label: <%s> p_stat: %1.8f\n", i, M.node[i].label, M.node[i].p_stat);
       for (j=0; j<absize; j++)
-	fprintf(fp," %1.8f <%s> --%c--> <%s> [%d]\n", M.node[i].p_c[j], M.node[i].label, AB[j], 
+	fprintf(fp," %1.8f <%s> --%c--> <%s> [%d]\n", M.node[i].p_c[j], M.node[i].label, AB[j],
 		M.node[M.node[i].son_c[j]].label, M.node[i].son_c[j]);
     }
 
@@ -129,7 +129,7 @@ void epst2pfa_aux(char *AB, int absize, int max_string, pst_type T0, pst_node *T
 void epst2pfa(char *AB, int absize, int max_string, pst_type T, pfa_type M)
 {
   char *S;
-  
+
   /* +1 for the terminating '\0' and +1 for the next symbol */
   if ((S = (char *) malloc (max_string+2)) == NULL)
     {
@@ -150,7 +150,7 @@ void solve_stat_pfa(pfa_type M, int absize)
   double **a, *b, d; /* we match names with NUMREC */
   int *indx;         /* NUMREC desires: a[1.n][1.n] b[1.n] indx[1.n] */
   int i,j;
- 
+
   if ((a = (double **) malloc ((M.nodes+1)*sizeof(double *))) == NULL)
     {
       fprintf (stderr,"failed to allocate transition matrix backbone\n");
@@ -169,17 +169,17 @@ void solve_stat_pfa(pfa_type M, int absize)
     }
 
   if ((b = (double *) malloc ((M.nodes+1)*sizeof(double))) == NULL)
-    {    
+    {
       fprintf (stderr,"failed to allocate stationary prob. vector\n");
       exit(1);
     }
-  
+
   if ((indx = (int *) malloc ((M.nodes+1)*sizeof(int))) == NULL)
-    {    
+    {
       fprintf (stderr,"failed to allocate row permutation vector\n");
       exit(1);
     }
-  
+
   for (j=0; j<M.nodes; j++)
     for (i=0; i<absize; i++)
       a[M.node[j].son_c[i]+1][j+1] = M.node[j].p_c[i];  /* a_ij=pr(j->i) */

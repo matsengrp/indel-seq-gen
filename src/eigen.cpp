@@ -1,8 +1,8 @@
-//  
+//
 //   Sequence Generator - seq-gen, version 1.3.2
 //   Andrew Rambaut & Nick Grassly
-//   Department of Zoology, University of Oxford			
-//	
+//   Department of Zoology, University of Oxford
+//
 //   The code in this file is taken from Ziheng Yang's PAML package.
 //   http://abacus.gene.ucl.ac.uk/
 //
@@ -24,7 +24,7 @@ void unbalance(int n, double vr[], double vi[], int low, int hi,
                double scale[]);
 int realeig(int job, double mat[], int n,int low, int hi, double valr[],
             double vali[], double vr[], double vi[]);
-void elemhess(int job, double mat[], int n, int low, int hi, 
+void elemhess(int job, double mat[], int n, int low, int hi,
             double vr[], double vi[], int work[]);
 
 typedef struct { double re, im; } complex;
@@ -83,7 +83,7 @@ int matinv( double x[], int n, int m, double space[])
       }
       for (j=0; j<m; j++)   x[i*m+j] *= t;
       x[i*m+i] = t;
-   }                            // i  
+   }                            // i
    for (i=n-1; i>=0; i--) {
       if (irow[i] == i) continue;
       for (j=0; j<n; j++)  {
@@ -129,26 +129,26 @@ int matinv( double x[], int n, int m, double space[])
 #define pos(i,j,n)      ((i)*(n)+(j))
 
 int eigen(
-		  int job, 
-		  double A[], 
-		  int n, 
-		  double rr[], 		//Root 
-		  double ri[], 
-          double vr[],		// U 
-          double vi[],  	// V 
+		  int job,
+		  double A[],
+		  int n,
+		  double rr[], 		//Root
+		  double ri[],
+          double vr[],		// U
+          double vi[],  	// V
           double work[]
          )
-{    
+{
 //  double work[n*2]: working space
     int low,hi,i,j,k, it, istate=0;
-    double tiny=sqrt(pow((double)BASE,(double)(1-DIGITS))), t; 
+    double tiny=sqrt(pow((double)BASE,(double)(1-DIGITS))), t;
 
     balance(A,n,&low,&hi,work);
     elemhess(job,A,n,low,hi,vr,vi, (int*)(work+n));
     if (-1 == realeig(job,A,n,low,hi,rr,ri,vr,vi)) return (-1);
     if (job) unbalance(n,vr,vi,low,hi,work);
 
-// sort, added by Z. Yang 
+// sort, added by Z. Yang
    for (i=0; i<n; i++) {
        for (j=i+1,it=i,t=rr[i]; j<n; j++)
            if (t<rr[j]) { t=rr[j]; it=j; }
@@ -181,16 +181,16 @@ complex c_compl (double re,double im)
 complex cplus (complex a, complex b)
 {
    complex c;
-   c.re = a.re+b.re;  
-   c.im = a.im+b.im;   
+   c.re = a.re+b.re;
+   c.im = a.im+b.im;
    return (c);
 }
 
 complex cminus (complex a, complex b)
 {
    complex c;
-   c.re = a.re-b.re;  
-   c.im = a.im-b.im;   
+   c.re = a.re-b.re;
+   c.im = a.im-b.im;
    return (c);
 }
 
@@ -226,7 +226,7 @@ complex SGcexp (complex a)
 {
    complex c;
    c.re = exp(a.re);
-   if (fabs(a.im)==0) c.im = 0; 
+   if (fabs(a.im)==0) c.im = 0;
    else  { c.im = c.re*sin(a.im); c.re*=cos(a.im); }
    return (c);
 }
@@ -234,7 +234,7 @@ complex SGcexp (complex a)
 complex cfactor (complex x, double a)
 {
    complex c;
-   c.re = a*x.re; 
+   c.re = a*x.re;
    c.im = a*x.im;
    return (c);
 }
@@ -253,7 +253,7 @@ int cmatby (complex a[], complex b[], complex c[], int n,int m,int k)
    complex t;
 
    FOR (i,n)  FOR(j,k) {
-       for (i1=0,t=c_compl(0,0); i1<m; i1++)  
+       for (i1=0,t=c_compl(0,0); i1<m; i1++)
            t = cplus (t, cby(a[i*m+i1],b[i1*k+j]));
        c[i*k+j] = t;
    }
@@ -263,7 +263,7 @@ int cmatby (complex a[], complex b[], complex c[], int n,int m,int k)
 int cmatout (FILE * fout, complex x[], int n, int m)
 {
    int i,j;
-   for (i=0,FPN(fout); i<n; i++,FPN(fout)) 
+   for (i=0,FPN(fout); i<n; i++,FPN(fout))
         FOR(j,m) fprintf(fout, "%7.3f%7.3f  ", x[i*m+j].re, x[i*m+j].im);
    return (0);
 }
@@ -304,7 +304,7 @@ int cmatinv( complex x[], int n, int m, double space[])
        }
        FOR(j,m)   x[i*m+j] = cby (x[i*m+j], t);
        x[i*m+i] = t;
-   }                         
+   }
    for (i=n-1; i>=0; i--) {
         if (irow[i] == i) continue;
         FOR(j,n)  {
@@ -460,7 +460,7 @@ void inline unbalance(int n,double vr[],double vi[], int low, int hi, double sca
 
                 tmp = vi[pos(i,j,n)];
                 vi[pos(i,j,n)] = vi[pos(k,j,n)];
-                vi[pos(k,j,n)] = tmp;        
+                vi[pos(k,j,n)] = tmp;
             }
         }
     }
@@ -474,7 +474,7 @@ void inline unbalance(int n,double vr[],double vi[], int low, int hi, double sca
 
                 tmp = vi[pos(i,j,n)];
                 vi[pos(i,j,n)] = vi[pos(k,j,n)];
-                vi[pos(k,j,n)] = tmp;        
+                vi[pos(k,j,n)] = tmp;
             }
         }
     }
@@ -557,7 +557,7 @@ void elemhess(int job,double mat[],int n,int low,int hi, double vr[],
 // Calculate eigenvalues and eigenvectors of a real upper Hessenberg matrix
 // Return 1 if converges successfully and 0 otherwise
 //
- 
+
 int realeig(int job,double mat[],int n,int low, int hi, double valr[],
       double vali[], double vr[],double vi[])
 {
@@ -573,7 +573,7 @@ int realeig(int job,double mat[],int n,int low, int hi, double valr[],
       valr[i]=0.0;
       vali[i]=0.0;
    }
-	// store isolated roots and calculate norm 
+	// store isolated roots and calculate norm
    for (norm = 0,i = 0; i < n; i++) {
       for (j = max(0,i-1); j < n; j++) {
          norm += fabs(mat[pos(i,j,n)]);
@@ -587,7 +587,7 @@ int realeig(int job,double mat[],int n,int low, int hi, double valr[],
       niter = 0;
       for (;;) {
 
-       // look for single small subdiagonal element 
+       // look for single small subdiagonal element
 
          for (l = en; l > low; l--) {
             s = fabs(mat[pos(l-1,l-1,n)]) + fabs(mat[pos(l,l,n)]);
@@ -595,11 +595,11 @@ int realeig(int job,double mat[],int n,int low, int hi, double valr[],
             if (fabs(mat[pos(l,l-1,n)]) <= eps * s) break;
          }
 
-         // form shift 
+         // form shift
 
          x = mat[pos(en,en,n)];
 
-         if (l == en) {             // one root found 
+         if (l == en) {             // one root found
             valr[en] = x + t;
             if (job) mat[pos(en,en,n)] = x + t;
             en--;
@@ -609,7 +609,7 @@ int realeig(int job,double mat[],int n,int low, int hi, double valr[],
          y = mat[pos(en-1,en-1,n)];
          w = mat[pos(en,en-1,n)] * mat[pos(en-1,en,n)];
 
-         if (l == en - 1) {                // two roots found 
+         if (l == en - 1) {                // two roots found
             p = (y - x) / 2;
             q = p * p + w;
             z = sqrt(fabs(q));
@@ -624,7 +624,7 @@ int realeig(int job,double mat[],int n,int low, int hi, double valr[],
                valr[en] = x+p;
                vali[en] = -z;
             }
-            else {                      // real pair 
+            else {                      // real pair
                z = (p < 0) ? p - z : p + z;
                valr[en-1] = x + z;
                valr[en] = (z == 0) ? x + z : x - w / z;
@@ -672,7 +672,7 @@ int realeig(int job,double mat[],int n,int low, int hi, double valr[],
             w = -0.4375 * s * s;
          }
          niter++;
-           // look for two consecutive small subdiagonal elements 
+           // look for two consecutive small subdiagonal elements
          for (m = en - 2; m >= l; m--) {
             z = mat[pos(m,m,n)];
             r = x - z;
@@ -741,7 +741,7 @@ int realeig(int job,double mat[],int n,int low, int hi, double valr[],
                mat[pos(k,j,n)] -= p * x;
             }
             j = min(en,k+3);
-            // column modification 
+            // column modification
             for (i = (!job ? l : 0); i <= j; i++) {
                p = x * mat[pos(i,k,n)] + y * mat[pos(i,k+1,n)];
                if (k != en - 1) {
@@ -768,7 +768,7 @@ int realeig(int job,double mat[],int n,int low, int hi, double valr[],
 
    if (!job) return(0);
    if (norm != 0) {
-       // back substitute to find vectors of upper triangular form 
+       // back substitute to find vectors of upper triangular form
       for (en = n-1; en >= 0; en--) {
          p = valr[en];
          if ((q = vali[en]) < 0) {            // complex vector
@@ -806,7 +806,7 @@ int realeig(int job,double mat[],int n,int low, int hi, double valr[],
                      mat[pos(i,en-1,n)] = v.re;
                      mat[pos(i,en,n)] = v.im;
                   }
-                  else {                      // solve complex equations 
+                  else {                      // solve complex equations
                      x = mat[pos(i,i+1,n)];
                      y = mat[pos(i+1,i,n)];
                      v.re = (valr[i]- p)*(valr[i]-p) + vali[i]*vali[i] - q*q;
@@ -819,7 +819,7 @@ int realeig(int job,double mat[],int n,int low, int hi, double valr[],
                      mat[pos(i,en-1,n)] = v.re;
                      mat[pos(i,en,n)] = v.im;
                      if (fabs(x) > fabs(z) + fabs(q)) {
-                        mat[pos(i+1,en-1,n)] = 
+                        mat[pos(i+1,en-1,n)] =
                              (-ra - w * mat[pos(i,en-1,n)] +
                              q * mat[pos(i,en,n)]) / x;
                         mat[pos(i+1,en,n)] = (-sa - w * mat[pos(i,en,n)] -
@@ -835,7 +835,7 @@ int realeig(int job,double mat[],int n,int low, int hi, double valr[],
                }
             }
          }
-         else if (q == 0) {                             // real vector 
+         else if (q == 0) {                             // real vector
             m = en;
             mat[pos(en,en,n)] = 1;
             for (i = en - 1; i >= 0; i--) {
@@ -879,7 +879,7 @@ int realeig(int job,double mat[],int n,int low, int hi, double valr[],
             }
          }
       }
-      // multiply by transformation matrix 
+      // multiply by transformation matrix
 
       for (j = n-1; j >= low; j--) {
          m = min(j,hi);
@@ -891,7 +891,7 @@ int realeig(int job,double mat[],int n,int low, int hi, double valr[],
          }
       }
    }
-   // rearrange complex eigenvectors 
+   // rearrange complex eigenvectors
    for (j = 0; j < n; j++) {
       if (vali[j] != 0) {
          for (i = 0; i < n; i++) {

@@ -43,13 +43,13 @@ int main (int argc, char **argv)
       else
 	seed = time(NULL);
       break;
-      
+
     default:
       fprintf(stderr,"Syntax Error: type %s for a short reminder\n",argv[0]);
       exit(1);
 
     }
-  
+
 
   /* emit */
 
@@ -58,7 +58,7 @@ int main (int argc, char **argv)
 
   if (*out_file == '@')
     fp = stdout;
-  else 
+  else
     if (*out_file == '#')
       {
 	if ((fp = fopen(out_file+1, "a")) == NULL)
@@ -73,7 +73,7 @@ int main (int argc, char **argv)
 	  perror("failed to open <out_file> for write");
 	  exit(1);
 	}
-  
+
   srand(seed);
 
   fprintf(fp, ">pst_file: %s   emitted string length: %d   srand seed: %d\n", pst_file, string_len, seed);
@@ -83,6 +83,6 @@ int main (int argc, char **argv)
   fclose(fp);
 
   return(0);
-  
-}    
+
+}
 

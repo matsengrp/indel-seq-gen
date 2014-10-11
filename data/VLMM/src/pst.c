@@ -63,7 +63,7 @@ void add_probs_aux (char *AB, int absize, int m, char **ds_ptr,
 
   if (T->p_c == NULL)
     T->p_c = proball_Sc (AB, absize, m, ds_ptr, S); /* func in pattern_match */
-  
+
   for (i=0; i<absize; i++)
     {
       if ((T->sonsp)[i] != NULL)
@@ -72,12 +72,12 @@ void add_probs_aux (char *AB, int absize, int m, char **ds_ptr,
 	  add_probs_aux(AB,absize,m,ds_ptr,(T->sonsp)[i],S-1);
 	}
     }
-  
+
 }
 
 
 void print_probs_aux (char *AB, int absize, pst_type T, char *S)
-/* S must be prorerly inited by print_probs_pst 
+/* S must be prorerly inited by print_probs_pst
    it points to the string\0 of this level */
 
 {
@@ -94,7 +94,7 @@ void print_probs_aux (char *AB, int absize, pst_type T, char *S)
 	printf("%c %6.4f  ", AB[i], T->p_c[i]);
     }
   printf("\n\n");
-  
+
   for (i=0; i<absize; i++)
     {
       if ((T->sonsp)[i] != NULL)
@@ -103,7 +103,7 @@ void print_probs_aux (char *AB, int absize, pst_type T, char *S)
 	  print_probs_aux(AB,absize,(T->sonsp)[i],S-1);
 	}
     }
-  
+
 }
 
 
@@ -124,7 +124,7 @@ void print_leaves_aux (char *AB, int absize, pst_type T, char *S, int *nodesp)
 	  print_leaves_aux(AB,absize,(T->sonsp)[i],S-1, nodesp);
 	}
     }
-  
+
   if (leaf)
     {
       printf("%s  ",S);
@@ -151,7 +151,7 @@ void print_stat_aux (const char *AB, const int absize, pst_type T, char *S, \
 			 nodesp,leavesp);
 	}
     }
-  
+
   if (leaf)
     {
       (*leavesp)++;
@@ -185,7 +185,7 @@ void sum_stat_aux (const char *AB, const int absize, pst_type T, char *S, \
 			 nodesp, leavesp, llp, lfp, flp, ffp);
 	}
     }
-  
+
   if (leaf)
     {
       (*leavesp)++;
@@ -241,7 +241,7 @@ void print_pst (char *AB, int absize, pst_type T, int *nodesp)
 }
 
 
-void traverse_pst(char *AB, pst_type nodep, char *S, 
+void traverse_pst(char *AB, pst_type nodep, char *S,
 		  pst_node **leafpp, int *lrip)
 
 /* output: (*leafpp)= pointer to leaf of traverse
@@ -286,7 +286,7 @@ void add_pst_node (char *AB, int absize, pst_type T, char *S)
   return;
 }
 
-void print_leaves_pst(char *AB, int absize, int max_string, 
+void print_leaves_pst(char *AB, int absize, int max_string,
 		      pst_type T, int *nodesp)
 
 {
@@ -304,7 +304,7 @@ void print_leaves_pst(char *AB, int absize, int max_string,
 }
 
 
-void add_probs_pst(char *AB, int absize, int max_string, 
+void add_probs_pst(char *AB, int absize, int max_string,
 		  int m, char **ds_ptr, pst_type T)
 
 {
@@ -380,7 +380,7 @@ void print_pst_stat (const char *AB, const int absize, const int max_string, \
       if (not_empty_pqueue(Qf))
 	{
 	  dequeue_pqueue(&Qf,S,&dummy1,&len,&freq,&dummy2);
-	  if (freq == prevf) 
+	  if (freq == prevf)
 	    fprintf(fp, "( -) ");
 	  else
 	    fprintf(fp, "(%2d) ", i);
@@ -392,7 +392,7 @@ void print_pst_stat (const char *AB, const int absize, const int max_string, \
       if (not_empty_pqueue(Ql))
 	{
 	  dequeue_pqueue(&Ql,S,&dummy1,&len,&freq,&dummy2);
-	  if (len == prevl) 
+	  if (len == prevl)
 	    fprintf(fp, "( -) ");
 	  else
 	    fprintf(fp, "(%2d) ", i);
@@ -400,7 +400,7 @@ void print_pst_stat (const char *AB, const int absize, const int max_string, \
 	  prevl = len;
 	}
     }
-  
+
   fprintf(fp, "\n");
   free_pqueue(Qf);
   free_pqueue(Ql);
@@ -453,7 +453,7 @@ void smoothen_pst (int absize, double min_prob, pst_type T)
 	T->p_c[i] = T->p_c[i] * (1 - absize * min_prob) + min_prob;
       T->smooth = 1;
     }
-  
+
   for (i=0; i<absize; i++)
     {
       if ((T->sonsp)[i] != NULL)
@@ -469,8 +469,8 @@ double lambda_fun (double b, double x0, double x)
 }
 
 
-void smoothP0_aux (const char *AB, const int absize, pst_type T, char *S, 
-		   const int m, char **ds_ptr, const double b, 
+void smoothP0_aux (const char *AB, const int absize, pst_type T, char *S,
+		   const int m, char **ds_ptr, const double b,
 		   const double x0, const double p0[])
 
 {
@@ -493,8 +493,8 @@ void smoothP0_aux (const char *AB, const int absize, pst_type T, char *S,
 }
 
 
-void smoothP0_pst(const char *AB, const int absize, const int max_string, 
-		  const int m, char **ds_ptr, pst_type T, const double b, 
+void smoothP0_pst(const char *AB, const int absize, const int max_string,
+		  const int m, char **ds_ptr, pst_type T, const double b,
 		  const double x0, const double p0[])
 {
   char *S;
@@ -512,8 +512,8 @@ void smoothP0_pst(const char *AB, const int absize, const int max_string,
 
 
 
-void pcounts_smooth_aux(const char *AB, const int absize, pst_type T, 
-           char *S, const int m, char **ds_ptr, const double mue, 
+void pcounts_smooth_aux(const char *AB, const int absize, pst_type T,
+           char *S, const int m, char **ds_ptr, const double mue,
 	   const double q[][23], const double Q[], int chi_Sc[])
 
 {
@@ -524,7 +524,7 @@ void pcounts_smooth_aux(const char *AB, const int absize, pst_type T,
 
   allchi_Sc(AB, absize, m, ds_ptr, S, chi_Sc);
 
-  if (T->smooth == 0) 
+  if (T->smooth == 0)
     {
       chi_Sx = 0;
       B_S = 0.0;
@@ -534,7 +534,7 @@ void pcounts_smooth_aux(const char *AB, const int absize, pst_type T,
 	  B_S += (chi_Sc[i] > 0);
 	}
       B_S *= mue;
-      
+
       for (c=0; c<absize; c++)
 	{
 	  b_c = 0.0;
@@ -552,18 +552,18 @@ void pcounts_smooth_aux(const char *AB, const int absize, pst_type T,
       if ((T->sonsp)[i] != NULL)
 	{
 	  S[-1] = AB[i];
-	  pcounts_smooth_aux(AB, absize, (T->sonsp)[i], S-1, m, ds_ptr, 
+	  pcounts_smooth_aux(AB, absize, (T->sonsp)[i], S-1, m, ds_ptr,
 			     mue, q, Q, chi_Sc );
 	}
     }
-  
+
   return;
 }
 
 
 
-void pseudo_counts_smooth(const char *AB, const int absize, 
-           const int max_string, const int m, char **ds_ptr, pst_type T, 
+void pseudo_counts_smooth(const char *AB, const int absize,
+           const int max_string, const int m, char **ds_ptr, pst_type T,
 	   const double mue, const double q[][23], double Q[])
 
 {
@@ -651,7 +651,7 @@ double log10like_detail(char *AB, pst_type T, char *S, FILE *fp)
 }
 
 
-void predict_entry (char *AB, pst_type T, char *S, const int lwrite, 
+void predict_entry (char *AB, pst_type T, char *S, const int lwrite,
 		    FILE *lfp, const int swrite, FILE *sfp, char *D)
 {
   char c;
@@ -689,7 +689,7 @@ void predict_entry (char *AB, pst_type T, char *S, const int lwrite,
 
 
 
-void emit_string (FILE *fp, pst_type T, char *AB, int absize, 
+void emit_string (FILE *fp, pst_type T, char *AB, int absize,
 		  int string_len)
 {
   int i,c;
@@ -697,7 +697,7 @@ void emit_string (FILE *fp, pst_type T, char *AB, int absize,
   pst_node *leafp;
   double cumprob,rnd;
   char *S;
-  
+
   if ((S = (char *) malloc (string_len+1)) == NULL)
     {
       fprintf (stderr,"failed to allocate new string buffer\n");
@@ -739,7 +739,7 @@ pst_node *add_dummy_pst_leaf(char *AB,int absize, pst_node *leafp, char c)
 }
 
 
-void add_dummy_pst_node (char *AB, int absize, pst_type T, char *S, 
+void add_dummy_pst_node (char *AB, int absize, pst_type T, char *S,
 			 int *new_nodesp)
 /* builds all nodes on path to S if needed */
 
@@ -747,7 +747,7 @@ void add_dummy_pst_node (char *AB, int absize, pst_type T, char *S,
   int lri; /* index of last read char in S (reading right to left) */
   pst_node *leafp;
 
-  
+
   traverse_pst(AB, T, S, &leafp, &lri);
 
   while (lri>0)
@@ -760,7 +760,7 @@ void add_dummy_pst_node (char *AB, int absize, pst_type T, char *S,
 }
 
 
-void extend_pst_aux (char *AB, int absize, pst_type T0, pst_node *T, char *S, 
+void extend_pst_aux (char *AB, int absize, pst_type T0, pst_node *T, char *S,
 		     int *nodesp, int *new_nodesp)
 /* S must be prorerly inited by print_leaves_pst */
 /* T0 will maintain the root and T the current node */
@@ -782,7 +782,7 @@ void extend_pst_aux (char *AB, int absize, pst_type T0, pst_node *T, char *S,
 	  extend_pst_aux(AB,absize,T0,(T->sonsp)[i],S-1, nodesp, new_nodesp);
 	}
     }
-  
+
   if (leaf)
     {
       /* add all prefixes of the leaf */
@@ -815,7 +815,7 @@ void extend_pst(char *AB, int absize, int max_string,
 }
 
 
-void print_pfa_form_aux(char *AB, int absize, int max_string, pst_type T0, 
+void print_pfa_form_aux(char *AB, int absize, int max_string, pst_type T0,
 			pst_node *T, char *S, int lenS, FILE *lfp, FILE *sfp)
 /* T is the current node while T0 is the tree root */
 {
@@ -831,7 +831,7 @@ void print_pfa_form_aux(char *AB, int absize, int max_string, pst_type T0,
       fprintf(sfp, "%-*s    %c    ", max_string, (lenS==0 ? ROOT : S), AB[i]);
       S[lenS] = AB[i];
       traverse_pst(AB, T0, S, &nodep, &lri);
-      fprintf(sfp, "%-*s     %1.8f\n", max_string, (lri==lenS+1 ? ROOT : S+lri), 
+      fprintf(sfp, "%-*s     %1.8f\n", max_string, (lri==lenS+1 ? ROOT : S+lri),
 	      (T->p_c)[i]);
       S[lenS] = '\0';
     }
@@ -850,7 +850,7 @@ void print_pfa_form(char *AB, int absize, int max_string, pst_type T,
 /* lfp - labels, sfp - sparse matrix */
 {
   char *S;
-  
+
   /* +1 for the terminating '\0' and +1 for the next symbol */
   if ((S = (char *) malloc (max_string+2)) == NULL)
     {
@@ -865,4 +865,4 @@ void print_pfa_form(char *AB, int absize, int max_string, pst_type T,
 }
 
 
-  
+

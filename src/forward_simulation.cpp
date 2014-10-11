@@ -1,16 +1,16 @@
 #include "forward_simulation.h"
 #include "dependency.h"
 
-void 
+void
 ForwardSimulation::EvolveNode(
-							  inTree *iTree, 
+							  inTree *iTree,
 							  TNode *anc, 	// Currently set in this function.
-							  TNode *des, 
-							  int inNumSites, 
-							  list<eventTrack*> *events, 
+							  TNode *des,
+							  int inNumSites,
+							  list<eventTrack*> *events,
 							  seqGenOptions *options
 			   				 )
-{ 
+{
 	bool chang_and_benner = false;
 	ofstream step_out;
 	string trs_outfile;
@@ -42,17 +42,17 @@ ForwardSimulation::EvolveNode(
 	//////////
 	/// If not a leaf, proceed down both subtrees.
 	//////////
-    if (des->tipNo==-1) { 
+    if (des->tipNo==-1) {
         EvolveNode(iTree, des, des->branch1, inNumSites, events, options);
     	EvolveNode(iTree, des, des->branch2, inNumSites, events, options);
     }
 	des->Remove_Objects();
-} 
+}
 
-void 
+void
 ForwardSimulation::EvolveSequences(
-					 			   inTree *iTree, 
-					 			   list<eventTrack*> *events, 
+					 			   inTree *iTree,
+					 			   list<eventTrack*> *events,
 					 			   seqGenOptions *options
 								  )
 {
@@ -65,7 +65,7 @@ ForwardSimulation::EvolveSequences(
 	cerr << me << "Forward Category breakdown: " << endl;	//XOUT
 	vector<short> cats (4,0);
 	vector<Site>::iterator root_it;
-	for (root_it = iTree->my_tree->root->seq_evo.begin(); root_it != iTree->my_tree->root->seq_evo.end(); ++root_it) 
+	for (root_it = iTree->my_tree->root->seq_evo.begin(); root_it != iTree->my_tree->root->seq_evo.end(); ++root_it)
 		cats.at((*root_it).returnCategory())++;
 
 	double overall_rate_multiplier = 0;
@@ -85,7 +85,7 @@ ForwardSimulation::EvolveSequences(
 		if ( order_3_markov) {
 			// Order 3 markov does not start with a sequence at equilibrium, since the sequence is
 			// essentially picked from the independent sites stationary model. To get to stationarity,
-			// we evolve the chosen sequence over a long branch (in this case, BL=10) using the 
+			// we evolve the chosen sequence over a long branch (in this case, BL=10) using the
 			// dependent sites model, and the sequence at the end of the branch will be assumed to be
 			// at stationarity for the dependent sites model.
 			cerr << me << "EVOLVING TO EQUILIBRIUM>>>>>" << endl;
@@ -93,13 +93,13 @@ ForwardSimulation::EvolveSequences(
 			cerr << me << "EVOLVED TO EQUILIBRIUM>>>>>" << endl;
 		}
 	}
-	
+
 	cerr << me << "Evolving branch 1" << endl;
 	EvolveNode(iTree, iTree->my_tree->root, iTree->my_tree->root->branch1, iTree->partitionLength, events, options);
 	cerr << me << "Evolving branch 2" << endl;
     EvolveNode(iTree, iTree->my_tree->root, iTree->my_tree->root->branch2, iTree->partitionLength, events, options);
     if (!iTree->my_tree->rooted) {
-		cerr << me << "Unrooted tree??" << endl; 
+		cerr << me << "Unrooted tree??" << endl;
 		exit(EXIT_FAILURE);
 	}
 
@@ -116,19 +116,19 @@ ForwardSimulation::EvolveSequences(
 //	else iTree->my_tree->root->Remove_varSites();
 	//
 	//////////
-	
+
 	cerr << me << "EVENTS:" << eventNo << endl;
 	PathProposal *path = new PathProposal();
 //	cout << path->P_path.ForwardProbability(*events, true) << endl;
 
 //	cout << "EVENTS:" << eventNo << endl;
-} 
+}
 
 double ForwardSimulation::calcGillespieLambda(
 						   					  TTree *tree,
-						   					  TNode *des, 
-						   					  double *I, 
-						   					  double *D, 
+						   					  TNode *des,
+						   					  double *I,
+						   					  double *D,
 						   					  double *S,
 						   					  int simulation_type,
 						   					  unsigned int event_site
@@ -157,7 +157,7 @@ double ForwardSimulation::calcGillespieLambda(
 		if (order_3_markov) *S = des->calculateForwardRateAwayFromSequence__order3Markov(tree, event_site);
 		else if (Human_Data_simulation) {
 			*S = des->calculateForwardRateAwayFromSequence__order3Markov(tree, event_site);
-		} else {	
+		} else {
 			for (vector<double>::iterator it = des->nodeEnv->delete_lengthDistribution.begin(); it != des->nodeEnv->delete_lengthDistribution.end(); ++it, i++) {
 				del_freq += (*it);
 				del_freq_by_size += (*it)*i;
@@ -182,9 +182,9 @@ double ForwardSimulation::calcGillespieLambda(
 
 	return lambda;
 }
-               
+
 void ForwardSimulation::gillespie(
-			   					  inTree *iTree, 
+			   					  inTree *iTree,
 			   					  TNode *des,
 								  double branch_len,
 								  list<eventTrack*> *events,
@@ -207,7 +207,7 @@ void ForwardSimulation::gillespie(
 		eventTrack *begin_event, *end_event;
 
 	//////////
-	// Indel routine	
+	// Indel routine
 	//  * Should codonRates affect the probability of an indel occurring?
 	//////////
 	lambda_T = calcGillespieLambda(iTree->my_tree, des, &I, &D, &S, simulation_type, -1);
@@ -216,7 +216,7 @@ void ForwardSimulation::gillespie(
 	if (!evolving_to_equilibrium) {
 		// Forward simulation, tree & branches fully made, thus, begin and end events do not need to know the branch lengths (last variable = 0).
 		// des->anc->DistanceFromRoot: beginning of branch starts at ancestor's DistanceFromRoot.
-		begin_event = branch_terminal_event(des->mytipNo, BRANCH_BEGIN, des->anc->DistanceFromRoot, des->bipartition, 0, branch_len); 
+		begin_event = branch_terminal_event(des->mytipNo, BRANCH_BEGIN, des->anc->DistanceFromRoot, des->bipartition, 0, branch_len);
 		begin_event->assign_Q(des, des->seq_evo.at(0), SUBSTITUTION, 1);
 		(*events).push_back(begin_event);
 	}
@@ -225,7 +225,7 @@ void ForwardSimulation::gillespie(
 		success = false;
 		RN = (double)rndu();
 		if ( RN < (I / lambda_T) ) {	// Insertion.
-        	event_size=Find_Indel_Size(des->nodeEnv->insert_lengthDistribution,des->nodeEnv->maxIndel);	
+        	event_size=Find_Indel_Size(des->nodeEnv->insert_lengthDistribution,des->nodeEnv->maxIndel);
 			action = INSERT;
 			if ( (success=Insert(iTree->my_tree,des,event_size)) ) {
 				event = to_string(event_size);
@@ -238,12 +238,12 @@ void ForwardSimulation::gillespie(
 			//////////
 			event.clear();
 			success = substitute(
-								 iTree->my_tree, 
-								 des, 
-								 &event_site, 
-								 simulation_type, 
-								 event, 
-								 options->events_to_track[seqGenOptions::track_substitution], 
+								 iTree->my_tree,
+								 des,
+								 &event_site,
+								 simulation_type,
+								 event,
+								 options->events_to_track[seqGenOptions::track_substitution],
 								 S
 								);
 			if (options->events_to_track[seqGenOptions::track_substitution]) trackEvent = true;
@@ -292,10 +292,10 @@ void ForwardSimulation::gillespie(
 			}
 			if (action == DELETE || action == INSERT) event_site = -1;		// Temp. Flags to recalculate TauIJ for entire sequence.
 //			if (Human_Data_simulation) iTree->my_tree->dep.front()->context.set_sequence_indices(des, 3);
-//			else 
+//			else
 				iTree->my_tree->dep.front()->context.reset_sequence_indices(des, event_site, event);
 			lambda_T = calcGillespieLambda(iTree->my_tree, des, &I, &D, &S, simulation_type, event_site);
-			cerr << "lambda_T, post_change = " << lambda_T << endl; 
+			cerr << "lambda_T, post_change = " << lambda_T << endl;
 			if (!evolving_to_equilibrium) {
 				new_event->Q.idot = lambda_T;
 				(*events).push_back(new_event);
@@ -329,16 +329,16 @@ void ForwardSimulation::gillespie(
 
 	if (!evolving_to_equilibrium) {
 		// Forward simulation, tree & branches fully made, thus, begin and end events do not need to know the branch lengths (last variable = 0).
-		end_event = branch_terminal_event(des->mytipNo, BRANCH_END, des->DistanceFromRoot, des->bipartition, 0, branch_len); 
+		end_event = branch_terminal_event(des->mytipNo, BRANCH_END, des->DistanceFromRoot, des->bipartition, 0, branch_len);
 		end_event->assign_Q(des, des->seq_evo.at(0), SUBSTITUTION, 1);
 		(*events).push_back(end_event);
 	}
 }
 
-void 
+void
 ForwardSimulation::evolve2Equilibrium(
 									  inTree *iTree,
-					 				  list<eventTrack*> *events, 
+					 				  list<eventTrack*> *events,
 					 				  seqGenOptions *options
 					   				 )
 {
@@ -368,7 +368,7 @@ template <class T> string to_string (
 	ss << t;
 	return ss.str();
 }
- 
+
 int quick_lookup(const std::vector<short>& letters)
 {
 	int temp=1;

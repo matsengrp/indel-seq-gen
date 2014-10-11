@@ -1,4 +1,4 @@
- 
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,7 +30,7 @@ void stock_pqueue1 (int absize, pst_type T0, char *AB, char *S, int m,
 {
   int chi_S, chi_xS, chi_Sx, i;
   double p_S;
-  
+
   (*pot_nodesp) += 1;
   S[0] = AB[0]; /* so it won't contain garbage */
   if (strlen(S)>L_max) /* we won't consider the sons of an L deep leave */
@@ -43,10 +43,10 @@ void stock_pqueue1 (int absize, pst_type T0, char *AB, char *S, int m,
       else /* a candidate for rejuvination */
 	{
 	  count_xSx (S, m, ts_ptr, &chi_S, &chi_xS, &chi_Sx);
-	  p_S = ((double) chi_S)/N[strlen(S)];      
+	  p_S = ((double) chi_S)/N[strlen(S)];
 	  if (p_S >= p_min)
 	    {
-	      stack_pqueue (Qp, S, p_S, chi_Sx, chi_xS, 
+	      stack_pqueue (Qp, S, p_S, chi_Sx, chi_xS,
 			      count_Sx(S+1,m,ts_ptr));
 	    }
 	}
@@ -59,7 +59,7 @@ void stock_pqueue2 (int absize, pst_type T0, char *AB, char *S, int m,
 		  char **ts_ptr, pQ_type *Qp, int *N, int *pot_nodesp)
 {
   int chi_S, chi_xS, chi_Sx, i;
-  
+
   (*pot_nodesp) += 1;
   S[0] = AB[0]; /* so it won't contain garbage */
   if (strlen(S)>L_max) /* we won't consider the sons of an L deep leave */
@@ -72,9 +72,9 @@ void stock_pqueue2 (int absize, pst_type T0, char *AB, char *S, int m,
       else /* a candidate for rejuvination */
 	{
 	  count_xSx (S, m, ts_ptr, &chi_S, &chi_xS, &chi_Sx);
-	  if (1.0*count_diff_S(S,m,ts_ptr)/m >= shows) 
+	  if (1.0*count_diff_S(S,m,ts_ptr)/m >= shows)
 	    {
-	      stack_pqueue (Qp, S, 0.0, chi_Sx, chi_xS, 
+	      stack_pqueue (Qp, S, 0.0, chi_Sx, chi_xS,
 			      count_Sx(S+1,m,ts_ptr));
 	    }
 	}
@@ -113,7 +113,7 @@ pst_type grow_tree1(char *AB, int absize, int m, char **ts_ptr, int *li, \
   N[0] = 0;  /* unused */
   for (lenS=1; lenS<=L_max; lenS++) {
     N[lenS] = 0;
-    for (i=1; i<=m; i++) 
+    for (i=1; i<=m; i++)
       N[lenS] += (li[i]-(lenS-1))*(li[i]>=lenS);
   }  /* accounts correctly for strings who are shorter than the suffix */
 
@@ -135,7 +135,7 @@ pst_type grow_tree1(char *AB, int absize, int m, char **ts_ptr, int *li, \
 	{
 	  S[0] = AB[i];
 	  count_xSx (S, m, ts_ptr, &chi_S, &chi_xS, &chi_Sx);
-	  p_S = ((double) chi_S)/N[1];      
+	  p_S = ((double) chi_S)/N[1];
 	  if (p_S >= p_min)
 	    {
 	      stack_pqueue (&Q, S, p_S, chi_Sx, chi_xS, N[1]);
@@ -152,7 +152,7 @@ pst_type grow_tree1(char *AB, int absize, int m, char **ts_ptr, int *li, \
 
   while (not_empty_pqueue(Q))
     {
-      dequeue_pqueue(&Q, S, &p_S, &chi_Sx, &chi_xS, &chi_sufSx);      
+      dequeue_pqueue(&Q, S, &p_S, &chi_Sx, &chi_xS, &chi_sufSx);
       (*pot_nodesp) += 1;
       insert = 0;
       lenS = strlen(S);
@@ -166,7 +166,7 @@ pst_type grow_tree1(char *AB, int absize, int m, char **ts_ptr, int *li, \
 	      if (((double) chi_Sc)/chi_Sx >= (1.0+alpha)*gamma_min)
 		{
 		  chi_sufSc = count_S (S+1, m, ts_ptr);
-		  lr = (((double) chi_Sc)/chi_Sx) / 
+		  lr = (((double) chi_Sc)/chi_Sx) /
 		       (((double) chi_sufSc)/chi_sufSx);
 		  insert = ((lr>=p_ratio) || ((1.0/lr)>=p_ratio));
 		}
@@ -179,7 +179,7 @@ pst_type grow_tree1(char *AB, int absize, int m, char **ts_ptr, int *li, \
 	      p_cS = ((double) chi_cS)/N[lenS+1];
 	      if (p_cS >= p_min)
 		{
-		  stack_pqueue (&Q, S-1, p_cS, chi_cSx, chi_xcS, chi_Sx); 
+		  stack_pqueue (&Q, S-1, p_cS, chi_cSx, chi_xcS, chi_Sx);
 		}
 	    }
 	}
@@ -190,7 +190,7 @@ pst_type grow_tree1(char *AB, int absize, int m, char **ts_ptr, int *li, \
 	}
 
     }
-  
+
   return(T);
 }
 
@@ -223,7 +223,7 @@ pst_type grow_tree2(char *AB, int absize, int m, char **ts_ptr, int *li, \
   N[0] = 0;  /* unused */
   for (lenS=1; lenS<=L_max; lenS++) {
     N[lenS] = 0;
-    for (i=1; i<=m; i++) 
+    for (i=1; i<=m; i++)
       N[lenS] += (li[i]-(lenS-1))*(li[i]>=lenS);
   }  /* accounts correctly for strings who are shorter than the suffix */
 
@@ -236,7 +236,7 @@ pst_type grow_tree2(char *AB, int absize, int m, char **ts_ptr, int *li, \
     }
   S = S+1; /* so we can add one letter upfront */
 
-  
+
   if (T0 == NULL)
     {
       (*pot_nodesp) = 1; /* count the root */
@@ -246,7 +246,7 @@ pst_type grow_tree2(char *AB, int absize, int m, char **ts_ptr, int *li, \
 	{
 	  S[0] = AB[i];
 	  count_xSx (S, m, ts_ptr, &chi_S, &chi_xS, &chi_Sx);
-	  if (1.0*count_diff_S(S,m,ts_ptr)/m >= shows) 
+	  if (1.0*count_diff_S(S,m,ts_ptr)/m >= shows)
 	    {
 	      stack_pqueue (&Q, S, 0.0, chi_Sx, chi_xS, N[1]);
 	    }
@@ -262,7 +262,7 @@ pst_type grow_tree2(char *AB, int absize, int m, char **ts_ptr, int *li, \
 
   while (not_empty_pqueue(Q))
     {
-      dequeue_pqueue(&Q, S, &dummy, &chi_Sx, &chi_xS, &chi_sufSx);      
+      dequeue_pqueue(&Q, S, &dummy, &chi_Sx, &chi_xS, &chi_sufSx);
       (*pot_nodesp) += 1;
       insert = 0;
       lenS = strlen(S);
@@ -276,7 +276,7 @@ pst_type grow_tree2(char *AB, int absize, int m, char **ts_ptr, int *li, \
 	      if (1.0*chi_Sc/chi_Sx >= gama)
 		{
 		  chi_sufSc = count_S (S+1, m, ts_ptr);
-		  lr = (((double) chi_Sc)/chi_Sx) / 
+		  lr = (((double) chi_Sc)/chi_Sx) /
 		       (((double) chi_sufSc)/chi_sufSx);
 		  insert = ((lr>=p_ratio) || ((1.0/lr)>=p_ratio));
 		}
@@ -286,9 +286,9 @@ pst_type grow_tree2(char *AB, int absize, int m, char **ts_ptr, int *li, \
 	      S[lenS]='\0'; /* turn back to S */
 	      S[-1]=AB[i];  /* now S-1 is cS */
 	      count_xSx (S-1, m, ts_ptr, &chi_cS, &chi_xcS, &chi_cSx);
-	      if (1.0*count_diff_S(S-1,m,ts_ptr)/m >= shows) 
+	      if (1.0*count_diff_S(S-1,m,ts_ptr)/m >= shows)
 		{
-		  stack_pqueue (&Q, S-1, 0.0, chi_cSx, chi_xcS, chi_Sx); 
+		  stack_pqueue (&Q, S-1, 0.0, chi_cSx, chi_xcS, chi_Sx);
 		}
 	    }
 	}
@@ -298,7 +298,7 @@ pst_type grow_tree2(char *AB, int absize, int m, char **ts_ptr, int *li, \
 	  add_pst_node(AB, absize, T, S);  /* adds midway nodes if needed */
 	}
     }
-  
+
   return(T);
 }
 

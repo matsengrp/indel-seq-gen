@@ -1,10 +1,10 @@
 /*  Header file for aamodels.c                             */
 
-/*  
+/*
    Sequence Generator - seq-gen, version 1.3.2
    Copyright (c)1996-2004, Andrew Rambaut & Nick Grassly
-   Department of Zoology, University of Oxford			
-   All rights reserved.                          
+   Department of Zoology, University of Oxford
+   All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
    modification, are permitted provided that the following conditions
@@ -17,8 +17,8 @@
         notice, this list of conditions and the following disclaimer in the
         documentation and/or other materials provided with the distribution.
 
-     3. The names of its contributors may not be used to endorse or promote 
-        products derived from this software without specific prior written 
+     3. The names of its contributors may not be used to endorse or promote
+        products derived from this software without specific prior written
         permission.
 
    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS

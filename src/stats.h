@@ -25,7 +25,7 @@ class SampleStatistics : private Counter<SampleStatistics>
 public:
 	using Counter<SampleStatistics>::howMany;
 	PathProbability *P_path;
-	
+
 	SampleStatistics();
 	void   calculateStatistics( list<eventTrack*> *events );
 	void   reportSampleStatistics();
@@ -49,10 +49,10 @@ public:
 	using Counter<Statistics>::howMany;
 	vector<SampleStatistics> sample_stats;
 	double importance_sampling_weight;
-	
-	Statistics(int howMany) 
-		: importance_sampling_weight (0), 
-		  M (-numeric_limits<double>::max()), 
+
+	Statistics(int howMany)
+		: importance_sampling_weight (0),
+		  M (-numeric_limits<double>::max()),
 		  m_i_sum (0),
 		  effective_sample_size (0)
 	{ sample_stats.assign(howMany, SampleStatistics()); }
@@ -66,7 +66,7 @@ public:
 	class ImportanceSampling : private Counter<ImportanceSampling>
 	{
 	public:
-	
+
 		ImportanceSampling() : u(0), r(0), med(0) { }
 		// Accessors
 		void set_mu( double mu ) { u = mu; }
@@ -94,7 +94,7 @@ public:
 		double u;
 		double r;
 		double med;
-	
+
 	}importance_sampling;
 
 
@@ -105,7 +105,7 @@ public:
 		PathProposal *current;
 		PathProposal *proposed;
 
-		MCMC() { }	
+		MCMC() { }
 		double J();  					// J(\theta^t | \theta^*) //
 		double Pr_data_given_path();	// Pr(X | \theta) //
 		double logr(double P, double J, double Pprime, double Jprime);

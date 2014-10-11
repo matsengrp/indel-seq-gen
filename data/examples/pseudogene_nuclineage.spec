@@ -1,4 +1,4 @@
-LINEAGES = 
+LINEAGES =
 {
 	Clade1, Clade2: "Ruminants" #mHKY,fnuc.freq# {5,0.02,idLD};
 	Clade3: "Archaeoptyrix" #mF84# {0,0};

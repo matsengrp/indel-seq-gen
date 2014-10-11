@@ -73,9 +73,9 @@ public:
 private:
 
 	// The order of Markov dependence.
-	int order;		
+	int order;
 
-	// 
+	//
 	vector<vector<LookUp*> > lookup_table;
 	map<string, LookUp*> 	lookup_table2;
 
@@ -114,8 +114,8 @@ double inline contextDependence::lt_markov_ratio (
 	//cerr << env_index << "/" << lookup_table.size() << "   ";
 	//cerr << lookup_table.at(env_index).size() << "              j:" << j_seq_index << " i:" << i_seq_index << endl;
 	//cerr << "Ratio: " << lookup_table.at(env_index).at(j_seq_index)->value << " / " << lookup_table.at(env_index).at(i_seq_index)->value << endl;
-	double ratio 
-	= lookup_table.at(env_index).at(j_seq_index)->value 
+	double ratio
+	= lookup_table.at(env_index).at(j_seq_index)->value
 	* lookup_table.at(env_index).at(i_seq_index)->inverse;
 	return ratio;
 }
@@ -133,8 +133,8 @@ double inline contextDependence::lt_markov_ratio (
 	if (i.size() < order*2+1)
 		if(sequence_position>order) seq_end = true;
 
-	ratio 
-	= lookup_context.at(lookup_context_index(j, seq_end))->value 
+	ratio
+	= lookup_context.at(lookup_context_index(j, seq_end))->value
 	* lookup_context.at(lookup_context_index(i, seq_end))->inverse;
 
 	//cerr << "j("; for (vector<short>::iterator it = j.begin(); it != j.end(); ++it) cerr << stateCharacters.at(*it);

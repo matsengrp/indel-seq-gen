@@ -96,7 +96,7 @@ AWK = awk
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
-CPPFLAGS = 
+CPPFLAGS =
 CXX = g++
 CXXCPP = g++ -E
 CXXDEPMODE = depmode=gcc3
@@ -105,10 +105,10 @@ CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
 ECHO_C = \c
-ECHO_N = 
-ECHO_T = 
+ECHO_N =
+ECHO_T =
 EGREP = /usr/bin/grep -E
-EXEEXT = 
+EXEEXT =
 GETOPT_H = getopt.h
 GNULIB_CHOWN = 0
 GNULIB_DUP2 = 0
@@ -139,14 +139,14 @@ INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LDFLAGS = 
-LIBGNU_LIBDEPS = 
-LIBGNU_LTLIBDEPS = 
-LIBINTL = 
-LIBOBJS = 
-LIBS = -lm 
-LTLIBINTL = 
-LTLIBOBJS = 
+LDFLAGS =
+LIBGNU_LIBDEPS =
+LIBGNU_LTLIBDEPS =
+LIBINTL =
+LIBOBJS =
+LIBS = -lm
+LTLIBINTL =
+LTLIBOBJS =
 MAKEINFO = ${SHELL} /Users/corystrope/git/indel-seq-gen/missing --run makeinfo
 MKDIR_P = .././install-sh -c -d
 NEXT_UNISTD_H = <unistd.h>
@@ -156,7 +156,7 @@ PACKAGE_BUGREPORT = corystrope@gmail.com
 PACKAGE_NAME = indel-seq-gen
 PACKAGE_STRING = indel-seq-gen 2.2.14
 PACKAGE_TARNAME = indel-seq-gen
-PACKAGE_URL = 
+PACKAGE_URL =
 PACKAGE_VERSION = 2.2.14
 PATH_SEPARATOR = :
 RANLIB = ranlib
@@ -166,9 +166,9 @@ REPLACE_GETCWD = 0
 REPLACE_GETPAGESIZE = 0
 REPLACE_LCHOWN = 0
 REPLACE_LSEEK = 0
-SET_MAKE = 
+SET_MAKE =
 SHELL = /bin/sh
-STRIP = 
+STRIP =
 VERSION = 2.2.14
 abs_builddir = /Users/corystrope/git/indel-seq-gen/src
 abs_srcdir = /Users/corystrope/git/indel-seq-gen/src
@@ -178,11 +178,11 @@ ac_ct_CC = gcc
 ac_ct_CXX = g++
 am__include = include
 am__leading_dot = .
-am__quote = 
+am__quote =
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
 bindir = ${exec_prefix}/bin
-build_alias = 
+build_alias =
 builddir = .
 datadir = ${datarootdir}
 datarootdir = ${prefix}/share
@@ -191,9 +191,9 @@ dvidir = ${docdir}
 exec_prefix = ${prefix}
 gl_LIBOBJS =  getopt.o getopt1.o
 gl_LTLIBOBJS =  getopt.lo getopt1.lo
-gltests_LIBOBJS = 
-gltests_LTLIBOBJS = 
-host_alias = 
+gltests_LIBOBJS =
+gltests_LTLIBOBJS =
+host_alias =
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
@@ -213,7 +213,7 @@ sbindir = ${exec_prefix}/sbin
 sharedstatedir = ${prefix}/com
 srcdir = .
 sysconfdir = ${prefix}/etc
-target_alias = 
+target_alias =
 top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
@@ -293,10 +293,10 @@ uninstall-binPROGRAMS:
 
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
-iSG_assess$(EXEEXT): $(iSG_assess_OBJECTS) $(iSG_assess_DEPENDENCIES) $(EXTRA_iSG_assess_DEPENDENCIES) 
+iSG_assess$(EXEEXT): $(iSG_assess_OBJECTS) $(iSG_assess_DEPENDENCIES) $(EXTRA_iSG_assess_DEPENDENCIES)
 	@rm -f iSG_assess$(EXEEXT)
 	$(CXXLINK) $(iSG_assess_OBJECTS) $(iSG_assess_LDADD) $(LIBS)
-indel-seq-gen$(EXEEXT): $(indel_seq_gen_OBJECTS) $(indel_seq_gen_DEPENDENCIES) $(EXTRA_indel_seq_gen_DEPENDENCIES) 
+indel-seq-gen$(EXEEXT): $(indel_seq_gen_OBJECTS) $(indel_seq_gen_DEPENDENCIES) $(EXTRA_indel_seq_gen_DEPENDENCIES)
 	@rm -f indel-seq-gen$(EXEEXT)
 	$(CXXLINK) $(indel_seq_gen_OBJECTS) $(indel_seq_gen_LDADD) $(LIBS)
 

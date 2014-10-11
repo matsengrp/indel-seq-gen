@@ -8,7 +8,7 @@
 
 void ludcmp(double **a, int n, int *indx, double *d);
 /* ch.2, p.46: perform LU decomposition. */
- 
+
 void lubksb(double **a, int n, int *indx, double b[]);
 /* ch.2, p.47: solve LU system */
 

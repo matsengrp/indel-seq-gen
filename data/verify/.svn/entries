@@ -25,16 +25,16 @@ cstrope
 
 
 3afae6fb-94a6-488e-aacf-045db869f053
-
+
 rates1000
 dir
-
+
 test
 dir
-
+
 aa1000
 dir
-
+
 test.scale_tree
 file
 
@@ -68,7 +68,7 @@ cstrope
 
 
 22
-
+
 indel-seq-gen
 file
 
@@ -102,7 +102,7 @@ has-props
 
 
 612824
-
+
 path_proposal.trace
 file
 
@@ -136,7 +136,7 @@ cstrope
 
 
 81982
-
+
 simple_endpoint.ctl
 file
 
@@ -170,7 +170,7 @@ cstrope
 
 
 232
-
+
 test.trace
 file
 
@@ -204,10 +204,10 @@ cstrope
 
 
 26360
-
+
 tree_branch
 dir
-
+
 test_subst.tree
 file
 
@@ -241,7 +241,7 @@ cstrope
 
 
 27
-
+
 verify.pl
 file
 
@@ -275,4 +275,4 @@ has-props
 
 
 16758
-
+

@@ -1,8 +1,8 @@
-/*  
+/*
    Sequence Generator - seq-gen, version 1.3.2
    Andrew Rambaut & Nick Grassly
-   Department of Zoology, University of Oxford			
-	
+   Department of Zoology, University of Oxford
+
    The code in this file is taken from Ziheng Yang's PAML package.
    http://abacus.gene.ucl.ac.uk/
 
@@ -22,21 +22,21 @@ double IncompleteGamma (double x, double alpha, double ln_gamma_alpha);
 double PointNormal (double prob);
 double PointChi2 (double prob, double v);
 
-	
+
 double rndgamma1 (double s);
 double rndgamma2 (double s);
 
 double rndgamma (double s)
 {
 	double	r=0.0;
-	
-	if (s <= 0.0)      
+
+	if (s <= 0.0)
 		return 0;
-	else if (s < 1.0)  
+	else if (s < 1.0)
 		r = rndgamma1 (s);
-	else if (s > 1.0)  
+	else if (s > 1.0)
 		r = rndgamma2 (s);
-	else           
+	else
 		r =- log(rndu());
 	return (r);
 }
@@ -47,8 +47,8 @@ double rndgamma1 (double s)
 
 	double			r, x=0.0, small=1e-37, w;
 	static double	a, p, uf, ss=10.0, d;
-	
-	if (s!=ss) 
+
+	if (s!=ss)
 		{
 		a  = 1.0-s;
 		p  = a/(a+s*exp(-a));
@@ -56,18 +56,18 @@ double rndgamma1 (double s)
 		d  = a*log(a);
 		ss = s;
 		}
-	for (;;) 
+	for (;;)
 		{
 		r = rndu();
-		if (r > p)        
+		if (r > p)
 			x = a-log((1.0-r)/(1.0-p)), w=a*log(x)-d;
-		else if (r>uf)  
+		else if (r>uf)
 			x = a*pow(r/p,1/s), w=x;
-		else            
+		else
 			return (0.0);
 		r = rndu();
 		if (1.0-r <= w && r > 0.0)
-			if (r*(w+1.0) >= 1.0 || -log(r) <= w)  
+			if (r*(w+1.0) >= 1.0 || -log(r) <= w)
 				continue;
 		break;
 		}
@@ -80,24 +80,24 @@ double rndgamma2 (double s)
 
 	double			r ,d, f, g, x;
 	static double	b, h, ss=0;
-	
-	if (s!=ss) 
+
+	if (s!=ss)
 		{
 		b  = s-1.0;
 		h  = sqrt(3.0*s-0.75);
 		ss = s;
 		}
-	for (;;) 
+	for (;;)
 		{
 		r = rndu();
 		g = r-r*r;
 		f = (r-0.5)*h/sqrt(g);
 		x = b+f;
-		if (x <= 0.0) 
+		if (x <= 0.0)
 			continue;
 		r = rndu();
 		d = 64*r*r*g*g*g;
-		if (d*x < x-2.0*f*f || log(d) < 2*(b*log(x/b)-f))  
+		if (d*x < x-2.0*f*f || log(d) < 2*(b*log(x/b)-f))
 			break;
 		}
 	return (x);
@@ -106,7 +106,7 @@ double rndgamma2 (double s)
 
 double LnGamma (double alpha)
 {
-/* returns ln(gamma(alpha)) for alpha>0, accurate to 10 decimal places.  
+/* returns ln(gamma(alpha)) for alpha>0, accurate to 10 decimal places.
    Stirling's formula is used for the central polynomial part of the procedure.
    Pike MC & Hill ID (1966) Algorithm 291: Logarithm of the gamma function.
    Communications of the Association for Computing Machinery, 9:684
@@ -119,14 +119,14 @@ double LnGamma (double alpha)
       x=z;   f=-log(f);
    }
    z = 1/(x*x);
-   return  f + (x-0.5)*log(x) - x + .918938533204673 
+   return  f + (x-0.5)*log(x) - x + .918938533204673
 	  + (((-.000595238095238*z+.000793650793651)*z-.002777777777778)*z
-	       +.083333333333333)/x;  
+	       +.083333333333333)/x;
 }
 
 double IncompleteGamma (double x, double alpha, double ln_gamma_alpha)
 {
-/* returns the incomplete gamma ratio I(x,alpha) where x is the upper 
+/* returns the incomplete gamma ratio I(x,alpha) where x is the upper
 	   limit of the integration and alpha is the shape parameter.
    returns (-1) if in error
    ln_gamma_alpha = ln(Gamma(alpha)), is almost redundant.
@@ -144,7 +144,7 @@ double IncompleteGamma (double x, double alpha, double ln_gamma_alpha)
    if (x==0) return (0);
    if (x<0 || p<=0) return (-1);
 
-   factor=exp(p*log(x)-x-g);   
+   factor=exp(p*log(x)-x-g);
    if (x>1 && x>=p) goto l30;
    /* (1) series expansion */
    gin=1;  term=1;  rn=p;
@@ -195,7 +195,7 @@ double PointNormal (double prob)
    Newer methods:
      Wichura MJ (1988) Algorithm AS 241: the percentage points of the
        normal distribution.  37: 477-484.
-     Beasley JD & Springer SG  (1977).  Algorithm AS 111: the percentage 
+     Beasley JD & Springer SG  (1977).  Algorithm AS 111: the percentage
        points of the normal distribution.  26: 118-121.
 
 */
@@ -207,7 +207,7 @@ double PointNormal (double prob)
    p1 = (p<0.5 ? p : 1-p);
    if (p1<1e-20) return (-9999);
 
-   y = sqrt (log(1/(p1*p1)));   
+   y = sqrt (log(1/(p1*p1)));
    z = y + ((((y*a4+a3)*y+a2)*y+a1)*y+a0) / ((((y*b4+b3)*y+b2)*y+b1)*y+b0);
    return (p<0.5 ? -z : z);
 }
@@ -218,7 +218,7 @@ double PointChi2 (double prob, double v)
 /* returns z so that Prob{x<z}=prob where x is Chi2 distributed with df=v
    returns -1 if in error.   0.000002<prob<0.999998
    RATNEST FORTRAN by
-       Best DJ & Roberts DE (1975) The percentage points of the 
+       Best DJ & Roberts DE (1975) The percentage points of the
        Chi2 distribution.  Applied Statistics 24: 385-388.  (AS91)
    Converted into C by Ziheng Yang, Oct. 1993.
 */
@@ -243,8 +243,8 @@ l2:
    ch-=(1-exp(a+g+.5*ch+c*aa)*p2/p1)/t;
    if (fabs(q/ch-1)-.01 <= 0) goto l4;
    else                       goto l2;
-  
-l3: 
+
+l3:
    x=PointNormal (p);
    p1=0.222222/v;   ch=v*pow((x*sqrt(p1)+1-p1), 3.0);
    if (ch>2.2*v+6)  ch=-2*(log(1-p)-c*log(.5*ch)+g);
@@ -254,7 +254,7 @@ l4:
       return (-1);
    }
    p2=p-t;
-   t=p2*exp(xx*aa+g+p1-c*log(ch));   
+   t=p2*exp(xx*aa+g+p1-c*log(ch));
    b=t/ch;  a=0.5*t-b*c;
 
    s1=(210+a*(140+a*(105+a*(84+a*(70+60*a))))) / 420;
@@ -272,10 +272,10 @@ l4:
 
 #define PointGamma(prob,alpha,beta) PointChi2(prob,2.0*(alpha))/(2.0*(beta))
 
-int DiscreteGamma (double freqK[], double rK[], 
+int DiscreteGamma (double freqK[], double rK[],
     double alfa, double beta, int K, int median)
 {
-/* discretization of gamma distribution with equal proportions in each 
+/* discretization of gamma distribution with equal proportions in each
    category
 */
    int i;
@@ -302,11 +302,11 @@ int DiscreteGamma (double freqK[], double rK[],
 }
 
 int DiscreteGamma(
-				  vector<double>& freqK, 
-				  vector<double>& rK, 
-    			  double alfa, 
-    			  double beta, 
-    			  int K, 
+				  vector<double>& freqK,
+				  vector<double>& rK,
+    			  double alfa,
+    			  double beta,
+    			  int K,
     			  int median
     			)
 {

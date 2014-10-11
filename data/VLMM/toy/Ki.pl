@@ -24,7 +24,7 @@ for my $i (0 .. $num_runs-1) {
 	for my $j (0 .. $num_runs-1) {
 		print "       ################### $i.$j/$num_runs #####################\n";
 		my $return_val = `./indel-seq-gen -m JC69 -D -E toy.sim.ma < toy.tree`;
-	
+
 		@ret_split = split /\n/, $return_val;
 		my $epc_log_prob = $ret_split[0];
 
@@ -116,7 +116,7 @@ system("gnuplot gnuplot2.gnu");
 
 sub hash_mark_val {
 	my ($value, $low, $high, $num_bins) = @_;
-	
+
 	my $val = (($high-$low)*$value)/$num_bins + $low;
 #	print "$value corresponds to bin $val\n";
 

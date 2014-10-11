@@ -17,10 +17,10 @@ pst_type make_empty_pst(int absize);
 void print_pst (char *AB, int absize, pst_type T, int *nodesp);
 /* we DFS the tree - results in infix notation */
 
-void print_leaves_pst(char *AB, int absize, int max_string, 
+void print_leaves_pst(char *AB, int absize, int max_string,
 		      pst_type T, int *nodesp);
 
-void traverse_pst(char *AB, pst_type nodep, char *S, 
+void traverse_pst(char *AB, pst_type nodep, char *S,
 		  pst_node **leafpp, int *lrip);
 /* output: (*leafpp)= pointer to leaf of traverse
             (*lrip) = index of last read letter of S
@@ -29,7 +29,7 @@ void traverse_pst(char *AB, pst_type nodep, char *S,
 void add_pst_node (char *AB, int absize, pst_type T, char *S);
 /* builds all nodes on path to S if needed */
 
-void add_probs_pst(char *AB, int absize, int max_string, 
+void add_probs_pst(char *AB, int absize, int max_string,
 		  int m, char **ds_ptr, pst_type T);
 /* allocates and sets all gamma_S(c) for all nodes where p-c==NULL*/
 
@@ -50,13 +50,13 @@ void smoothen_pst (int absize, double min_prob, pst_type T);
 /* p(x) -> p(x) * (1 - absize * min_prob) + min_prob */
 /* smoothes to min value min_prob. only those whose smooth==0 */
 
-void smoothP0_pst(const char *AB, const int absize, const int max_string, 
-		  const int m, char **ds_ptr, pst_type T, const double b, 
+void smoothP0_pst(const char *AB, const int absize, const int max_string,
+		  const int m, char **ds_ptr, pst_type T, const double b,
 		  const double x0, const double p0[]);
 /* smoothes in relation to a given prior - defunct */
 
-void pseudo_counts_smooth(const char *AB, const int absize, 
-           const int max_string, const int m, char **ds_ptr, pst_type T, 
+void pseudo_counts_smooth(const char *AB, const int absize,
+           const int max_string, const int m, char **ds_ptr, pst_type T,
 	   const double mue, const double q[][23], double Q[]);
 /* the new smoother of alg2. we init Q[] within it */
 
@@ -71,7 +71,7 @@ void predict_entry (char *AB, pst_type T, char *S, const int lwrite, \
 /* for predict_fasta_set in file_handle.c */
 /* saves long/short format predictions to designated files */
 
-void emit_string (FILE *fp, pst_type T, char *AB, int absize, 
+void emit_string (FILE *fp, pst_type T, char *AB, int absize,
 		  int string_len);
 /* for emit.c */
 /* emits a string to designated file */

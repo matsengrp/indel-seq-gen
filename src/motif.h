@@ -73,14 +73,14 @@ public:
 		  sitemap (""),
 		  sequence_template (false)
 	{ bipartition.clear(); }
-	inMotif(string& prosite_name, string& prosite_regex, size_t num_tips) 
+	inMotif(string& prosite_name, string& prosite_regex, size_t num_tips)
 		: name (prosite_name),
 		  marker ('*'),
 		  regex (prosite_regex),
 		  sitemap (""),
 		  sequence_template (false)
 	{ bipartition.assign(true, num_tips); }
-	inMotif(inMotif *thisMotif, string& map, char mark) 
+	inMotif(inMotif *thisMotif, string& map, char mark)
 		: name (thisMotif->name),
 		  marker (mark),
 		  regex (thisMotif->regex),
@@ -116,12 +116,12 @@ class Substitution : private Counter<Substitution>
 public:
 	using Counter<Substitution>::howMany;
 	bitset<20> substitution_bitstring;
-		
+
 	Substitution() { substitution_bitstring.set(); }
-	Substitution(Substitution* site2copy) 
-	{ 
-		substitution_bitstring.set(); 
-		substitution_bitstring &= site2copy->substitution_bitstring; 
+	Substitution(Substitution* site2copy)
+	{
+		substitution_bitstring.set();
+		substitution_bitstring &= site2copy->substitution_bitstring;
 	}
 	void copy(Substitution* site2copy);
 	void setSiteBits(bitset<20> regex_site);
@@ -143,25 +143,25 @@ public:
 	///////////
 	/// CONSTRUCTORS
 	///////////
-	varSite(size_t minl, size_t maxl, TNode *my_node) 
-		: min(minl), 
-		  max(maxl), 
-		  my_TNode(my_node), 
+	varSite(size_t minl, size_t maxl, TNode *my_node)
+		: min(minl),
+		  max(maxl),
+		  my_TNode(my_node),
 		  descendant_equiv(NULL)
 	{
 		member_set.clear();
 		my_TNode->variable_region_list.push_back(this);
 	}
 	varSite(varSite *varSite2copy, TNode *my_node)
-		: min(varSite2copy->min), 
-		  max(varSite2copy->max), 
-		  my_TNode(my_node), 
+		: min(varSite2copy->min),
+		  max(varSite2copy->max),
+		  my_TNode(my_node),
 		  descendant_equiv(NULL)
 	{
 		member_set.clear();
 		varSite2copy->descendant_equiv = this;
 	}
-	
+
 	///////////
 	/// MEMBER FUNCTIONS
 	///////////
@@ -183,15 +183,15 @@ public:
 	//////////
 	/// CONSTRUCTORS
 	//////////
-	Deletion() : my_sequence_template_varSite(NULL), my_motif_varSite(NULL) 
+	Deletion() : my_sequence_template_varSite(NULL), my_motif_varSite(NULL)
 	{ }
-	Deletion(varSite *in_template_varSite, varSite *in_motif_varSite) 
+	Deletion(varSite *in_template_varSite, varSite *in_motif_varSite)
 		: my_sequence_template_varSite(in_template_varSite), my_motif_varSite(in_motif_varSite)
 	{ }
-	Deletion(Deletion *site2copy, motifSite *anc, bool isTemplate) 
+	Deletion(Deletion *site2copy, motifSite *anc, bool isTemplate)
 		: my_sequence_template_varSite
-			( ( (anc != NULL) 
-				? ( (isTemplate) 
+			( ( (anc != NULL)
+				? ( (isTemplate)
 				 	? (site2copy->my_sequence_template_varSite->descendant_equiv)
 				 	: NULL
 				  )
@@ -199,11 +199,11 @@ public:
 				 	? site2copy->my_sequence_template_varSite
 				 	: NULL
 				  )
-			  ) 
+			  )
 		    ),
 		  my_motif_varSite
-		    ( ( (anc != NULL) 
-				? ( (isTemplate) 
+		    ( ( (anc != NULL)
+				? ( (isTemplate)
 					? NULL
 				 	: (site2copy->my_motif_varSite->descendant_equiv)
 				  )
@@ -211,7 +211,7 @@ public:
 					? NULL
 				 	: site2copy->my_motif_varSite
 				  )
-			  ) 
+			  )
 			)
 	{ }
 
@@ -231,8 +231,8 @@ public:
 	// Each one has a LEFT and RIGHT motif.
 	varSite *my_sequence_template_varSite_left, *my_sequence_template_varSite_right;
 	varSite *my_motif_varSite_left, *my_motif_varSite_right;
-	varSite *on_site_motif_varSite, *on_site_sequence_template_varSite;	
-		
+	varSite *on_site_motif_varSite, *on_site_sequence_template_varSite;
+
 	Insertion()
 		: my_sequence_template_varSite_left (NULL),
 		  my_motif_varSite_left (NULL),
@@ -284,7 +284,7 @@ class Indel : private Counter<Indel>
 {
 public:
 	using Counter<Indel>::howMany;
-	Insertion    *L_ins_, *R_ins_;	
+	Insertion    *L_ins_, *R_ins_;
 	Deletion     *del;
 
 	Indel();
@@ -295,7 +295,7 @@ public:
 	void copy(Indel *site2copy, motifSite *prev, bool isTemplate, bool last_site, bool isDescendant, Indel *anc_copy);
 	void set(Indel *site2copy, Indel *prev_site, short type, bool isDescendant, Indel *anc_indel);
 	void createObjects();
-	
+
 	void report();
 };
 
@@ -308,7 +308,7 @@ public:
 	inMotif		 *fromMotif;
 	inMotif		 *fromTemplate;
 
-	activeProperties() 
+	activeProperties()
 		: subst(NULL),
 		  indel(NULL),
 		  fromMotif(NULL),
@@ -351,13 +351,13 @@ public:
 		: touched (false)
 	{ Li_xi_.assign(numStates, 0); }
 	//////////
-	/// Why 2 functions? 
+	/// Why 2 functions?
 	//////////
 	// State likelihoods are calculated once only, and are active throughout the simulation, so they
 	// set the Site likelihood variable, thus requiring a void return value:
 	void calculateStateLikelihood(
-								  TNode *node, 
-								  int category, 
+								  TNode *node,
+								  int category,
 								  int sequence_position,
 								  double branch_length_scalar
 								 );
@@ -366,8 +366,8 @@ public:
 	// category that the Site belongs to, and afterwards, will be unnecessary. Thus, it will use
 	// only a temporary variable, so the conditional likelihood variable is returned.
 	vector<double> calculateCatLikelihood(
-										  TNode *node, 
-										  int category, 
+										  TNode *node,
+										  int category,
 										  int sequence_position,
 										  vector<double> b1_Li,
 										  vector<double> b2_Li
@@ -400,17 +400,17 @@ protected:
 	double 	rij;
 	int		lookup_table_sequence_index;
 	int		lookup_table_environment_index;
-	
+
 public:
 	using Counter<Site>::howMany;
 	motifSite motif;
 
-	Site() 
-		: state(-1), 
-		  value(-1), 
-		  phenotype(-1), 
-		  invariable_state(0), 
-		  gamma_category(0), 
+	Site()
+		: state(-1),
+		  value(-1),
+		  phenotype(-1),
+		  invariable_state(0),
+		  gamma_category(0),
 		  gammaRates(1),
 		  Pik0(0),
 		  calcTauIJ(true),
@@ -443,7 +443,7 @@ public:
 	short returnState() { return state; }
 	short returnInvariableState() { return invariable_state; }
 	long double return_epc_ij()
-	{ 
+	{
 		return site_rate_away.at(state) - ( (state == 0) ? 0 : site_rate_away.at(state-1) );
 	}
 	double forward_rate_away_from_site(Branch *branch);
@@ -473,9 +473,9 @@ public:
 	/// Constructors
 	//////////
 	Sequence(
-			 Sequence *anc, 
+			 Sequence *anc,
 			 TNode *node
-			) 
+			)
 		: evolutionaryAttributes( anc->evolutionaryAttributes ),
 		  my_node(node),
 		  Qidot(0.0),
@@ -483,10 +483,10 @@ public:
 		  Rij (0.0)
 	{ }
 	Sequence(
-			 TNode *node, 
+			 TNode *node,
 			 int seqLength
 			)
-		: evolutionaryAttributes(seqLength, Site()), 
+		: evolutionaryAttributes(seqLength, Site()),
 		  my_node(node),
 		  Qidot(0.0),
 		  Qidot_k__T__(0.0),
@@ -495,10 +495,10 @@ public:
 
 	void init(
 			  TNode *des = NULL,
-			  string initial_state = "", 
-			  inClade *env = NULL, 
-			  motifSite *site_type = NULL, 
-			  varSite* template_varSite = NULL, 
+			  string initial_state = "",
+			  inClade *env = NULL,
+			  motifSite *site_type = NULL,
+			  varSite* template_varSite = NULL,
 			  varSite *motif_varSite = NULL
 			 );
 
@@ -521,11 +521,11 @@ public:
 	Indel		 indel;
 	inMotif		 *fromMotif;
 	inMotif		 *fromTemplate;
-		
+
 	siteProperties()
 		: subst (Substitution()),
-		  indel(Indel()), 
-		  fromMotif(NULL), 
+		  indel(Indel()),
+		  fromMotif(NULL),
 		  fromTemplate(NULL)
 	{ }
 	siteProperties(vector<siteProperties*> site, varSite *var, inMotif *infromMotif, bool isTemplate);
@@ -533,10 +533,10 @@ public:
 		: subst (Substitution()),
 		  indel(Indel(in_template_varSite, in_motif_varSite)),
 		  fromMotif
-		    ( 
-		      (in_motif_varSite) 
+		    (
+		      (in_motif_varSite)
 		  	  ? site_type->active_properties.fromMotif
-		  	  : NULL	   
+		  	  : NULL
 		    ),
 		  fromTemplate
 		    (

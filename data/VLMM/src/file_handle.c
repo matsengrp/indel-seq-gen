@@ -211,7 +211,7 @@ void read_ind_data_set (char **data_setp, int *mp, char ***ds_ptrp, int **lip,
 	  fprintf(stderr,"<index_file> is shorter then <string_file>\n");
 	  exit(1);
 	}
-      
+
 
       if (strspn(cbuf,AB)!=cbuflen)
 	{
@@ -324,7 +324,7 @@ void mread_ind_data_set (char **data_setp, int *mp, char ***ds_ptrp, \
 	  fprintf(stderr,"<index_file> is shorter then <string_file>\n");
 	  exit(1);
 	}
-      
+
 
       if (ind == 0) {   /* train */
 	(*mp)++;
@@ -332,13 +332,13 @@ void mread_ind_data_set (char **data_setp, int *mp, char ***ds_ptrp, \
       }
       else
 	tn++;
-      
+
     }
 
   *tez = tn;
   *trz = *mp;
   *trl = loc;
-    
+
   rewind(fp);
   rewind(ifp);
 
@@ -451,7 +451,7 @@ void read_fasta_set (char **data_setp, int *mp, char ***ds_ptrp, \
 	    }
 	}
       while (cbuflen == 0);
-	
+
       switch (state)
 	{
 	case -1: /* start of file */
@@ -511,7 +511,7 @@ void read_fasta_set (char **data_setp, int *mp, char ***ds_ptrp, \
 	    }
 
 	  break;
-	  
+
 	case  1: /* in goodata */
 	  switch(incoming)
 	    {
@@ -550,7 +550,7 @@ void read_fasta_set (char **data_setp, int *mp, char ***ds_ptrp, \
 	    }
 
 	  break;
-	  
+
 	default:
 	  fprintf(stderr,"Program bug: impossible state in read fasta\n");
 	  exit(1);
@@ -560,7 +560,7 @@ void read_fasta_set (char **data_setp, int *mp, char ***ds_ptrp, \
 
   *trz = *mp;
   *trl = loc;
-    
+
   rewind(fp);
   if (indexed)
     rewind(ifp);
@@ -579,7 +579,7 @@ void read_fasta_set (char **data_setp, int *mp, char ***ds_ptrp, \
   (*lip)[0] = loc;
   (*ds_ptrp)[0] = NULL;    /* we don't use it */
   (*data_setp)[0] = '\0';  /* we need it for efficient string count */
-  
+
   /* 2nd pass - read into memory */
 
   i = 0; /* string number, like *mp above */
@@ -623,7 +623,7 @@ void read_fasta_set (char **data_setp, int *mp, char ***ds_ptrp, \
 	    }
 	}
       while (cbuflen == 0);
-      
+
       switch (state)
 	{
 	case -1: /* start of file */
@@ -682,7 +682,7 @@ void read_fasta_set (char **data_setp, int *mp, char ***ds_ptrp, \
 	    }
 
 	  break;
-	  
+
 	case  1: /* in goodata */
 	  switch(incoming)
 	    {
@@ -725,7 +725,7 @@ void read_fasta_set (char **data_setp, int *mp, char ***ds_ptrp, \
 	    }
 
 	  break;
-	  
+
 	default:
 	  fprintf(stderr,"Program bug: impossible state in read fasta\n");
 	  exit(1);
@@ -829,7 +829,7 @@ void predict_fasta_set (const char *long_out, const char *short_out, \
 	    }
 	}
       while (cbuflen == 0);
-	
+
       switch (state)
 	{
 	case -1: /* start of file */
@@ -890,7 +890,7 @@ void predict_fasta_set (const char *long_out, const char *short_out, \
 	    }
 
 	  break;
-	  
+
 	case  1: /* in goodata */
 	  switch(incoming)
 	    {
@@ -934,7 +934,7 @@ void predict_fasta_set (const char *long_out, const char *short_out, \
 	    }
 
 	  break;
-	  
+
 	default:
 	  fprintf(stderr,"Program bug: impossible state in read fasta\n");
 	  exit(1);
@@ -1007,7 +1007,7 @@ void predict_fasta_set (const char *long_out, const char *short_out, \
 	    }
 	}
       while (cbuflen == 0);
-      
+
       switch (state)
 	{
 	case -1: /* start of file */
@@ -1053,10 +1053,10 @@ void predict_fasta_set (const char *long_out, const char *short_out, \
 		state = 2;
 	      else /* non-indexed || ind == 0 */
 		{
-		  loc = 1; 
+		  loc = 1;
          /* restarted, calcs relative pos within entryp, [0] contains '\0' */
 		  strcpy(entryp+loc,cbuf); /* trailing \0 is copied */
-		  loc += cbuflen; 
+		  loc += cbuflen;
          /* restarted, trailing \0 to be trampled unless last */
 		  state = 1;
 		}
@@ -1068,7 +1068,7 @@ void predict_fasta_set (const char *long_out, const char *short_out, \
 	    }
 
 	  break;
-	  
+
 	case  1: /* in goodata */
 	  switch(incoming)
 	    {
@@ -1112,7 +1112,7 @@ void predict_fasta_set (const char *long_out, const char *short_out, \
 	    }
 
 	  break;
-	  
+
 	default:
 	  fprintf(stderr,"Program bug: impossible state in read fasta\n");
 	  exit(1);
@@ -1153,7 +1153,7 @@ void save_pst (char *outfile, char *AB, int absize, int L_max, pst_type T)
 }
 
 
-void load_pst (char *pstfile, char **ABp, int *absizep, int *L_maxp, 
+void load_pst (char *pstfile, char **ABp, int *absizep, int *L_maxp,
 	       pst_type *Tp)
 {
   FILE *fp;
@@ -1316,9 +1316,9 @@ void pred_onall_save (char *filename, char *resfile, char *AB, pst_type T, char 
 
 }
 
-void prediction_stat (char *AB, pst_type T, const int n, const char *sfile, 
+void prediction_stat (char *AB, pst_type T, const int n, const char *sfile,
        const char *ifile, const char *s0file, const char *i0file, const int s1,
-       const int s2, int s3, double *non1p, double *non2p, double *non12p, 
+       const int s2, int s3, double *non1p, double *non2p, double *non12p,
        double *iso1p, double *iso2p, double *iso12p)
 
 {
@@ -1334,7 +1334,7 @@ void prediction_stat (char *AB, pst_type T, const int n, const char *sfile,
   e2 = 0;      /* test   */
   e3 = 0;      /* others */
 
-  if ((fp = fopen(s0file, "r")) == NULL) 
+  if ((fp = fopen(s0file, "r")) == NULL)
     {
       perror("failed to open others strings file for read");
       exit(1);
@@ -1353,20 +1353,20 @@ void prediction_stat (char *AB, pst_type T, const int n, const char *sfile,
 	  fprintf(stderr, "single string size exceeds STRINGLEN_MAX = %d (may update and re-compile)\n", STRINGLEN_MAX);
 	  exit(1);
 	}
-      
+
       if (strspn(cbuf,AB)!=cbuflen)
 	{
 	  fprintf(stderr,"found a rejected string\n");
 	  exit(1);
 	}
-      
+
       if ((fscanf(ifp,"%*s %*s %*d %d",&i)) == EOF)
 	             /* id acc len cln */
 	{
 	  fprintf(stderr,"names file is shorter then others string file\n");
 	  exit(1);
 	}
-      
+
       if (i != n)
 	{
 	  dum1++;
@@ -1378,7 +1378,7 @@ void prediction_stat (char *AB, pst_type T, const int n, const char *sfile,
     }
   fclose(fp);
   fclose(ifp);
-  
+
 
 /* we disable so that PFAM could be run...
   if (dum1 < s3)
@@ -1386,9 +1386,9 @@ void prediction_stat (char *AB, pst_type T, const int n, const char *sfile,
       fprintf(stderr,"not enough strings in 0.strings\n");
       exit(1);
     }
-*/    
-  
-  if ((fp = fopen(sfile, "r")) == NULL) 
+*/
+
+  if ((fp = fopen(sfile, "r")) == NULL)
     {
       perror("failed to open cluster <strings_file> for read");
       exit(1);
@@ -1398,7 +1398,7 @@ void prediction_stat (char *AB, pst_type T, const int n, const char *sfile,
       perror("failed to open cluster <index_file> for read");
       exit(1);
     }
-  
+
   while (fscanf(fp,"%s",cbuf) != EOF)
     {
       if ((cbuflen = strlen(cbuf)) > STRINGLEN_MAX)
@@ -1418,7 +1418,7 @@ void prediction_stat (char *AB, pst_type T, const int n, const char *sfile,
 	  fprintf(stderr,"<index_file> is shorter then <string_file>\n");
 	  exit(1);
 	}
-      
+
       a = log10like_on_pst(AB, T, cbuf)/cbuflen;
       if (a<=amin)
 	{
@@ -1461,12 +1461,12 @@ void prediction_stat (char *AB, pst_type T, const int n, const char *sfile,
 	    if (f12)
 	      *iso12p = 1.0*(e1+e2); /* /(s1+s2); */
 	    break;
-	  case 3:  
+	  case 3:
 	    e3++;
 	    iso3 = 1.0*e3; /* /s3; */
 	    break;
 	}
-      
+
       f1 = (*iso1p > iso3);
       f2 = (*iso2p > iso3);
       f12 = (*iso12p > iso3);
@@ -1481,9 +1481,9 @@ void prediction_stat (char *AB, pst_type T, const int n, const char *sfile,
 
 
 
-void pred_stat_save (char *AB, pst_type T, const int n, const char *sfile, 
+void pred_stat_save (char *AB, pst_type T, const int n, const char *sfile,
        const char *ifile, const char *s0file, const char *i0file, int s1,
-       int s2, int s3, double *non1p, double *non2p, double *non12p, 
+       int s2, int s3, double *non1p, double *non2p, double *non12p,
        double *iso1p, double *iso2p, double *iso12p, const char *wfile,
        const char *w0file, const int tsize)
 
@@ -1500,12 +1500,12 @@ void pred_stat_save (char *AB, pst_type T, const int n, const char *sfile,
   e2 = 0;      /* test   */
   e3 = 0;      /* others */
 
-  if ((wfp = fopen(w0file, "w")) == NULL) 
+  if ((wfp = fopen(w0file, "w")) == NULL)
     {
       perror("failed to open others output file for write");
       exit(1);
     }
-  if ((fp = fopen(s0file, "r")) == NULL) 
+  if ((fp = fopen(s0file, "r")) == NULL)
     {
       perror("failed to open others strings file for read");
       exit(1);
@@ -1523,19 +1523,19 @@ void pred_stat_save (char *AB, pst_type T, const int n, const char *sfile,
 	  fprintf(stderr, "single string size exceeds STRINGLEN_MAX = %d (may update and re-compile)\n", STRINGLEN_MAX);
 	  exit(1);
 	}
-      
+
       if (strspn(cbuf,AB)!=cbuflen)
 	{
 	  fprintf(stderr,"found a rejected string\n");
 	  exit(1);
 	}
-      
+
       if ((fscanf(ifp,"%s %s %d %d",nam, acc, &dum2, &i)) == EOF)
 	{
 	  fprintf(stderr,"names file is shorter then others string file\n");
 	  exit(1);
 	}
-      
+
       if ((i != n) && (dum1<s3))
 	{
 	  dum1++;
@@ -1554,12 +1554,12 @@ void pred_stat_save (char *AB, pst_type T, const int n, const char *sfile,
   fclose(ifp);
   fclose(wfp);
 
-/*  
+/*
   printf("\nthe %d most related others strings:\n \t slope\t  len\tcluster\tname\n", tsize/2);
   Qh = Q;
   for (i=1; (i<=tsize/2) && (Qh!=NULL); i++)
     {
-      printf("(%d)\t%5.3f\t%5d\t%5d\t%s\n", i, -Qh->p_S, Qh->chi_sufSx, 
+      printf("(%d)\t%5.3f\t%5d\t%5d\t%s\n", i, -Qh->p_S, Qh->chi_sufSx,
 	     Qh->chi_xS,Qh->S);
       Qh = Qh->nextp;
     }
@@ -1569,14 +1569,14 @@ void pred_stat_save (char *AB, pst_type T, const int n, const char *sfile,
       fprintf(stderr,"not enough strings in 0.strings\n");
       exit(1);
     }
-*/    
-  
-  if ((wfp = fopen(wfile, "w")) == NULL) 
+*/
+
+  if ((wfp = fopen(wfile, "w")) == NULL)
     {
       perror("failed to open cluster output file for write");
       exit(1);
     }
-  if ((fp = fopen(sfile, "r")) == NULL) 
+  if ((fp = fopen(sfile, "r")) == NULL)
     {
       perror("failed to open cluster <strings_file> for read");
       exit(1);
@@ -1586,7 +1586,7 @@ void pred_stat_save (char *AB, pst_type T, const int n, const char *sfile,
       perror("failed to open cluster <index_file> for read");
       exit(1);
     }
-  
+
   while (fscanf(fp,"%s",cbuf) != EOF)
     {
       if ((cbuflen = strlen(cbuf)) > STRINGLEN_MAX)
@@ -1606,7 +1606,7 @@ void pred_stat_save (char *AB, pst_type T, const int n, const char *sfile,
 	  fprintf(stderr,"<index_file> is shorter then <string_file>\n");
 	  exit(1);
 	}
-      
+
       y = log10like_on_pst(AB, T, cbuf);
       fprintf (wfp, "%f\n", y);
 /*      a = y/cbuflen;
@@ -1654,12 +1654,12 @@ void pred_stat_save (char *AB, pst_type T, const int n, const char *sfile,
 	    if (f12)
 	      *iso12p = 1.0*(e1+e2); /* /(s1+s2); */
 	    break;
-	  case 3:  
+	  case 3:
 	    e3++;
 	    iso3 = 1.0*e3; /* /s3; */
 	    break;
 	}
-      
+
       f1 = (*iso1p > iso3);
       f2 = (*iso2p > iso3);
       f12 = (*iso12p > iso3);
